@@ -1,0 +1,13 @@
+{{ define "main" }}
+
+<header class="page-header reading-column">
+  <h1 class="page-title">{{ .Title | default "About" }}</h1>
+</header>
+
+<div class="about-page reading-column">
+  <div class="about-content">
+    {{ .Content }}
+  </div>
+</div>
+
+{{ end }}

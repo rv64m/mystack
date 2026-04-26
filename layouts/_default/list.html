@@ -1,0 +1,23 @@
+{{ define "main" }}
+
+<header class="page-header reading-column">
+  <h1 class="page-title">{{ .Title }}</h1>
+  {{ if .Content }}
+    <p class="page-subtitle">{{ .Content }}</p>
+  {{ end }}
+</header>
+
+<div class="reading-column" style="padding-bottom: clamp(3rem, 6vw, 5rem);">
+  {{ range .Pages }}
+    <article style="padding: 24px 0; border-bottom: 1px solid rgba(26,26,26,0.06);">
+      <h2 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 4px;">
+        <a href="{{ .RelPermalink }}" style="color: var(--ink); text-decoration: none;">{{ .Title }}</a>
+      </h2>
+      <time style="font-size: 0.75rem; color: var(--ink-tertiary); font-family: var(--font-mono);">{{ .Date.Format "January 2, 2006" }}</time>
+    </article>
+  {{ else }}
+    <p style="color: var(--ink-secondary);">No content yet.</p>
+  {{ end }}
+</div>
+
+{{ end }}

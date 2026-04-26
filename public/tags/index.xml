@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Alex Chen</title>
+    <link>http://localhost:1313/tags/</link>
+    <description>Recent content in Tags on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 18 Apr 2026 11:15:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:1313/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Code</title>
+      <link>http://localhost:1313/tags/code/</link>
+      <pubDate>Sat, 18 Apr 2026 11:15:00 +0800</pubDate>
+      <guid>http://localhost:1313/tags/code/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Design</title>
+      <link>http://localhost:1313/tags/design/</link>
+      <pubDate>Sat, 18 Apr 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/tags/design/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Essay</title>
+      <link>http://localhost:1313/tags/essay/</link>
+      <pubDate>Sat, 18 Apr 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/tags/essay/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Thought</title>
+      <link>http://localhost:1313/tags/thought/</link>
+      <pubDate>Sat, 18 Apr 2026 08:30:00 +0800</pubDate>
+      <guid>http://localhost:1313/tags/thought/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Css</title>
+      <link>http://localhost:1313/tags/css/</link>
+      <pubDate>Fri, 10 Apr 2026 09:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/tags/css/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tutorial</title>
+      <link>http://localhost:1313/tags/tutorial/</link>
+      <pubDate>Fri, 10 Apr 2026 09:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/tags/tutorial/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Typography</title>
+      <link>http://localhost:1313/tags/typography/</link>
+      <pubDate>Fri, 10 Apr 2026 09:00:00 +0800</pubDate>
+      <guid>http://localhost:1313/tags/typography/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

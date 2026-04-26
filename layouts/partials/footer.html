@@ -1,0 +1,13 @@
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copyright">&copy; {{ now.Year }} {{ .Site.Title }}</span>
+    <nav class="footer-nav">
+      {{ range .Site.Menus.main }}
+        <a href="{{ .URL }}">{{ .Name }}</a>
+      {{ end }}
+    </nav>
+    <div class="footer-social">
+      <a href="/index.xml" aria-label="RSS Feed">RSS</a>
+    </div>
+  </div>
+</footer>

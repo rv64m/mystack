@@ -1,0 +1,40 @@
+{{ define "main" }}
+
+<div class="memos-page">
+  <div class="container" style="max-width: 1440px;">
+    <div class="date-selector" id="date-selector"></div>
+    <div class="memo-desk" id="memo-desk"></div>
+  </div>
+</div>
+
+{{/* Build memo data as JSON for JS consumption */}}
+{{ $scratch := newScratch }}
+{{ $scratch.Set "grouped" dict }}
+
+{{ range .Pages }}
+  {{ $date := .Date.Format "2006-01-02" }}
+  {{ $existing := $scratch.Get (printf "memos-%s" $date) | default slice }}
+  {{ $entry := dict
+    "title" (.Params.title | default "")
+    "content" (.Content)
+    "preview" (.Summary | plainify | truncate 120)
+    "time" (.Date.Format "3:04 PM")
+    "tags" (.Params.tags | default slice)
+  }}
+  {{ $scratch.Set (printf "memos-%s" $date) ($existing | append $entry) }}
+{{ end }}
+
+{{/* Build final grouped dict */}}
+{{ range .Pages }}
+  {{ $date := .Date.Format "2006-01-02" }}
+  {{ $list := $scratch.Get (printf "memos-%s" $date) }}
+  {{ $scratch.SetInMap "grouped" $date $list }}
+{{ end }}
+
+{{ $grouped := $scratch.Get "grouped" }}
+
+<script type="application/json" id="memo-data">
+{{ $grouped | jsonify | safeJS }}
+</script>
+
+{{ end }}

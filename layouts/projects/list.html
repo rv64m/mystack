@@ -1,0 +1,92 @@
+{{ define "main" }}
+
+{{ $featured := where .Pages "Params.featured" true }}
+{{ $secondary := where .Pages "Params.featured" "ne" true }}
+
+<section class="showcase-index container">
+  <header class="showcase-hero">
+    <div class="showcase-hero-copy">
+      <p class="section-kicker">Selected work</p>
+      <h1 class="showcase-title">{{ .Title | default "Projects" }}</h1>
+      {{ if .Content }}
+        <div class="showcase-intro">{{ .Content }}</div>
+      {{ else }}
+        <p class="showcase-intro">Product, design, and engineering work shaped with restraint, clarity, and a bias toward shipping polished systems.</p>
+      {{ end }}
+    </div>
+    <div class="showcase-hero-note">
+      <span class="showcase-note-label">Current lens</span>
+      <p>Smaller surfaces, tighter type, cleaner hierarchy, and interface systems that still feel warm.</p>
+    </div>
+  </header>
+
+  {{ range $featured }}
+    <article class="showcase-feature">
+      <div class="showcase-feature-copy">
+        <p class="section-kicker">Featured project</p>
+        <h2 class="showcase-feature-title">
+          <a href="{{ if .Params.external }}{{ .Params.link }}{{ else }}{{ .RelPermalink }}{{ end }}" {{ if .Params.external }}target="_blank" rel="noopener"{{ end }}>{{ .Title }}</a>
+        </h2>
+        <p class="showcase-feature-desc">{{ .Params.description }}</p>
+        <div class="showcase-feature-meta">
+          {{ with .Params.role }}<span>{{ . }}</span>{{ end }}
+          {{ with .Params.year }}<span>{{ . }}</span>{{ end }}
+          {{ with .Params.status }}
+            <span class="project-status">
+              <span class="status-dot status-dot--{{ . }}"></span>
+              {{ . }}
+            </span>
+          {{ end }}
+        </div>
+        {{ with .Params.stack }}
+          <div class="article-tags">
+            {{ range . }}
+              <span class="tag-pill">{{ . }}</span>
+            {{ end }}
+          </div>
+        {{ end }}
+      </div>
+
+      <a href="{{ if .Params.external }}{{ .Params.link }}{{ else }}{{ .RelPermalink }}{{ end }}" class="showcase-feature-media" {{ if .Params.external }}target="_blank" rel="noopener"{{ end }}>
+        {{ if .Params.image }}
+          <img src="{{ .Params.image }}" alt="{{ .Title }}">
+        {{ else }}
+          <div class="showcase-feature-placeholder">
+            <span>{{ .Title }}</span>
+          </div>
+        {{ end }}
+      </a>
+    </article>
+  {{ end }}
+
+  <div class="showcase-grid">
+    {{ range $secondary }}
+      <article class="showcase-card">
+        <div class="showcase-card-head">
+          <h3 class="showcase-card-title">
+            <a href="{{ if .Params.external }}{{ .Params.link }}{{ else }}{{ .RelPermalink }}{{ end }}" {{ if .Params.external }}target="_blank" rel="noopener"{{ end }}>{{ .Title }}</a>
+          </h3>
+          {{ with .Params.year }}<span class="showcase-card-year">{{ . }}</span>{{ end }}
+        </div>
+        <p class="showcase-card-desc">{{ .Params.description }}</p>
+        <div class="showcase-card-foot">
+          {{ with .Params.status }}
+            <span class="project-status">
+              <span class="status-dot status-dot--{{ . }}"></span>
+              {{ . }}
+            </span>
+          {{ end }}
+          {{ with .Params.stack }}
+            <span class="showcase-card-stack">{{ delimit (first 2 .) " · " }}</span>
+          {{ end }}
+        </div>
+      </article>
+    {{ end }}
+  </div>
+
+  {{ if eq (len .Pages) 0 }}
+    <p class="empty-state">No projects yet.</p>
+  {{ end }}
+</section>
+
+{{ end }}

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head><script src="/livereload.js?mindelay=10&amp;v=2&amp;port=1313&amp;path=livereload" data-no-instant defer></script>
+  <script>
+    (() => {
+      const key = 'site-theme';
+      const stored = localStorage.getItem(key);
+      const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorial — Alex Chen</title>
+<meta name="description" content="Designer and developer. Quiet, intentional software.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+
+</head>
+<body>
+  <nav class="site-nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-wordmark">Alex Chen</a>
+    <div class="nav-actions">
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="Switch to dark mode"
+        aria-pressed="false"
+      >
+        <span class="theme-toggle-sun" aria-hidden="true">Light</span>
+        <span class="theme-toggle-moon" aria-hidden="true">Dark</span>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
+    <ul class="nav-links" id="nav-links">
+      
+        <li><a href="/blog/" class="">Blog</a></li>
+      
+        <li><a href="/projects/" class="">Projects</a></li>
+      
+        <li><a href="/memos/" class="">Memos</a></li>
+      
+        <li><a href="/about/" class="">About</a></li>
+      
+    </ul>
+  </div>
+</nav>
+
+  <main id="main">
+    
+
+<header class="page-header reading-column">
+  <h1 class="page-title">Tutorial</h1>
+  
+</header>
+
+<div class="reading-column" style="padding-bottom: clamp(3rem, 6vw, 5rem);">
+  
+    <article style="padding: 24px 0; border-bottom: 1px solid rgba(26,26,26,0.06);">
+      <h2 style="font-family: var(--font-display); font-size: 1.25rem; margin-bottom: 4px;">
+        <a href="/blog/2026/04/typography-on-the-web-a-practical-guide/" style="color: var(--ink); text-decoration: none;">Typography on the Web: A Practical Guide</a>
+      </h2>
+      <time style="font-size: 0.75rem; color: var(--ink-tertiary); font-family: var(--font-mono);">April 10, 2026</time>
+    </article>
+  
+</div>
+
+
+  </main>
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copyright">&copy; 2026 Alex Chen</span>
+    <nav class="footer-nav">
+      
+        <a href="/blog/">Blog</a>
+      
+        <a href="/projects/">Projects</a>
+      
+        <a href="/memos/">Memos</a>
+      
+        <a href="/about/">About</a>
+      
+    </nav>
+    <div class="footer-social">
+      <a href="/index.xml" aria-label="RSS Feed">RSS</a>
+    </div>
+  </div>
+</footer>
+
+  
+  <script src="/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,47 @@
+{{ define "main" }}
+
+<article class="story-shell container">
+  <header class="story-hero">
+    <div class="story-hero-copy">
+      <p class="section-kicker">Essay</p>
+      <h1 class="story-title">{{ .Title }}</h1>
+      <div class="story-meta">
+        <span><time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time></span>
+        <span>{{ .ReadingTime }} min read</span>
+        {{ with .Params.series }}<span>{{ . }}</span>{{ end }}
+      </div>
+    </div>
+    {{ with .Params.tags }}
+      <div class="story-tags">
+        {{ range . }}
+          <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag-pill">{{ . }}</a>
+        {{ end }}
+      </div>
+    {{ end }}
+  </header>
+
+  <div class="story-body-wrap">
+    <div class="article-body story-body">
+      {{ .Content }}
+    </div>
+  </div>
+
+  <nav class="story-nav">
+    <div class="article-nav-inner">
+      {{ with .PrevInSection }}
+        <div class="article-nav-prev">
+          <p class="article-nav-label">Previous</p>
+          <a href="{{ .RelPermalink }}" class="article-nav-title">{{ .Title }}</a>
+        </div>
+      {{ end }}
+      {{ with .NextInSection }}
+        <div class="article-nav-next">
+          <p class="article-nav-label">Next</p>
+          <a href="{{ .RelPermalink }}" class="article-nav-title">{{ .Title }}</a>
+        </div>
+      {{ end }}
+    </div>
+  </nav>
+</article>
+
+{{ end }}

@@ -1,0 +1,78 @@
+{{ define "main" }}
+
+<article class="project-story container">
+  <header class="project-story-hero">
+    <div class="project-story-copy">
+      <p class="section-kicker">Project</p>
+      <h1 class="project-story-title">{{ .Title }}</h1>
+      {{ with .Params.description }}
+        <p class="project-story-tagline">{{ . }}</p>
+      {{ end }}
+    </div>
+
+    <div class="project-story-meta">
+      {{ with .Params.role }}
+        <div class="project-story-meta-item">
+          <span class="project-story-meta-label">Role</span>
+          <span class="project-story-meta-value">{{ . }}</span>
+        </div>
+      {{ end }}
+      {{ with .Params.year }}
+        <div class="project-story-meta-item">
+          <span class="project-story-meta-label">Year</span>
+          <span class="project-story-meta-value">{{ . }}</span>
+        </div>
+      {{ end }}
+      {{ with .Params.stack }}
+        <div class="project-story-meta-item">
+          <span class="project-story-meta-label">Stack</span>
+          <span class="project-story-meta-value">{{ delimit . ", " }}</span>
+        </div>
+      {{ end }}
+      {{ with .Params.status }}
+        <div class="project-story-meta-item">
+          <span class="project-story-meta-label">Status</span>
+          <span class="project-story-meta-value">
+            <span class="project-status">
+              <span class="status-dot status-dot--{{ . }}"></span>
+              {{ . }}
+            </span>
+          </span>
+        </div>
+      {{ end }}
+    </div>
+  </header>
+
+  <div class="project-story-media">
+    {{ with .Params.image }}
+      <img src="{{ . }}" alt="{{ $.Title }}">
+    {{ else }}
+      <div class="project-story-placeholder">
+        <span>{{ .Title }}</span>
+      </div>
+    {{ end }}
+  </div>
+
+  <div class="project-story-body article-body">
+    {{ .Content }}
+  </div>
+
+  <nav class="story-nav">
+    <div class="article-nav-inner">
+      {{ with .PrevInSection }}
+        <div class="article-nav-prev">
+          <p class="article-nav-label">Previous project</p>
+          <a href="{{ .RelPermalink }}" class="article-nav-title">{{ .Title }}</a>
+        </div>
+      {{ end }}
+      {{ with .NextInSection }}
+        <div class="article-nav-next">
+          <p class="article-nav-label">Next project</p>
+          <a href="{{ .RelPermalink }}" class="article-nav-title">{{ .Title }}</a>
+        </div>
+      {{ end }}
+    </div>
+  </nav>
+</article>
+
+{{ end }}
