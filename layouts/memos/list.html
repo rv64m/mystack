@@ -17,7 +17,7 @@
   {{ $entry := dict
     "title" (.Params.title | default "")
     "content" (.Content)
-    "preview" (.Summary | plainify | truncate 120)
+    "preview" (.Summary | plainify | truncate 150)
     "time" (.Date.Format "3:04 PM")
     "tags" (.Params.tags | default slice)
   }}

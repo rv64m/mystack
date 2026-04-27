@@ -2,83 +2,65 @@
 
 {{ $pages := .Pages.ByDate.Reverse }}
 
-<section class="editorial-index container">
-  <header class="editorial-hero">
-    <div class="editorial-hero-copy">
-      <p class="section-kicker">Journal</p>
-      <h1 class="editorial-title">{{ .Title | default "Writing" }}</h1>
+<div class="blog-index container">
+  <header class="blog-header">
+    <span class="blog-kicker">Journal</span>
+    <h1 class="blog-title">{{ .Title | default "Writing" }}</h1>
+    <div class="blog-description">
       {{ if .Content }}
-        <div class="editorial-intro">{{ .Content }}</div>
+        {{ .Content }}
       {{ else }}
-        <p class="editorial-intro">Essays, notes, and practical writing on building software with a calmer visual and technical standard.</p>
+        <p>Essays, notes, and practical writing on building software with a calmer visual and technical standard.</p>
       {{ end }}
-    </div>
-    <div class="editorial-hero-meta">
-      <div class="editorial-stat">
-        <span class="editorial-stat-label">Published</span>
-        <strong>{{ len $pages }}</strong>
-      </div>
-      <div class="editorial-stat">
-        <span class="editorial-stat-label">Focus</span>
-        <strong>Design, systems, web craft</strong>
-      </div>
     </div>
   </header>
 
   {{ with first 1 $pages }}
     {{ range . }}
-    <article class="editorial-feature">
-      <div class="editorial-feature-shell">
-        <div class="editorial-feature-copy">
-          <p class="section-kicker">Latest article</p>
-          <h2 class="editorial-feature-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
-          <p class="editorial-feature-excerpt">{{ .Summary | plainify }}</p>
-          <div class="editorial-feature-meta">
-            <span>{{ .Date.Format "January 2, 2006" }}</span>
+    <section class="blog-featured">
+      <div class="featured-card">
+        <div class="featured-content">
+          <span class="blog-kicker">Latest Article</span>
+          <h2 class="featured-title">
+            <a href="{{ .RelPermalink }}" class="stretched-link">{{ .Title }}</a>
+          </h2>
+          {{ if .Summary }}
+            <p class="featured-excerpt">{{ .Summary | plainify }}</p>
+          {{ end }}
+          <div class="featured-meta">
+            <time datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
             <span>{{ .ReadingTime }} min read</span>
-            {{ with .Params.series }}<span>{{ . }}</span>{{ end }}
           </div>
         </div>
-        {{ with .Params.tags }}
-          <div class="editorial-feature-tags">
-            {{ range first 4 . }}
-              <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag-pill">{{ . }}</a>
-            {{ end }}
+        <div class="featured-visual">
+          <div class="visual-placeholder">
+             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="var(--ink-tertiary)" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
           </div>
-        {{ end }}
+        </div>
       </div>
-    </article>
+    </section>
     {{ end }}
   {{ end }}
 
-  <div class="editorial-grid">
+  <div class="posts-list">
     {{ range after 1 $pages }}
-      <article class="editorial-card">
-        <div class="editorial-card-top">
-          <time class="editorial-card-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 2, 2006" }}</time>
-          <span class="editorial-card-read">{{ .ReadingTime }} min</span>
-        </div>
-        <h3 class="editorial-card-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
-        {{ if .Summary }}
-          <p class="editorial-card-excerpt">{{ .Summary | plainify }}</p>
-        {{ end }}
-        <div class="editorial-card-bottom">
-          {{ with .Params.tags }}
-            <div class="article-tags">
-              {{ range first 3 . }}
-                <a href="{{ "/tags/" | relURL }}{{ . | urlize }}" class="tag-pill">{{ . }}</a>
-              {{ end }}
-            </div>
-          {{ end }}
-          <a href="{{ .RelPermalink }}" class="editorial-card-link">Read article</a>
+      <article class="post-entry">
+        <div class="post-row">
+          <time class="post-date" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "Jan 02, 2006" }}</time>
+          <h3 class="post-title">
+            <a href="{{ .RelPermalink }}" class="stretched-link">{{ .Title }}</a>
+          </h3>
+          <span class="post-meta-extra">{{ .ReadingTime }} min read &rarr;</span>
         </div>
       </article>
     {{ end }}
   </div>
 
   {{ if eq (len $pages) 0 }}
-    <p class="empty-state">No posts yet.</p>
+    <div class="blog-empty">
+      <p>No articles have been published yet. Please check back soon.</p>
+    </div>
   {{ end }}
-</section>
+</div>
 
 {{ end }}

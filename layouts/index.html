@@ -3,16 +3,19 @@
 <section class="hero">
   <div class="container">
     <div class="hero-inner">
-      {{ partial "hero-computer.html" . }}
+      <div class="hero-scene">
+        {{ partial "hero-computer.html" . }}
+      </div>
 
       <div class="hero-text">
-        <p class="hero-greeting">{{ .Site.Params.greeting | default "Hello, I'm" }}</p>
+        <span class="hero-greeting">{{ .Site.Params.greeting | default "Hello, I'm" }}</span>
         <h1 class="hero-name">{{ .Site.Title }}</h1>
         <p class="hero-statement">{{ .Site.Params.statement | default "I design and build quiet, intentional software." }}</p>
         <div class="hero-links">
-          <a href="/blog/">Read the blog &rarr;</a>
-          <a href="/projects/">See projects &rarr;</a>
-          <a href="/memos/">Browse memos &rarr;</a>
+          <a href="/blog/">Journal</a>
+          <a href="/projects/">Projects</a>
+          <a href="/memos/">Memos</a>
+          <a href="/about/">About</a>
         </div>
       </div>
     </div>
@@ -21,42 +24,38 @@
 
 <section class="previews">
   <div class="container">
+    <header class="previews-header">
+      <h2 class="previews-title">Selected Activity</h2>
+    </header>
+
     <div class="previews-grid">
       {{ $latestBlog := index (where .Site.RegularPages "Section" "blog") 0 }}
-      <article class="preview-card">
-        <p class="preview-label">Latest from the blog</p>
+      <article class="preview-item">
+        <span class="preview-label">Latest Journal</span>
         {{ if $latestBlog }}
-          <h2 class="preview-title"><a href="{{ $latestBlog.RelPermalink }}">{{ $latestBlog.Title }}</a></h2>
-          <p class="preview-desc">{{ $latestBlog.Summary | plainify | truncate 100 }}</p>
-          <a href="/blog/" class="preview-link">Read &rarr;</a>
-        {{ else }}
-          <p class="preview-desc">No posts yet.</p>
+          <h3 class="preview-title"><a href="{{ $latestBlog.RelPermalink }}">{{ $latestBlog.Title }}</a></h3>
+          <p class="preview-desc">{{ $latestBlog.Summary | plainify | truncate 120 }}</p>
+          <a href="{{ $latestBlog.RelPermalink }}" class="preview-link">Read entry &rarr;</a>
         {{ end }}
       </article>
 
       {{ $featuredProject := index (where .Site.RegularPages "Params.featured" true) 0 | default (index (where .Site.RegularPages "Section" "projects") 0) }}
-      <article class="preview-card">
-        <p class="preview-label">Selected work</p>
+      <article class="preview-item">
+        <span class="preview-label">Featured Project</span>
         {{ if $featuredProject }}
-          <h2 class="preview-title"><a href="{{ $featuredProject.RelPermalink }}">{{ $featuredProject.Title }}</a></h2>
-          <p class="preview-desc">{{ $featuredProject.Params.description | default ($featuredProject.Summary | plainify | truncate 100) }}</p>
-          <a href="/projects/" class="preview-link">View &rarr;</a>
-        {{ else }}
-          <p class="preview-desc">No projects yet.</p>
+          <h3 class="preview-title"><a href="{{ $featuredProject.RelPermalink }}">{{ $featuredProject.Title }}</a></h3>
+          <p class="preview-desc">{{ $featuredProject.Params.description | default ($featuredProject.Summary | plainify | truncate 120) }}</p>
+          <a href="{{ $featuredProject.RelPermalink }}" class="preview-link">View project &rarr;</a>
         {{ end }}
       </article>
 
-      <article class="preview-card">
-        <p class="preview-label">Today's memos</p>
-        {{ $todayMemos := where .Site.RegularPages "Section" "memos" }}
-        {{ $todayCount := len $todayMemos }}
-        {{ if gt $todayCount 0 }}
-          <h2 class="preview-title"><a href="/memos/">{{ $todayCount }} memo{{ if gt $todayCount 1 }}s{{ end }}</a></h2>
-          <p class="preview-desc">Short notes and observations from today.</p>
-          <a href="/memos/" class="preview-link">Browse &rarr;</a>
-        {{ else }}
-          <p class="preview-desc">No memos yet today.</p>
-          <a href="/memos/" class="preview-link">Browse &rarr;</a>
+      {{ $latestMemo := index (where .Site.RegularPages "Section" "memos") 0 }}
+      <article class="preview-item">
+        <span class="preview-label">Latest Memo</span>
+        {{ if $latestMemo }}
+          <h3 class="preview-title"><a href="/memos/">{{ $latestMemo.Title }}</a></h3>
+          <p class="preview-desc">{{ $latestMemo.Summary | plainify | truncate 120 }}</p>
+          <a href="/memos/" class="preview-link">Browse all &rarr;</a>
         {{ end }}
       </article>
     </div>
@@ -67,7 +66,9 @@
   <div class="container">
     <div class="home-about-inner">
       <div class="home-about-avatar" aria-hidden="true">{{ substr .Site.Title 0 1 }}</div>
-      <p class="home-about-text">{{ .Site.Params.description | default "Designer and developer." }}</p>
+      <p class="home-about-text">
+        {{ .Site.Params.description | default "I believe software should be a calm room in a noisy world — a place for focus, clarity, and quiet craftsmanship." }}
+      </p>
     </div>
   </div>
 </section>

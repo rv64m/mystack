@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
   const desk = document.getElementById('memo-desk');
-  const selector = document.getElementById('date-selector');
-  if (!desk || !selector) return;
+  if (!desk) return;
 
   const memoDataEl = document.getElementById('memo-data');
   if (!memoDataEl) return;
@@ -20,41 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     return;
   }
 
-  const memoThemes = [
-    {
-      surface: '#FFFFFF',
-      strong: '#F4FAFF',
-      soft: '#EAF6FF',
-      accent: '#53B4E8',
-      ink: '#33424D',
-      muted: '#71828F'
-    },
-    {
-      surface: '#FFFFFF',
-      strong: '#FFF8F1',
-      soft: '#FDEBDD',
-      accent: '#F0AE6B',
-      ink: '#4B4138',
-      muted: '#86776A'
-    },
-    {
-      surface: '#FFFFFF',
-      strong: '#F6FBF7',
-      soft: '#E8F5EA',
-      accent: '#88C590',
-      ink: '#33463A',
-      muted: '#6F8475'
-    },
-    {
-      surface: '#FFFFFF',
-      strong: '#FAF8FF',
-      soft: '#EEE7FB',
-      accent: '#A58CE2',
-      ink: '#3D3950',
-      muted: '#7A748F'
-    }
-  ];
-
   let dayIndex = 0;
   let memoIndex = 0;
 
@@ -66,83 +30,88 @@ document.addEventListener('DOMContentLoaded', () => {
     return memosByDate[getCurrentDate()] || [];
   }
 
-  function getTheme(index) {
-    return memoThemes[index % memoThemes.length];
-  }
-
-  function themeStyle(index) {
-    const theme = getTheme(index);
-    return `--memo-surface:${theme.surface};--memo-strong:${theme.strong};--memo-soft:${theme.soft};--memo-accent:${theme.accent};--memo-ink:${theme.ink};--memo-muted:${theme.muted};`;
-  }
-
   function formatDate(date) {
     const d = new Date(`${date}T00:00:00`);
-    return {
-      weekday: d.toLocaleDateString('en-US', { weekday: 'long' }),
-      shortWeekday: d.toLocaleDateString('en-US', { weekday: 'short' }),
-      monthDay: d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
-      full: d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })
-    };
-  }
-
-  function renderSelector() {
-    selector.innerHTML = '';
-    selector.hidden = true;
+    return d.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' });
   }
 
   function renderDesk() {
     const items = getCurrentItems();
-
     if (items.length === 0) {
       renderEmpty('No memos for this day.');
       return;
     }
 
-    memoIndex = Math.max(0, Math.min(memoIndex, items.length - 1));
+    // Ensure memoIndex is always within bounds (looping logic)
+    memoIndex = memoIndex % items.length;
+    if (memoIndex < 0) memoIndex = items.length - 1;
 
-    const currentDate = formatDate(getCurrentDate());
     const currentItem = items[memoIndex];
-    const stackedItems = items.slice(memoIndex, memoIndex + 3);
-    const hasPrevDay = dayIndex < dates.length - 1;
-    const hasNextDay = dayIndex > 0;
+    
+    // For the stacking visual effect, we get the next items in a loop
+    const stackedItems = [];
+    for (let i = 0; i < Math.min(3, items.length); i++) {
+      stackedItems.push(items[(memoIndex + i) % items.length]);
+    }
 
     desk.innerHTML = `
       <section class="memo-kinetic">
         <div class="memo-kinetic-header">
-          <button class="memo-date-btn" id="memo-prev-day" type="button" aria-label="Previous day" ${hasPrevDay ? '' : 'disabled'}>
+          <button class="memo-date-btn" id="memo-prev-day" type="button" aria-label="Previous day" ${dayIndex < dates.length - 1 ? '' : 'disabled'}>
             &lsaquo;
           </button>
           <div class="memo-date-display">
-            <span>${escapeHtml(currentDate.weekday)},</span>
-            <span>${escapeHtml(currentDate.monthDay)}</span>
+            ${formatDate(getCurrentDate())}
           </div>
-          <button class="memo-date-btn" id="memo-next-day" type="button" aria-label="Next day" ${hasNextDay ? '' : 'disabled'}>
+          <button class="memo-date-btn" id="memo-next-day" type="button" aria-label="Next day" ${dayIndex > 0 ? '' : 'disabled'}>
             &rsaquo;
           </button>
         </div>
 
-        <p class="memo-scribble memo-scribble--left">&larr; your daily pulse</p>
-
         <div class="memo-kinetic-stack" id="memo-stack">
-          ${stackedItems.slice(1).reverse().map((item, offset) => renderBackCard(item, memoIndex + stackedItems.length - 1 - offset, items.length, stackedItems.length - 1 - offset)).join('')}
-          <button class="memo-focus-card is-visible" id="memo-focus-card" type="button" style="${themeStyle(memoIndex)}" ${memoIndex < items.length - 1 ? 'data-next="true"' : ''}>
-            <div class="memo-focus-badge">${memoIndex === 0 ? "Today's Focus" : `Note ${memoIndex + 1}`}</div>
-            <h2 class="memo-focus-title">${escapeHtml(getHeadline(currentItem, memoIndex))}</h2>
-            <p class="memo-focus-body">${escapeHtml(getBodyCopy(currentItem))}</p>
-            <div class="memo-focus-wave" aria-hidden="true">
-              <svg viewBox="0 0 240 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M8 38C51 38 76 9 118 9C160 9 185 38 232 38" stroke="var(--memo-accent)" stroke-width="3.5" stroke-linecap="round"/>
-              </svg>
+          ${stackedItems.slice(1).reverse().map((item, offset) => `
+            <div class="memo-back-card memo-back-card--depth-${stackedItems.length - 1 - offset}"></div>
+          `).join('')}
+          
+          <div class="memo-focus-card" id="memo-focus-card">
+            <div class="memo-card-top-meta">
+              <time class="memo-time-top">${currentItem.time}</time>
+              <span class="memo-focus-badge">${memoIndex === 0 ? "Latest" : `Note ${memoIndex + 1}`}</span>
             </div>
-            <div class="memo-focus-meta">
-              <time>${escapeHtml(currentItem.time)}</time>
-              <span>${items.length > 1 ? `${memoIndex + 1}/${items.length}` : currentDate.shortWeekday}</span>
+            
+            <div class="memo-card-inner-content">
+              <h2 class="memo-focus-title">${currentItem.title || ''}</h2>
+              <div class="memo-focus-body">
+                ${currentItem.content}
+              </div>
             </div>
-          </button>
+            
+            <div class="memo-card-actions">
+              <button class="memo-expand-btn" id="memo-expand-trigger">Read Full</button>
+              <div class="memo-card-footer-minimal">
+                <span>${memoIndex + 1} / ${items.length}</span>
+              </div>
+            </div>
+          </div>
         </div>
-
-        <p class="memo-scribble memo-scribble--right">history of wins &rarr;</p>
       </section>
+
+      <!-- Float Detail Overlay -->
+      <div class="memo-detail-overlay" id="memo-detail-overlay">
+        <div class="memo-detail-modal">
+          <button class="memo-detail-close" id="memo-detail-close">&times;</button>
+          <div class="memo-detail-content">
+             <div class="memo-card-top-meta">
+               <time class="memo-time-top">${currentItem.time}</time>
+               <span class="memo-focus-badge">${memoIndex === 0 ? "Latest" : `Note ${memoIndex + 1}`}</span>
+             </div>
+             <h2 class="memo-detail-title">${currentItem.title || ''}</h2>
+             <div class="memo-detail-body article-body">
+               ${currentItem.content}
+             </div>
+          </div>
+        </div>
+      </div>
     `;
 
     bindEvents();
@@ -152,113 +121,72 @@ document.addEventListener('DOMContentLoaded', () => {
     const prevDay = document.getElementById('memo-prev-day');
     const nextDay = document.getElementById('memo-next-day');
     const focusCard = document.getElementById('memo-focus-card');
+    const expandBtn = document.getElementById('memo-expand-trigger');
+    const overlay = document.getElementById('memo-detail-overlay');
+    const closeBtn = document.getElementById('memo-detail-close');
 
     if (prevDay) {
-      prevDay.addEventListener('click', () => {
-        if (dayIndex < dates.length - 1) {
-          dayIndex += 1;
-          memoIndex = 0;
-          renderDesk();
-        }
-      });
+      prevDay.onclick = (e) => {
+        e.stopPropagation();
+        dayIndex++;
+        memoIndex = 0;
+        renderDesk();
+      };
     }
 
     if (nextDay) {
-      nextDay.addEventListener('click', () => {
-        if (dayIndex > 0) {
-          dayIndex -= 1;
-          memoIndex = 0;
-          renderDesk();
-        }
-      });
+      nextDay.onclick = (e) => {
+        e.stopPropagation();
+        dayIndex--;
+        memoIndex = 0;
+        renderDesk();
+      };
     }
 
     if (focusCard) {
-      focusCard.addEventListener('click', () => {
-        if (memoIndex < getCurrentItems().length - 1) {
-          transitionToMemo(memoIndex + 1);
-        }
-      });
+      focusCard.onclick = (e) => {
+        // Prevent click if clicking the expand button
+        if (e.target.closest('#memo-expand-trigger')) return;
+        
+        // Loop back to start if it's the last one, or just go to next
+        const items = getCurrentItems();
+        
+        focusCard.classList.add('is-leaving');
+        const stack = document.getElementById('memo-stack');
+        stack.classList.add('is-transitioning');
+        
+        setTimeout(() => {
+          memoIndex = (memoIndex + 1) % items.length;
+          renderDesk();
+        }, 300);
+      };
     }
-  }
 
-  function transitionToMemo(nextIndex) {
-    const card = document.getElementById('memo-focus-card');
-    const stack = document.getElementById('memo-stack');
-    if (!card || !stack) {
-      memoIndex = nextIndex;
-      renderDesk();
-      return;
+    if (expandBtn) {
+      expandBtn.onclick = (e) => {
+        e.stopPropagation();
+        overlay.classList.add('is-active');
+        document.body.style.overflow = 'hidden';
+      };
     }
 
-    card.classList.remove('is-visible');
-    card.classList.add('is-leaving');
-    stack.classList.add('is-transitioning');
+    if (closeBtn) {
+      closeBtn.onclick = () => {
+        overlay.classList.remove('is-active');
+        document.body.style.overflow = '';
+      };
+    }
 
-    window.setTimeout(() => {
-      memoIndex = nextIndex;
-      renderDesk();
-
-      const incoming = document.getElementById('memo-focus-card');
-      if (!incoming) return;
-
-      requestAnimationFrame(() => {
-        incoming.classList.remove('is-visible');
-        requestAnimationFrame(() => {
-          incoming.classList.add('is-visible');
-        });
-      });
-    }, 240);
-  }
-
-  function renderBackCard(item, idx, total, depth) {
-    return `
-      <div class="memo-back-card memo-back-card--depth-${depth}" style="${themeStyle(idx)}" aria-hidden="true">
-        <div class="memo-back-card-veil"></div>
-      </div>
-    `;
-  }
-
-  function getHeadline(item, idx) {
-    if (item.title && item.title.trim()) return item.title.trim();
-
-    const source = (item.preview || stripHtml(item.content || '')).trim();
-    if (!source) return `Memo ${idx + 1}`;
-
-    const cleaned = source.replace(/\s+/g, ' ').trim();
-    const sentence = cleaned.split(/[.!?]/)[0].trim();
-    const headline = sentence || cleaned;
-    return headline.length > 42 ? `${headline.slice(0, 42).trim()}...` : headline;
-  }
-
-  function getBodyCopy(item) {
-    const source = (item.preview || stripHtml(item.content || '')).replace(/\s+/g, ' ').trim();
-    if (!source) return 'A quiet note for the day.';
-    return source.length > 96 ? `${source.slice(0, 96).trim()}...` : source;
-  }
-
-  function stripHtml(html) {
-    return html.replace(/<[^>]+>/g, ' ');
+    if (overlay) {
+      overlay.onclick = (e) => {
+        if (e.target === overlay) closeBtn.onclick();
+      };
+    }
   }
 
   function renderEmpty(message) {
-    desk.innerHTML = `
-      <div class="memo-empty">
-        <p class="memo-empty-title">${escapeHtml(message)}</p>
-        <p class="memo-empty-text">Memos are usually written in the morning. Check back soon.</p>
-      </div>
-    `;
+    desk.innerHTML = `<div class="memo-empty">${message}</div>`;
   }
 
-  function escapeHtml(str) {
-    if (!str) return '';
-    return str
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  renderSelector();
   renderDesk();
 });

@@ -63,220 +63,171 @@
 <section class="hero">
   <div class="container">
     <div class="hero-inner">
-      <div class="hero-computer" aria-hidden="true">
-  <svg class="computer-object" viewBox="0 0 420 400" fill="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      
-      <linearGradient id="bodyFront" x1="60" y1="30" x2="60" y2="340" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#F2EDE5"/>
-        <stop offset="0.6" stop-color="#E8E2D8"/>
-        <stop offset="1" stop-color="#DDD6CA"/>
-      </linearGradient>
-      <linearGradient id="bodySide" x1="320" y1="30" x2="360" y2="340" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#D5CEC2"/>
-        <stop offset="1" stop-color="#C4BCAF"/>
-      </linearGradient>
-      <linearGradient id="bodyTop" x1="60" y1="30" x2="340" y2="15" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#FAF7F2"/>
-        <stop offset="1" stop-color="#E8E2D8"/>
-      </linearGradient>
+      <div class="hero-scene">
+        <div class="hero-computer-wrapper" id="hero-computer-container">
+  <div class="hero-computer" id="hero-computer">
+    <svg class="computer-object" viewBox="0 0 420 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        
+        <linearGradient id="bodyFront" x1="60" y1="30" x2="60" y2="340" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#F2EDE5"/>
+          <stop offset="0.6" stop-color="#E8E2D8"/>
+          <stop offset="1" stop-color="#DDD6CA"/>
+        </linearGradient>
+        <linearGradient id="bodySide" x1="320" y1="30" x2="360" y2="340" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#D5CEC2"/>
+          <stop offset="1" stop-color="#C4BCAF"/>
+        </linearGradient>
+        <linearGradient id="bodyTop" x1="60" y1="30" x2="340" y2="15" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#FAF7F2"/>
+          <stop offset="1" stop-color="#E8E2D8"/>
+        </linearGradient>
+
+        
+        <radialGradient id="screenGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#2A2D35"/>
+          <stop offset="100%" stop-color="#1A1C22"/>
+        </radialGradient>
+        <linearGradient id="bezelGrad" x1="90" y1="55" x2="90" y2="245" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#D5CEC4"/>
+          <stop offset="1" stop-color="#C8C0B4"/>
+        </linearGradient>
+
+        
+        <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
+          <rect width="4" height="2" fill="#000" opacity="0.08"/>
+        </pattern>
+        
+        <radialGradient id="crtVignette" cx="50%" cy="50%" r="65%">
+          <stop offset="60%" stop-color="transparent"/>
+          <stop offset="100%" stop-color="#000" opacity="0.4"/>
+        </radialGradient>
+
+        
+        <linearGradient id="rainbowPear" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#E85D4E"/>
+          <stop offset="20%" stop-color="#E8A34E"/>
+          <stop offset="40%" stop-color="#E8D44E"/>
+          <stop offset="60%" stop-color="#5EB85E"/>
+          <stop offset="80%" stop-color="#4E8DE8"/>
+          <stop offset="100%" stop-color="#9B5EE8"/>
+        </linearGradient>
+
+        <clipPath id="screenClip">
+          <path d="M100 70 C100 60, 110 55, 130 55 L290 55 C310 55, 320 60, 320 70 L320 240 C320 250, 310 255, 290 255 L130 255 C110 255, 100 250, 100 240 Z"/>
+        </clipPath>
+      </defs>
 
       
-      <radialGradient id="screenGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="#2A2D35"/>
-        <stop offset="100%" stop-color="#1A1C22"/>
-      </radialGradient>
-      <linearGradient id="bezelGrad" x1="90" y1="55" x2="90" y2="245" gradientUnits="userSpaceOnUse">
-        <stop stop-color="#D5CEC4"/>
-        <stop offset="1" stop-color="#C8C0B4"/>
-      </linearGradient>
+      <path d="M320 30 L355 18 L355 350 L320 365 Z" fill="url(#bodySide)"/>
+      <path d="M60 30 L95 18 L335 5 L320 18 Z" fill="url(#bodyTop)"/>
+      <path d="M60 30 C60 15, 75 10, 100 10 L300 10 C325 10, 340 15, 340 30 L340 350 C340 362, 330 365, 320 365 L80 365 C70 365, 60 362, 60 350 Z" fill="url(#bodyFront)"/>
 
       
-      <pattern id="scanlines" width="4" height="4" patternUnits="userSpaceOnUse">
-        <rect width="4" height="2" fill="#000" opacity="0.08"/>
-      </pattern>
-      
-      <radialGradient id="crtVignette" cx="50%" cy="50%" r="65%">
-        <stop offset="60%" stop-color="transparent"/>
-        <stop offset="100%" stop-color="#000" opacity="0.4"/>
-      </radialGradient>
+      <path d="M85 50 C85 38, 95 34, 115 34 L305 34 C325 34, 335 38, 335 50 L335 260 C335 272, 325 276, 305 276 L115 276 C95 276, 85 272, 85 260 Z" fill="url(#bezelGrad)"/>
+      <path d="M92 56 C92 46, 100 42, 118 42 L302 42 C320 42, 328 46, 328 56 L328 250 C328 260, 320 264, 302 264 L118 264 C100 264, 92 260, 92 250 Z" fill="#3A3834"/>
 
       
-      <radialGradient id="groundShadow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%" stop-color="rgba(26,26,26,0.12)"/>
-        <stop offset="100%" stop-color="rgba(26,26,26,0)"/>
-      </radialGradient>
+      <g clip-path="url(#screenClip)">
+        <rect x="95" y="48" width="230" height="212" fill="url(#screenGlow)"/>
+        <rect x="95" y="48" width="230" height="212" fill="url(#scanlines)"/>
+        <rect x="95" y="48" width="230" height="212" fill="url(#crtVignette)"/>
 
-      
-      <linearGradient id="rainbowPear" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#E85D4E"/>
-        <stop offset="20%" stop-color="#E8A34E"/>
-        <stop offset="40%" stop-color="#E8D44E"/>
-        <stop offset="60%" stop-color="#5EB85E"/>
-        <stop offset="80%" stop-color="#4E8DE8"/>
-        <stop offset="100%" stop-color="#9B5EE8"/>
-      </linearGradient>
+        <rect x="95" y="48" width="230" height="20" fill="#1E2026"/>
+        <text x="105" y="62" fill="#8A8F99" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="400">FigOS 1.0</text>
+        <rect x="95" y="68" width="70" height="192" fill="#1E2026"/>
+        <line x1="165" y1="68" x2="165" y2="260" stroke="#2A2D35" stroke-width="0.5"/>
 
-      
-      <clipPath id="screenClip">
-        <path d="M100 70 C100 60, 110 55, 130 55 L290 55 C310 55, 320 60, 320 70 L320 240 C320 250, 310 255, 290 255 L130 255 C110 255, 100 250, 100 240 Z"/>
-      </clipPath>
-    </defs>
+        <g font-family="'JetBrains Mono', monospace" font-size="7" fill="#A0A5AD">
+          <circle cx="108" cy="84" r="3" fill="#5B9BD5"/>
+          <text x="116" y="87">System</text>
+          <circle cx="108" cy="100" r="3" fill="#D4905B"/>
+          <text x="116" y="103">Disk A</text>
+          <circle cx="108" cy="116" r="3" fill="#6B6F78"/>
+          <text x="116" y="119">Trash</text>
+        </g>
 
-    
-    <ellipse cx="210" cy="385" rx="150" ry="12" fill="url(#groundShadow)"/>
-
-    
-    
-    <path d="M320 30 L355 18 L355 350 L320 365 Z" fill="url(#bodySide)"/>
-    
-    <path d="M60 30 L95 18 L335 5 L320 18 Z" fill="url(#bodyTop)"/>
-    
-    <path d="M60 30 C60 15, 75 10, 100 10 L300 10 C325 10, 340 15, 340 30 L340 350 C340 362, 330 365, 320 365 L80 365 C70 365, 60 362, 60 350 Z" fill="url(#bodyFront)"/>
-
-    
-    
-    <path d="M85 50 C85 38, 95 34, 115 34 L305 34 C325 34, 335 38, 335 50 L335 260 C335 272, 325 276, 305 276 L115 276 C95 276, 85 272, 85 260 Z" fill="url(#bezelGrad)"/>
-    
-    <path d="M92 56 C92 46, 100 42, 118 42 L302 42 C320 42, 328 46, 328 56 L328 250 C328 260, 320 264, 302 264 L118 264 C100 264, 92 260, 92 250 Z" fill="#3A3834"/>
-
-    
-    <g clip-path="url(#screenClip)">
-      
-      <rect x="95" y="48" width="230" height="212" fill="url(#screenGlow)"/>
-
-      
-      <rect x="95" y="48" width="230" height="212" fill="url(#scanlines)"/>
-
-      <rect x="95" y="48" width="230" height="212" fill="url(#crtVignette)"/>
-
-      
-      
-      <rect x="95" y="48" width="230" height="20" fill="#1E2026"/>
-      <text x="105" y="62" fill="#8A8F99" font-family="'JetBrains Mono', monospace" font-size="8" font-weight="400">FigOS 1.0</text>
-
-      
-      <rect x="95" y="68" width="70" height="192" fill="#1E2026"/>
-      <line x1="165" y1="68" x2="165" y2="260" stroke="#2A2D35" stroke-width="0.5"/>
-
-      
-      <g font-family="'JetBrains Mono', monospace" font-size="7" fill="#A0A5AD">
-        <circle cx="108" cy="84" r="3" fill="#5B9BD5"/>
-        <text x="116" y="87">System</text>
-
-        <circle cx="108" cy="100" r="3" fill="#D4905B"/>
-        <text x="116" y="103">Disk A</text>
-
-        <circle cx="108" cy="116" r="3" fill="#6B6F78"/>
-        <text x="116" y="119">Trash</text>
-
-        <circle cx="108" cy="132" r="3" fill="#6B6F78"/>
-        <text x="116" y="135">Write</text>
-
-        <circle cx="108" cy="148" r="3" fill="#6B6F78"/>
-        <text x="116" y="151">Think</text>
+        <g transform="translate(172, 86)">
+          <rect x="0" y="0" width="130" height="68" rx="3" fill="#E8E2D8"/>
+          <rect x="0" y="0" width="130" height="15" rx="3" fill="#D5CEC4"/>
+          <text x="8" y="10" fill="#3A3834" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="500">Untitled.txt</text>
+          <text x="8" y="26" fill="#3A3834" font-family="'JetBrains Mono', monospace" font-size="7">Design is how</text>
+          <text x="8" y="36" fill="#3A3834" font-family="'JetBrains Mono', monospace" font-size="7">it works.</text>
+          <rect x="58" y="40" width="4" height="7" fill="#3A3834" opacity="0.7">
+            <animate attributeName="opacity" values="0.7;0;0.7" dur="1s" repeatCount="indefinite" calcMode="discrete"/>
+          </rect>
+        </g>
       </g>
 
       
-      <g transform="translate(172, 86)">
-        
-        <rect x="3" y="3" width="130" height="68" rx="3" fill="#000" opacity="0.3"/>
-        
-        <rect x="0" y="0" width="130" height="68" rx="3" fill="#E8E2D8"/>
-        
-        <rect x="0" y="0" width="130" height="15" rx="3" fill="#D5CEC4"/>
-        <rect x="0" y="7" width="130" height="8" fill="#D5CEC4"/>
-        
-        <text x="8" y="10" fill="#3A3834" font-family="'JetBrains Mono', monospace" font-size="7" font-weight="500">Untitled.txt</text>
-        
-        <rect x="118" y="3" width="8" height="8" rx="1" fill="#C4BCAF" stroke="#A39E98" stroke-width="0.5"/>
-        <text x="120" y="10" fill="#3A3834" font-family="'JetBrains Mono', monospace" font-size="7">[x]</text>
-        
-        <rect x="6" y="20" width="118" height="1" fill="#C4BCAF" opacity="0.5"/>
-        <rect x="6" y="24" width="118" height="1" fill="#C4BCAF" opacity="0.5"/>
-        <rect x="6" y="28" width="118" height="1" fill="#C4BCAF" opacity="0.5"/>
-        <rect x="6" y="32" width="118" height="1" fill="#C4BCAF" opacity="0.5"/>
-        <rect x="6" y="36" width="118" height="1" fill="#C4BCAF" opacity="0.5"/>
-        <rect x="6" y="40" width="118" height="1" fill="#C4BCAF" opacity="0.5"/>
-        <rect x="6" y="44" width="118" height="1" fill="#C4BCAF" opacity="0.5"/>
-        <rect x="6" y="48" width="118" height="1" fill="#C4BCAF" opacity="0.5"/>
-        
-        <text x="8" y="26" fill="#3A3834" font-family="'JetBrains Mono', monospace" font-size="7">Good morning. Your memo</text>
-        <text x="8" y="36" fill="#3A3834" font-family="'JetBrains Mono', monospace" font-size="7">is drafted, your files</text>
-        <text x="8" y="46" fill="#3A3834" font-family="'JetBrains Mono', monospace" font-size="7">are sorted.</text>
-        
-        <rect x="58" y="50" width="4" height="7" fill="#3A3834" opacity="0.7">
-          <animate attributeName="opacity" values="0.7;0;0.7" dur="1s" repeatCount="indefinite" calcMode="discrete"/>
-        </rect>
+      <rect x="150" y="295" width="100" height="9" rx="4.5" fill="#2A2825"/>
+      <rect x="152" y="296" width="96" height="7" rx="3.5" fill="#1A1816"/>
+
+      
+      <g transform="translate(112, 355)">
+        <path d="M0 -6 C-7 -6, -11 0, -11 5 C-11 11, -6 14, 0 14 C6 14, 11 11, 11 5 C11 0, 7 -6, 0 -6 Z" fill="url(#rainbowPear)"/>
       </g>
-    </g>
-
-    
-    <path d="M100 52 C100 48, 110 46, 130 46 L290 46 C310 46, 320 48, 320 52 L320 75 C320 71, 310 67, 290 67 L130 67 C110 67, 100 71, 100 75 Z" fill="#fff" opacity="0.04"/>
-
-    
-    
-    <rect x="150" y="295" width="100" height="9" rx="4.5" fill="#2A2825"/>
-    <rect x="152" y="296" width="96" height="7" rx="3.5" fill="#1A1816"/>
-
-    
-    
-    <g transform="translate(105, 320)">
-      <circle cx="0" cy="0" r="15" fill="#C4653A"/>
-      <circle cx="0" cy="0" r="13" fill="#D4784A"/>
-      <path d="M-7 -5 Q-3 -9, 0 -9" stroke="#E8A47A" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    </g>
-
-    
-    <g transform="translate(142, 312) rotate(-12)">
-      <rect x="-13" y="-13" width="26" height="26" rx="4" fill="#FAF7F2" stroke="#E8E2D8" stroke-width="0.5"/>
-      <polygon points="0,-7 2,-2 7,-2 3,2 5,7 0,4 -5,7 -3,2 -7,-2 -2,-2" fill="#4A7DB3"/>
-    </g>
-
-    
-    <g transform="translate(190, 332)">
-      <rect x="-36" y="-12" width="72" height="24" rx="2" fill="#9B2D2D"/>
-      <rect x="-34" y="-10" width="68" height="20" rx="1" fill="#A83535"/>
-      <text x="0" y="-2" fill="#F0D5A8" font-family="'JetBrains Mono', monospace" font-size="6" font-weight="500" text-anchor="middle" letter-spacing="0.08em">MACHINE</text>
-      <text x="0" y="8" fill="#F0D5A8" font-family="'JetBrains Mono', monospace" font-size="6" font-weight="500" text-anchor="middle" letter-spacing="0.08em">INTELLIGENCE</text>
-    </g>
-
-    
-    <g transform="translate(112, 355)">
-      <rect x="-1" y="-12" width="2" height="5" rx="1" fill="#8B7355"/>
-      <path d="M0 -6 C-7 -6, -11 0, -11 5 C-11 11, -6 14, 0 14 C6 14, 11 11, 11 5 C11 0, 7 -6, 0 -6 Z" fill="url(#rainbowPear)"/>
-      <ellipse cx="4" cy="-9" rx="3" ry="1.5" fill="#5EB85E" transform="rotate(-30, 4, -9)"/>
-    </g>
-
-    
-    <g transform="translate(298, 340)">
-      <rect x="0" y="0" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="6" y="0" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="12" y="0" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="18" y="0" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="0" y="6" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="6" y="6" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="12" y="6" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="18" y="6" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="0" y="12" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="6" y="12" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="12" y="12" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-      <rect x="18" y="12" width="3.5" height="3.5" rx="1" fill="#2A2825" opacity="0.55"/>
-    </g>
-  </svg>
-
-  <div class="computer-shadow"></div>
+      <g transform="translate(190, 332)">
+        <rect x="-36" y="-12" width="72" height="24" rx="2" fill="#9B2D2D"/>
+        <text x="0" y="4" fill="#F0D5A8" font-family="'JetBrains Mono', monospace" font-size="6" font-weight="500" text-anchor="middle" letter-spacing="0.08em">MACHINE</text>
+      </g>
+    </svg>
+  </div>
+  <div class="scene-floor-shadow"></div>
 </div>
 
+<script>
+  (function() {
+    const container = document.getElementById('hero-computer-container');
+    const computer = document.getElementById('hero-computer');
+
+    if (!container || !computer) return;
+
+    let targetRotateX = 0;
+    let targetRotateY = 0;
+    let currentRotateX = 0;
+    let currentRotateY = 0;
+
+    container.addEventListener('mousemove', (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+
+      const centerX = rect.width / 2;
+      const centerY = rect.height / 2;
+
+      targetRotateY = ((x - centerX) / centerX) * 10;
+      targetRotateX = ((centerY - y) / centerY) * 10;
+    });
+
+    container.addEventListener('mouseleave', () => {
+      targetRotateX = 0;
+      targetRotateY = 0;
+    });
+
+    function update() {
+      currentRotateX += (targetRotateX - currentRotateX) * 0.1;
+      currentRotateY += (targetRotateY - currentRotateY) * 0.1;
+
+      computer.style.transform = `perspective(1000px) rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
+      requestAnimationFrame(update);
+    }
+
+    update();
+  })();
+</script>
+
+      </div>
 
       <div class="hero-text">
-        <p class="hero-greeting">Hello, I&#39;m</p>
+        <span class="hero-greeting">Hello, I&#39;m</span>
         <h1 class="hero-name">Alex Chen</h1>
         <p class="hero-statement">I design and build quiet, intentional software.</p>
         <div class="hero-links">
-          <a href="/blog/">Read the blog &rarr;</a>
-          <a href="/projects/">See projects &rarr;</a>
-          <a href="/memos/">Browse memos &rarr;</a>
+          <a href="/blog/">Journal</a>
+          <a href="/projects/">Projects</a>
+          <a href="/memos/">Memos</a>
+          <a href="/about/">About</a>
         </div>
       </div>
     </div>
@@ -285,35 +236,38 @@
 
 <section class="previews">
   <div class="container">
+    <header class="previews-header">
+      <h2 class="previews-title">Selected Activity</h2>
+    </header>
+
     <div class="previews-grid">
       
-      <article class="preview-card">
-        <p class="preview-label">Latest from the blog</p>
+      <article class="preview-item">
+        <span class="preview-label">Latest Journal</span>
         
-          <h2 class="preview-title"><a href="/blog/2026/04/designing-quiet-software/">Designing Quiet Software</a></h2>
-          <p class="preview-desc">In a world of notification badges, infinite scroll, and dark patterns, quiet software feels like a …</p>
-          <a href="/blog/" class="preview-link">Read &rarr;</a>
+          <h3 class="preview-title"><a href="/blog/2026/04/designing-quiet-software/">Designing Quiet Software</a></h3>
+          <p class="preview-desc">In a world of notification badges, infinite scroll, and dark patterns, quiet software feels like a radical act. It …</p>
+          <a href="/blog/2026/04/designing-quiet-software/" class="preview-link">Read entry &rarr;</a>
         
       </article>
 
       
-      <article class="preview-card">
-        <p class="preview-label">Selected work</p>
+      <article class="preview-item">
+        <span class="preview-label">Featured Project</span>
         
-          <h2 class="preview-title"><a href="/projects/quiet-reader/">Quiet Reader</a></h2>
+          <h3 class="preview-title"><a href="/projects/quiet-reader/">Quiet Reader</a></h3>
           <p class="preview-desc">A distraction-free reading app for long-form articles and ePub books.</p>
-          <a href="/projects/" class="preview-link">View &rarr;</a>
+          <a href="/projects/quiet-reader/" class="preview-link">View project &rarr;</a>
         
       </article>
 
-      <article class="preview-card">
-        <p class="preview-label">Today's memos</p>
+      
+      <article class="preview-item">
+        <span class="preview-label">Latest Memo</span>
         
-        
-        
-          <h2 class="preview-title"><a href="/memos/">3 memos</a></h2>
-          <p class="preview-desc">Short notes and observations from today.</p>
-          <a href="/memos/" class="preview-link">Browse &rarr;</a>
+          <h3 class="preview-title"><a href="/memos/"></a></h3>
+          <p class="preview-desc">Spent the afternoon refining the memo card stack interaction. The key insight: the fan effect needs to feel physical but …</p>
+          <a href="/memos/" class="preview-link">Browse all &rarr;</a>
         
       </article>
     </div>
@@ -324,7 +278,9 @@
   <div class="container">
     <div class="home-about-inner">
       <div class="home-about-avatar" aria-hidden="true">A</div>
-      <p class="home-about-text">Designer and developer. Quiet, intentional software.</p>
+      <p class="home-about-text">
+        Designer and developer. Quiet, intentional software.
+      </p>
     </div>
   </div>
 </section>

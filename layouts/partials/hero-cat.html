@@ -1,0 +1,80 @@
+<div class="hero-cat" aria-hidden="true">
+  <svg class="cat-object" viewBox="0 0 200 240" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <!-- 高级哑光材质渐变 -->
+      <linearGradient id="catMatte" x1="100" y1="40" x2="100" y2="220" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#32363D"/>
+        <stop offset="1" stop-color="#1A1C20"/>
+      </linearGradient>
+
+      <!-- 侧缘高光，增强 3D 体积感 -->
+      <linearGradient id="catRim" x1="50" y1="80" x2="150" y2="80" gradientUnits="userSpaceOnUse">
+        <stop stop-color="#4A4F58" stop-opacity="0.6"/>
+        <stop offset="0.5" stop-color="#4A4F58" stop-opacity="0"/>
+        <stop offset="1" stop-color="#4A4F58" stop-opacity="0.4"/>
+      </linearGradient>
+
+      <!-- 呼吸阴影 -->
+      <radialGradient id="catContactShadow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%" stop-color="rgba(0,0,0,0.2)"/>
+        <stop offset="100%" stop-color="rgba(0,0,0,0)"/>
+      </radialGradient>
+    </defs>
+
+    <!-- 地面接触阴影 -->
+    <ellipse cx="100" cy="225" rx="55" ry="10" fill="url(#catContactShadow)">
+      <animate attributeName="rx" values="55;62;55" dur="4s" repeatCount="indefinite" />
+      <animate attributeName="opacity" values="1;0.7;1" dur="4s" repeatCount="indefinite" />
+    </ellipse>
+
+    <!-- 尾巴：优雅的流动线条 -->
+    <g class="cat-tail-v2">
+      <path d="M75 210 C40 210, 25 180, 25 150 C25 110, 50 100, 60 100" stroke="#25282E" stroke-width="14" stroke-linecap="round" fill="none">
+        <animateTransform
+          attributeName="transform"
+          type="rotate"
+          values="-2 60 100; 3 60 100; -2 60 100"
+          dur="5s"
+          repeatCount="indefinite"
+          calcMode="spline"
+          keySplines="0.45 0 0.55 1; 0.45 0 0.55 1"
+        />
+      </path>
+    </g>
+
+    <!-- 身体：极简坐姿形体 -->
+    <path d="M65 220 C65 160, 75 80, 100 80 C125 80, 135 160, 135 220 L65 220 Z" fill="url(#catMatte)"/>
+    <path d="M65 220 C65 160, 75 80, 100 80 C125 80, 135 160, 135 220" stroke="url(#catRim)" stroke-width="1" fill="none" opacity="0.5"/>
+
+    <!-- 头部 -->
+    <g transform="translate(0, -5)">
+      <!-- 耳朵：锐利但有圆角 -->
+      <path d="M78 85 L72 55 C71 50, 78 52, 82 55 L95 80 Z" fill="#1A1C20"/>
+      <path d="M122 85 L128 55 C129 50, 122 52, 118 55 L105 80 Z" fill="#1A1C20"/>
+
+      <!-- 脸部：饱满的弧线 -->
+      <path d="M75 100 C75 75, 85 65, 100 65 C115 65, 125 75, 125 100 C125 130, 115 145, 100 145 C85 145, 75 130, 75 100 Z" fill="url(#catMatte)"/>
+      <path d="M75 100 C75 75, 85 65, 100 65 C115 65, 125 75, 125 100" stroke="url(#catRim)" stroke-width="0.5" fill="none" opacity="0.3"/>
+
+      <!-- 眼睛：极致简约的细线（闭目养神） -->
+      <path d="M88 102 C90 104, 94 104, 96 102" stroke="#4A4F58" stroke-width="1.5" stroke-linecap="round"/>
+      <path d="M104 102 C106 104, 110 104, 112 102" stroke="#4A4F58" stroke-width="1.5" stroke-linecap="round"/>
+
+      <!-- 鼻子：极小的倒三角 -->
+      <path d="M99 112 L101 112 L100 113.5 Z" fill="#4A4F58"/>
+
+      <animateTransform
+        attributeName="transform"
+        type="translate"
+        values="0 0; 0 1.5; 0 0"
+        dur="4s"
+        repeatCount="indefinite"
+        calcMode="spline"
+        keySplines="0.4 0 0.6 1; 0.4 0 0.6 1"
+      />
+    </g>
+
+    <!-- 前肢：收拢在胸前的轮廓 -->
+    <path d="M88 220 L88 180 C88 175, 92 172, 96 172 L104 172 C108 172, 112 175, 112 180 L112 220" stroke="#1A1C20" stroke-width="2" fill="none" opacity="0.4"/>
+  </svg>
+</div>
