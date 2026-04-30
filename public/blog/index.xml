@@ -1,26 +1,15 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Writing on Alex Chen</title>
-    <link>http://localhost:1313/blog/</link>
-    <description>Recent content in Writing on Alex Chen</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Sat, 18 Apr 2026 10:00:00 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/blog/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Designing Quiet Software</title>
-      <link>http://localhost:1313/blog/2026/04/designing-quiet-software/</link>
-      <pubDate>Sat, 18 Apr 2026 10:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/blog/2026/04/designing-quiet-software/</guid>
-      <description>&lt;p&gt;In a world of notification badges, infinite scroll, and dark patterns, quiet software feels like a radical act. It doesn&amp;rsquo;t demand your attention. It waits patiently for you to arrive, and when you do, it offers clarity rather than confusion.&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-is-quiet-software&#34;&gt;What is quiet software?&lt;/h2&gt;&#xA;&lt;p&gt;Quiet software has a few defining characteristics:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;It respects your time.&lt;/strong&gt; No onboarding tours you can&amp;rsquo;t skip. No &amp;ldquo;helpful&amp;rdquo; popups. No artificial urgency.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;It gets out of the way.&lt;/strong&gt; The interface is a container for your work, not the main event.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;It ages well.&lt;/strong&gt; Trends come and go, but quiet software relies on fundamentals: typography, spacing, clarity.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&amp;ldquo;The best design is the least design.&amp;rdquo; — Dieter Rams&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title>Typography on the Web: A Practical Guide</title>
-      <link>http://localhost:1313/blog/2026/04/typography-on-the-web-a-practical-guide/</link>
-      <pubDate>Fri, 10 Apr 2026 09:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/blog/2026/04/typography-on-the-web-a-practical-guide/</guid>
-      <description>&lt;p&gt;Good typography is invisible. When it&amp;rsquo;s done well, readers simply enjoy the content without thinking about the letters. When it&amp;rsquo;s done poorly, reading becomes a chore.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-basics&#34;&gt;The basics&lt;/h2&gt;&#xA;&lt;h3 id=&#34;measure&#34;&gt;Measure&lt;/h3&gt;&#xA;&lt;p&gt;The measure (line length) should be between 45 and 75 characters. I prefer around 65 characters for body text. Too wide and the eye loses its place; too narrow and reading feels choppy.&lt;/p&gt;&#xA;&lt;h3 id=&#34;line-height&#34;&gt;Line height&lt;/h3&gt;&#xA;&lt;p&gt;Body text typically needs a line height of 1.5 to 1.7. Headings can be tighter — around 1.2 to 1.3.&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Writing on Alex Chen</title><link>https://example.org/blog/</link><description>Recent content in Writing on Alex Chen</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 18 Apr 2026 10:00:00 +0800</lastBuildDate><atom:link href="https://example.org/blog/index.xml" rel="self" type="application/rss+xml"/><item><title>Designing Quiet Software</title><link>https://example.org/blog/2026/04/designing-quiet-software/</link><pubDate>Sat, 18 Apr 2026 10:00:00 +0800</pubDate><guid>https://example.org/blog/2026/04/designing-quiet-software/</guid><description>&lt;p&gt;In a world of notification badges, infinite scroll, and dark patterns, quiet software feels like a radical act. It doesn&amp;rsquo;t demand your attention. It waits patiently for you to arrive, and when you do, it offers clarity rather than confusion.&lt;/p&gt;
+&lt;h2 id="what-is-quiet-software"&gt;What is quiet software?&lt;/h2&gt;
+&lt;p&gt;Quiet software has a few defining characteristics:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;It respects your time.&lt;/strong&gt; No onboarding tours you can&amp;rsquo;t skip. No &amp;ldquo;helpful&amp;rdquo; popups. No artificial urgency.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;It gets out of the way.&lt;/strong&gt; The interface is a container for your work, not the main event.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;It ages well.&lt;/strong&gt; Trends come and go, but quiet software relies on fundamentals: typography, spacing, clarity.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&amp;ldquo;The best design is the least design.&amp;rdquo; — Dieter Rams&lt;/p&gt;</description></item><item><title>Typography on the Web: A Practical Guide</title><link>https://example.org/blog/2026/04/typography-on-the-web-a-practical-guide/</link><pubDate>Fri, 10 Apr 2026 09:00:00 +0800</pubDate><guid>https://example.org/blog/2026/04/typography-on-the-web-a-practical-guide/</guid><description>&lt;p&gt;Good typography is invisible. When it&amp;rsquo;s done well, readers simply enjoy the content without thinking about the letters. When it&amp;rsquo;s done poorly, reading becomes a chore.&lt;/p&gt;
+&lt;h2 id="the-basics"&gt;The basics&lt;/h2&gt;
+&lt;h3 id="measure"&gt;Measure&lt;/h3&gt;
+&lt;p&gt;The measure (line length) should be between 45 and 75 characters. I prefer around 65 characters for body text. Too wide and the eye loses its place; too narrow and reading feels choppy.&lt;/p&gt;
+&lt;h3 id="line-height"&gt;Line height&lt;/h3&gt;
+&lt;p&gt;Body text typically needs a line height of 1.5 to 1.7. Headings can be tighter — around 1.2 to 1.3.&lt;/p&gt;</description></item></channel></rss>

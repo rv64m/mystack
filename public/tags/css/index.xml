@@ -1,19 +1,6 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>Css on Alex Chen</title>
-    <link>http://localhost:1313/tags/css/</link>
-    <description>Recent content in Css on Alex Chen</description>
-    <generator>Hugo</generator>
-    <language>en-us</language>
-    <lastBuildDate>Fri, 10 Apr 2026 09:00:00 +0800</lastBuildDate>
-    <atom:link href="http://localhost:1313/tags/css/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Typography on the Web: A Practical Guide</title>
-      <link>http://localhost:1313/blog/2026/04/typography-on-the-web-a-practical-guide/</link>
-      <pubDate>Fri, 10 Apr 2026 09:00:00 +0800</pubDate>
-      <guid>http://localhost:1313/blog/2026/04/typography-on-the-web-a-practical-guide/</guid>
-      <description>&lt;p&gt;Good typography is invisible. When it&amp;rsquo;s done well, readers simply enjoy the content without thinking about the letters. When it&amp;rsquo;s done poorly, reading becomes a chore.&lt;/p&gt;&#xA;&lt;h2 id=&#34;the-basics&#34;&gt;The basics&lt;/h2&gt;&#xA;&lt;h3 id=&#34;measure&#34;&gt;Measure&lt;/h3&gt;&#xA;&lt;p&gt;The measure (line length) should be between 45 and 75 characters. I prefer around 65 characters for body text. Too wide and the eye loses its place; too narrow and reading feels choppy.&lt;/p&gt;&#xA;&lt;h3 id=&#34;line-height&#34;&gt;Line height&lt;/h3&gt;&#xA;&lt;p&gt;Body text typically needs a line height of 1.5 to 1.7. Headings can be tighter — around 1.2 to 1.3.&lt;/p&gt;</description>
-    </item>
-  </channel>
-</rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Css on Alex Chen</title><link>https://example.org/tags/css/</link><description>Recent content in Css on Alex Chen</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 10 Apr 2026 09:00:00 +0800</lastBuildDate><atom:link href="https://example.org/tags/css/index.xml" rel="self" type="application/rss+xml"/><item><title>Typography on the Web: A Practical Guide</title><link>https://example.org/blog/2026/04/typography-on-the-web-a-practical-guide/</link><pubDate>Fri, 10 Apr 2026 09:00:00 +0800</pubDate><guid>https://example.org/blog/2026/04/typography-on-the-web-a-practical-guide/</guid><description>&lt;p&gt;Good typography is invisible. When it&amp;rsquo;s done well, readers simply enjoy the content without thinking about the letters. When it&amp;rsquo;s done poorly, reading becomes a chore.&lt;/p&gt;
+&lt;h2 id="the-basics"&gt;The basics&lt;/h2&gt;
+&lt;h3 id="measure"&gt;Measure&lt;/h3&gt;
+&lt;p&gt;The measure (line length) should be between 45 and 75 characters. I prefer around 65 characters for body text. Too wide and the eye loses its place; too narrow and reading feels choppy.&lt;/p&gt;
+&lt;h3 id="line-height"&gt;Line height&lt;/h3&gt;
+&lt;p&gt;Body text typically needs a line height of 1.5 to 1.7. Headings can be tighter — around 1.2 to 1.3.&lt;/p&gt;</description></item></channel></rss>
