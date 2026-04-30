@@ -3,72 +3,22 @@
 <section class="hero">
   <div class="container">
     <div class="hero-inner">
-      <div class="hero-scene">
-        {{ partial "hero-computer.html" . }}
-      </div>
-
       <div class="hero-text">
         <span class="hero-greeting">{{ .Site.Params.greeting | default "Hello, I'm" }}</span>
         <h1 class="hero-name">{{ .Site.Title }}</h1>
+        <div class="hero-divider" aria-hidden="true"></div>
         <p class="hero-statement">{{ .Site.Params.statement | default "I design and build quiet, intentional software." }}</p>
-        <div class="hero-links">
+        <nav class="hero-links">
           <a href="/blog/">Journal</a>
           <a href="/projects/">Projects</a>
           <a href="/memos/">Memos</a>
           <a href="/about/">About</a>
-        </div>
+        </nav>
       </div>
-    </div>
-  </div>
-</section>
 
-<section class="previews">
-  <div class="container">
-    <header class="previews-header">
-      <h2 class="previews-title">Selected Activity</h2>
-    </header>
-
-    <div class="previews-grid">
-      {{ $latestBlog := index (where .Site.RegularPages "Section" "blog") 0 }}
-      <article class="preview-item">
-        <span class="preview-label">Latest Journal</span>
-        {{ if $latestBlog }}
-          <h3 class="preview-title"><a href="{{ $latestBlog.RelPermalink }}">{{ $latestBlog.Title }}</a></h3>
-          <p class="preview-desc">{{ $latestBlog.Summary | plainify | truncate 120 }}</p>
-          <a href="{{ $latestBlog.RelPermalink }}" class="preview-link">Read entry &rarr;</a>
-        {{ end }}
-      </article>
-
-      {{ $featuredProject := index (where .Site.RegularPages "Params.featured" true) 0 | default (index (where .Site.RegularPages "Section" "projects") 0) }}
-      <article class="preview-item">
-        <span class="preview-label">Featured Project</span>
-        {{ if $featuredProject }}
-          <h3 class="preview-title"><a href="{{ $featuredProject.RelPermalink }}">{{ $featuredProject.Title }}</a></h3>
-          <p class="preview-desc">{{ $featuredProject.Params.description | default ($featuredProject.Summary | plainify | truncate 120) }}</p>
-          <a href="{{ $featuredProject.RelPermalink }}" class="preview-link">View project &rarr;</a>
-        {{ end }}
-      </article>
-
-      {{ $latestMemo := index (where .Site.RegularPages "Section" "memos") 0 }}
-      <article class="preview-item">
-        <span class="preview-label">Latest Memo</span>
-        {{ if $latestMemo }}
-          <h3 class="preview-title"><a href="/memos/">{{ $latestMemo.Title }}</a></h3>
-          <p class="preview-desc">{{ $latestMemo.Summary | plainify | truncate 120 }}</p>
-          <a href="/memos/" class="preview-link">Browse all &rarr;</a>
-        {{ end }}
-      </article>
-    </div>
-  </div>
-</section>
-
-<section class="home-about">
-  <div class="container">
-    <div class="home-about-inner">
-      <div class="home-about-avatar" aria-hidden="true">{{ substr .Site.Title 0 1 }}</div>
-      <p class="home-about-text">
-        {{ .Site.Params.description | default "I believe software should be a calm room in a noisy world — a place for focus, clarity, and quiet craftsmanship." }}
-      </p>
+      <div class="hero-scene">
+        {{ partial "hero-computer.html" . }}
+      </div>
     </div>
   </div>
 </section>
