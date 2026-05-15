@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Alex Chen</title>
+    <link>http://localhost:52954/zh/tags/</link>
+    <description>Recent content in Tags on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Fri, 15 May 2026 10:00:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:52954/zh/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Agents</title>
+      <link>http://localhost:52954/zh/tags/agents/</link>
+      <pubDate>Fri, 15 May 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:52954/zh/tags/agents/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Ai</title>
+      <link>http://localhost:52954/zh/tags/ai/</link>
+      <pubDate>Fri, 15 May 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:52954/zh/tags/ai/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Memory</title>
+      <link>http://localhost:52954/zh/tags/memory/</link>
+      <pubDate>Fri, 15 May 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:52954/zh/tags/memory/</guid>
+      <description></description>
+    </item>
+  </channel>
+</rss>

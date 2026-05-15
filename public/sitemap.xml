@@ -1,1 +1,18 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml"><url><loc>https://example.org/memos/2026/04/2026-04-18-afternoon-code/</loc><lastmod>2026-04-18T11:15:00+08:00</lastmod></url><url><loc>https://example.org/</loc><lastmod>2026-04-18T11:15:00+08:00</lastmod></url><url><loc>https://example.org/tags/code/</loc><lastmod>2026-04-18T11:15:00+08:00</lastmod></url><url><loc>https://example.org/memos/</loc><lastmod>2026-04-18T11:15:00+08:00</lastmod></url><url><loc>https://example.org/tags/</loc><lastmod>2026-04-18T11:15:00+08:00</lastmod></url><url><loc>https://example.org/tags/design/</loc><lastmod>2026-04-18T10:00:00+08:00</lastmod></url><url><loc>https://example.org/blog/2026/04/designing-quiet-software/</loc><lastmod>2026-04-18T10:00:00+08:00</lastmod></url><url><loc>https://example.org/tags/essay/</loc><lastmod>2026-04-18T10:00:00+08:00</lastmod></url><url><loc>https://example.org/blog/</loc><lastmod>2026-04-18T10:00:00+08:00</lastmod></url><url><loc>https://example.org/memos/2026/04/2026-04-18-morning-thoughts/</loc><lastmod>2026-04-18T08:30:00+08:00</lastmod></url><url><loc>https://example.org/tags/thought/</loc><lastmod>2026-04-18T08:30:00+08:00</lastmod></url><url><loc>https://example.org/memos/2026/04/2026-04-17-design-systems/</loc><lastmod>2026-04-17T10:00:00+08:00</lastmod></url><url><loc>https://example.org/tags/css/</loc><lastmod>2026-04-10T09:00:00+08:00</lastmod></url><url><loc>https://example.org/series/</loc><lastmod>2026-04-10T09:00:00+08:00</lastmod></url><url><loc>https://example.org/tags/tutorial/</loc><lastmod>2026-04-10T09:00:00+08:00</lastmod></url><url><loc>https://example.org/tags/typography/</loc><lastmod>2026-04-10T09:00:00+08:00</lastmod></url><url><loc>https://example.org/blog/2026/04/typography-on-the-web-a-practical-guide/</loc><lastmod>2026-04-10T09:00:00+08:00</lastmod></url><url><loc>https://example.org/series/web-fundamentals/</loc><lastmod>2026-04-10T09:00:00+08:00</lastmod></url><url><loc>https://example.org/about/</loc></url><url><loc>https://example.org/categories/</loc></url><url><loc>https://example.org/projects/design-system-kit/</loc></url><url><loc>https://example.org/projects/quiet-reader/</loc></url><url><loc>https://example.org/projects/</loc></url></urlset>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  <sitemap>
+    <loc>http://localhost:52954/en/sitemap.xml</loc>
+    
+      <lastmod>2026-05-15T10:00:00+08:00</lastmod>
+    
+  </sitemap>
+  
+  <sitemap>
+    <loc>http://localhost:52954/zh/sitemap.xml</loc>
+    
+      <lastmod>2026-05-15T10:00:00+08:00</lastmod>
+    
+  </sitemap>
+  
+</sitemapindex>

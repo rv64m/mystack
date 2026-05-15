@@ -9,10 +9,9 @@
         <div class="hero-divider" aria-hidden="true"></div>
         <p class="hero-statement">{{ .Site.Params.statement | default "I design and build quiet, intentional software." }}</p>
         <nav class="hero-links">
-          <a href="/blog/">Journal</a>
-          <a href="/projects/">Projects</a>
-          <a href="/memos/">Memos</a>
-          <a href="/about/">About</a>
+          {{ range .Site.Menus.main }}
+            <a href="{{ .URL }}">{{ .Name }}</a>
+          {{ end }}
         </nav>
       </div>
 

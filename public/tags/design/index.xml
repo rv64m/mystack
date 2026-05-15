@@ -1,14 +1,26 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Design on Alex Chen</title><link>https://example.org/tags/design/</link><description>Recent content in Design on Alex Chen</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 18 Apr 2026 10:00:00 +0800</lastBuildDate><atom:link href="https://example.org/tags/design/index.xml" rel="self" type="application/rss+xml"/><item><title>Designing Quiet Software</title><link>https://example.org/blog/2026/04/designing-quiet-software/</link><pubDate>Sat, 18 Apr 2026 10:00:00 +0800</pubDate><guid>https://example.org/blog/2026/04/designing-quiet-software/</guid><description>&lt;p&gt;In a world of notification badges, infinite scroll, and dark patterns, quiet software feels like a radical act. It doesn&amp;rsquo;t demand your attention. It waits patiently for you to arrive, and when you do, it offers clarity rather than confusion.&lt;/p&gt;
-&lt;h2 id="what-is-quiet-software"&gt;What is quiet software?&lt;/h2&gt;
-&lt;p&gt;Quiet software has a few defining characteristics:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;It respects your time.&lt;/strong&gt; No onboarding tours you can&amp;rsquo;t skip. No &amp;ldquo;helpful&amp;rdquo; popups. No artificial urgency.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;It gets out of the way.&lt;/strong&gt; The interface is a container for your work, not the main event.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;It ages well.&lt;/strong&gt; Trends come and go, but quiet software relies on fundamentals: typography, spacing, clarity.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&amp;ldquo;The best design is the least design.&amp;rdquo; — Dieter Rams&lt;/p&gt;</description></item><item><title/><link>https://example.org/memos/2026/04/2026-04-17-design-systems/</link><pubDate>Fri, 17 Apr 2026 10:00:00 +0800</pubDate><guid>https://example.org/memos/2026/04/2026-04-17-design-systems/</guid><description>&lt;p&gt;Re-reading &lt;em&gt;The Elements of Typographic Style&lt;/em&gt; by Robert Bringhurst. Still the best book on typography after all these years.&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&amp;ldquo;Typography exists to honor content.&amp;rdquo;&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Every time I return to this book, I find something new. Today&amp;rsquo;s insight: the importance of optical alignment over mathematical alignment. Sometimes things need to feel right more than they need to measure right.&lt;/p&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Design on Alex Chen</title>
+    <link>http://localhost:52954/tags/design/</link>
+    <description>Recent content in Design on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 18 Apr 2026 10:00:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:52954/tags/design/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Designing Quiet Software</title>
+      <link>http://localhost:52954/blog/2026/04/designing-quiet-software/</link>
+      <pubDate>Sat, 18 Apr 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:52954/blog/2026/04/designing-quiet-software/</guid>
+      <description>&lt;p&gt;In a world of notification badges, infinite scroll, and dark patterns, quiet software feels like a radical act. It doesn&amp;rsquo;t demand your attention. It waits patiently for you to arrive, and when you do, it offers clarity rather than confusion.&lt;/p&gt;&#xA;&lt;h2 id=&#34;what-is-quiet-software&#34;&gt;What is quiet software?&lt;/h2&gt;&#xA;&lt;p&gt;Quiet software has a few defining characteristics:&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;It respects your time.&lt;/strong&gt; No onboarding tours you can&amp;rsquo;t skip. No &amp;ldquo;helpful&amp;rdquo; popups. No artificial urgency.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;It gets out of the way.&lt;/strong&gt; The interface is a container for your work, not the main event.&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;It ages well.&lt;/strong&gt; Trends come and go, but quiet software relies on fundamentals: typography, spacing, clarity.&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&amp;ldquo;The best design is the least design.&amp;rdquo; — Dieter Rams&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title></title>
+      <link>http://localhost:52954/memos/2026/04/2026-04-17-design-systems/</link>
+      <pubDate>Fri, 17 Apr 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:52954/memos/2026/04/2026-04-17-design-systems/</guid>
+      <description>&lt;p&gt;Re-reading &lt;em&gt;The Elements of Typographic Style&lt;/em&gt; by Robert Bringhurst. Still the best book on typography after all these years.&lt;/p&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;&amp;ldquo;Typography exists to honor content.&amp;rdquo;&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;Every time I return to this book, I find something new. Today&amp;rsquo;s insight: the importance of optical alignment over mathematical alignment. Sometimes things need to feel right more than they need to measure right.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

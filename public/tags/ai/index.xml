@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Ai on Alex Chen</title>
+    <link>http://localhost:52954/tags/ai/</link>
+    <description>Recent content in Ai on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 15 May 2026 10:00:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:52954/tags/ai/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Agent Memory Needs a Clock</title>
+      <link>http://localhost:52954/blog/2026/05/agent-memory-needs-time/</link>
+      <pubDate>Fri, 15 May 2026 10:00:00 +0800</pubDate>
+      <guid>http://localhost:52954/blog/2026/05/agent-memory-needs-time/</guid>
+      <description>&lt;p&gt;Mem0&amp;rsquo;s latest article on Memory Decay makes a useful point about agent memory: remembering more is not the same thing as remembering well. Long-running agents need a sense of time, because context that mattered last month should not compete with context the user touched this morning as if both were equally alive.&lt;/p&gt;&#xA;&lt;p&gt;The feature Mem0 introduces is deliberately modest. It does not erase old memory, hide it behind a hard filter, or force developers to migrate stored data. Instead, it changes search ranking. Memories that have been retrieved recently get a boost; memories that have been idle for a while are dampened. If an old memory is still the best semantic match, it can still surface.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

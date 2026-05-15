@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script>
+    (() => {
+      const key = 'site-theme';
+      const stored = localStorage.getItem(key);
+      const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Memory Needs a Clock — Alex Chen</title>
+<meta name="description" content="Designer and developer. Quiet, intentional software.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+
+</head>
+<body>
+  <nav class="site-nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-wordmark">Alex Chen</a>
+    <ul class="nav-links" id="nav-links">
+      
+        <li><a href="/blog/" class="">Blog</a></li>
+      
+        <li><a href="/projects/" class="">Projects</a></li>
+      
+        <li><a href="/memos/" class="">Memos</a></li>
+      
+        <li><a href="/about/" class="">About</a></li>
+      
+    </ul>
+    <div class="nav-actions">
+      <div class="language-switcher" aria-label="Language switcher">
+        
+          
+          
+          
+            
+          
+          <a href="/blog/2026/05/agent-memory-needs-a-clock/" class="is-active" hreflang="en">English</a>
+        
+          
+          
+          
+            
+              
+                
+              
+            
+            
+          
+          <a href="/zh/blog/2026/05/agent-%E8%AE%B0%E5%BF%86%E9%9C%80%E8%A6%81%E4%B8%80%E5%8F%AA%E6%97%B6%E9%92%9F/" class="" hreflang="zh">中文</a>
+        
+      </div>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="Switch to dark mode"
+        aria-pressed="false"
+      >
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
+        </svg>
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+  <main id="main">
+    
+
+<article class="story-shell container">
+  <header class="story-hero">
+    <div class="story-hero-copy">
+      <p class="section-kicker">Essay</p>
+      <h1 class="story-title">Agent Memory Needs a Clock</h1>
+      <div class="story-meta">
+        <span><time datetime="2026-05-15">May 15, 2026</time></span>
+        <span>4 min read</span>
+        <span>Agent Notes</span>
+      </div>
+    </div>
+    
+      <div class="story-tags">
+        
+          <a href="/tags/ai" class="tag-pill">ai</a>
+        
+          <a href="/tags/agents" class="tag-pill">agents</a>
+        
+          <a href="/tags/memory" class="tag-pill">memory</a>
+        
+      </div>
+    
+  </header>
+
+  <div class="story-body-wrap">
+    <div class="article-body story-body">
+      <p>Mem0&rsquo;s latest article on Memory Decay makes a useful point about agent memory: remembering more is not the same thing as remembering well. Long-running agents need a sense of time, because context that mattered last month should not compete with context the user touched this morning as if both were equally alive.</p>
+<p>The feature Mem0 introduces is deliberately modest. It does not erase old memory, hide it behind a hard filter, or force developers to migrate stored data. Instead, it changes search ranking. Memories that have been retrieved recently get a boost; memories that have been idle for a while are dampened. If an old memory is still the best semantic match, it can still surface.</p>
+<p>That distinction matters. A useful memory system should preserve history without letting history flatten the present.</p>
+<h2 id="why-freshness-matters">Why freshness matters</h2>
+<p>Most memory layers start with a simple promise: store the user&rsquo;s facts, preferences, decisions, and prior context so the agent can recover them later. That is enough for demos and short sessions. It becomes fragile once an assistant runs for weeks or months.</p>
+<p>Imagine a coding agent that remembers an old side project, the current sprint, and a refactor discussed yesterday. Or a personal assistant that remembers a one-off cafe order from last year and this week&rsquo;s actual breakfast routine. Pure semantic relevance can pull old details back into the answer because they look textually relevant, even when they are no longer operationally important.</p>
+<p>Time is not a replacement for relevance. It is an additional signal that helps relevance behave more like human attention.</p>
+<h2 id="what-memory-decay-changes">What Memory Decay changes</h2>
+<p>Mem0 describes Memory Decay as a per-project toggle. Once enabled, each memory keeps track of recent retrievals. During search, Mem0 applies a scaling factor to the relevance score: fresh memories can move upward, while stale memories move lower.</p>
+<p>The important part is that the floor is not zero. Stale memories are dampened, not discarded. That makes the system more forgiving than a strict time window. A six-month-old fact can still matter if the current query clearly asks for it, but it no longer gets to stand shoulder to shoulder with context the agent has used repeatedly today.</p>
+<p>This is a better shape for long-term personalization. The memory layer can keep continuity, while the ranking layer keeps the working set clean.</p>
+<h2 id="why-this-is-good-product-design">Why this is good product design</h2>
+<p>I like this feature because it treats memory as something lived with, not just stored. The hard part of agent memory is not only capture; it is maintenance. A growing memory store needs pressure valves, otherwise every saved fact slowly becomes another candidate for confusion.</p>
+<p>Search-time decay is also pragmatic. It avoids reindexing and migration. Existing add and search code can continue to work. Developers can turn the behavior on for a project and observe whether answers become more current without changing the shape of their data.</p>
+<p>There is a broader product lesson here: when a system accumulates context, it needs a way to age that context gracefully. Not everything old is wrong. Not everything recent is right. But the present deserves a voice in the ranking function.</p>
+<h2 id="where-it-helps-first">Where it helps first</h2>
+<p>The most obvious beneficiaries are agents with repeated use:</p>
+<ul>
+<li>Coding agents can keep the active project or sprint above stale implementation details.</li>
+<li>Personal assistants can adapt to recent routines without forgetting older preferences.</li>
+<li>Support bots can prioritize current tickets and recent customer interactions before resurfacing resolved history.</li>
+</ul>
+<p>These are not flashy changes, but they are the kind that make an agent feel less scattered. The assistant stops treating memory like an archive search and starts treating it like working context.</p>
+<h2 id="the-next-frontier">The next frontier</h2>
+<p>Mem0 also points toward category-aware weighting and project-level tuning. That is where this becomes more interesting. Health information, identity preferences, security constraints, and temporary observations should not decay at the same rate. Some memories are durable commitments; others are passing weather.</p>
+<p>The deeper pattern is clear: agent memory will need multiple ranking signals, including semantic match, recency, category, importance, confidence, and maybe user correction history. Memory Decay is one small but necessary step toward that richer model.</p>
+<p>For now, the useful takeaway is simple: an agent that remembers everything still needs to know what is fresh.</p>
+
+    </div>
+  </div>
+
+  <nav class="story-nav">
+    <div class="article-nav-inner">
+      
+        <div class="article-nav-prev">
+          <p class="article-nav-label">Previous</p>
+          <a href="/blog/2026/04/designing-quiet-software/" class="article-nav-title">Designing Quiet Software</a>
+        </div>
+      
+      
+    </div>
+  </nav>
+</article>
+
+
+  </main>
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copyright">&copy; 2026 Alex Chen</span>
+    <nav class="footer-nav">
+      
+        <a href="/blog/">Blog</a>
+      
+        <a href="/projects/">Projects</a>
+      
+        <a href="/memos/">Memos</a>
+      
+        <a href="/about/">About</a>
+      
+    </nav>
+    <div class="footer-social">
+      <a href="/index.xml" aria-label="RSS Feed">RSS</a>
+    </div>
+  </div>
+</footer>
+
+  
+  <script src="/js/main.js"></script>
+</body>
+</html>

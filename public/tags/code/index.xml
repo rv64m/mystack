@@ -1,2 +1,19 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Code on Alex Chen</title><link>https://example.org/tags/code/</link><description>Recent content in Code on Alex Chen</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 18 Apr 2026 11:15:00 +0800</lastBuildDate><atom:link href="https://example.org/tags/code/index.xml" rel="self" type="application/rss+xml"/><item><title/><link>https://example.org/memos/2026/04/2026-04-18-afternoon-code/</link><pubDate>Sat, 18 Apr 2026 11:15:00 +0800</pubDate><guid>https://example.org/memos/2026/04/2026-04-18-afternoon-code/</guid><description>&lt;p&gt;Spent the afternoon refining the memo card stack interaction. The key insight: the fan effect needs to feel physical but not chaotic.&lt;/p&gt;
-&lt;p&gt;Current approach uses subtle rotation (±0.5deg) and vertical offsets. On mobile, rotation is too noisy, so it switches to pure vertical stacking with scale reduction.&lt;/p&gt;</description></item></channel></rss>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Code on Alex Chen</title>
+    <link>http://localhost:52954/tags/code/</link>
+    <description>Recent content in Code on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 18 Apr 2026 11:15:00 +0800</lastBuildDate>
+    <atom:link href="http://localhost:52954/tags/code/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title></title>
+      <link>http://localhost:52954/memos/2026/04/2026-04-18-afternoon-code/</link>
+      <pubDate>Sat, 18 Apr 2026 11:15:00 +0800</pubDate>
+      <guid>http://localhost:52954/memos/2026/04/2026-04-18-afternoon-code/</guid>
+      <description>&lt;p&gt;Spent the afternoon refining the memo card stack interaction. The key insight: the fan effect needs to feel physical but not chaotic.&lt;/p&gt;&#xA;&lt;p&gt;Current approach uses subtle rotation (±0.5deg) and vertical offsets. On mobile, rotation is too noisy, so it switches to pure vertical stacking with scale reduction.&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

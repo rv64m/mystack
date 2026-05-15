@@ -1,6 +1,8 @@
 baseURL = 'https://example.org'
 languageCode = 'en-us'
 title = 'Alex Chen'
+defaultContentLanguage = 'en'
+defaultContentLanguageInSubdir = false
 
 [params]
   author = "Alex Chen"
@@ -8,23 +10,59 @@ title = 'Alex Chen'
   greeting = "Hello, I'm"
   statement = "I design and build quiet, intentional software."
 
-[menu]
-  [[menu.main]]
+[languages]
+  [languages.en]
+    languageCode = 'en-us'
+    languageName = 'English'
+    weight = 1
+    title = 'Alex Chen'
+    [languages.en.params]
+      author = "Alex Chen"
+      description = "Designer and developer. Quiet, intentional software."
+      greeting = "Hello, I'm"
+      statement = "I design and build quiet, intentional software."
+    [[languages.en.menu.main]]
     name = 'Blog'
     url = '/blog/'
     weight = 10
-  [[menu.main]]
+    [[languages.en.menu.main]]
     name = 'Projects'
     url = '/projects/'
     weight = 20
-  [[menu.main]]
+    [[languages.en.menu.main]]
     name = 'Memos'
     url = '/memos/'
     weight = 30
-  [[menu.main]]
+    [[languages.en.menu.main]]
     name = 'About'
     url = '/about/'
     weight = 40
+  [languages.zh]
+    languageCode = 'zh-cn'
+    languageName = '中文'
+    weight = 2
+    title = 'Alex Chen'
+    [languages.zh.params]
+      author = "Alex Chen"
+      description = "设计师与开发者，构建安静而有意图的软件。"
+      greeting = "你好，我是"
+      statement = "我设计并构建安静、克制、有意图的软件。"
+    [[languages.zh.menu.main]]
+      name = '博客'
+      url = '/zh/blog/'
+      weight = 10
+    [[languages.zh.menu.main]]
+      name = '项目'
+      url = '/zh/projects/'
+      weight = 20
+    [[languages.zh.menu.main]]
+      name = '随笔'
+      url = '/zh/memos/'
+      weight = 30
+    [[languages.zh.menu.main]]
+      name = '关于'
+      url = '/zh/about/'
+      weight = 40
 
 [taxonomies]
   tag = 'tags'

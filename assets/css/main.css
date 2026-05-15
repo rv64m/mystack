@@ -232,6 +232,30 @@ code, pre {
   gap: 10px;
 }
 
+.language-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+}
+
+.language-switcher a {
+  color: var(--ink-tertiary);
+  text-decoration: none;
+  transition: color 200ms ease;
+}
+
+.language-switcher a:hover,
+.language-switcher a.is-active {
+  color: var(--ink);
+}
+
+.language-switcher a + a::before {
+  content: '/';
+  margin-right: 8px;
+  color: var(--line-strong);
+}
+
 .theme-toggle {
   display: inline-flex;
   align-items: center;
