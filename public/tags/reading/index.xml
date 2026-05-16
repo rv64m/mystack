@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Thought on Alex Chen</title>
-    <link>https://example.org/tags/thought/</link>
-    <description>Recent content in Thought on Alex Chen</description>
+    <title>Reading on Alex Chen</title>
+    <link>https://example.org/tags/reading/</link>
+    <description>Recent content in Reading on Alex Chen</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 16 May 2026 18:30:00 +0800</lastBuildDate>
-    <atom:link href="https://example.org/tags/thought/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://example.org/tags/reading/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>杠铃式阅读</title>
       <link>https://example.org/memos/2026/05/2026-05-16-barbell-reading/</link>
       <pubDate>Sat, 16 May 2026 18:30:00 +0800</pubDate>
       <guid>https://example.org/memos/2026/05/2026-05-16-barbell-reading/</guid>
       <description>&lt;p&gt;硅谷传奇投资人 Marc Andreessen 最近分享了一种很有意思的阅读方法，叫“杠铃式阅读”。&lt;/p&gt;&#xA;&lt;p&gt;一端是最新的信息，比如 X 上的实时动态。因为很多行业变化太快，真正的一手信号，往往最早出现在一线从业者的推文里。&lt;/p&gt;&#xA;&lt;p&gt;另一端是特别老的书，最好是 50 年以上的经典。因为能穿越几十年还被人反复阅读的东西，通常已经经过时间筛选。&lt;/p&gt;&#xA;&lt;p&gt;中间那一层，比如报纸、杂志，他反而很少看。因为很多内容既不够快，也不够深。&lt;/p&gt;&#xA;&lt;p&gt;他还特别重视 practitioner-led newsletters，也就是一线实践者写的 newsletter。&lt;/p&gt;&#xA;&lt;p&gt;比如投资人、创业者、工程师、医生、研究员，亲自把自己在工作中看到的问题、踩过的坑、总结出的经验写下来。这类内容通常很朴素，但很接近真实世界，反而比很多包装精美的媒体文章更有价值。&lt;/p&gt;</description>
-    </item>
-    <item>
-      <title></title>
-      <link>https://example.org/memos/2026/04/2026-04-18-morning-thoughts/</link>
-      <pubDate>Sat, 18 Apr 2026 08:30:00 +0800</pubDate>
-      <guid>https://example.org/memos/2026/04/2026-04-18-morning-thoughts/</guid>
-      <description>&lt;p&gt;The best designs are often the ones that subtract rather than add. I&amp;rsquo;ve been thinking about this a lot while working on the new portfolio site — every element needs to justify its existence.&lt;/p&gt;&#xA;&lt;p&gt;There&amp;rsquo;s a temptation to add features because you can, not because you should. Resisting that temptation is a skill.&lt;/p&gt;</description>
     </item>
   </channel>
 </rss>
