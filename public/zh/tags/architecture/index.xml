@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Architecture on Alex Chen</title>
+    <link>https://example.org/zh/tags/architecture/</link>
+    <description>Recent content in Architecture on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 09:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/architecture/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>扩展 Managed Agents：将大脑与双手解耦</title>
+      <link>https://example.org/zh/blog/2026/05/scaling-managed-agents/</link>
+      <pubDate>Sat, 16 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/scaling-managed-agents/</guid>
+      <description>&lt;p&gt;&lt;em&gt;按照我们的&lt;a href=&#34;https://platform.claude.com/docs/en/managed-agents/overview&#34;&gt;文档&lt;/a&gt;，开始使用 Claude Managed Agents。&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;工程博客上一个持续讨论的主题，是如何&lt;a href=&#34;https://www.anthropic.com/engineering/building-effective-agents&#34;&gt;构建有效的 agent&lt;/a&gt;，以及如何为&lt;a href=&#34;https://www.anthropic.com/engineering/harness-design-long-running-apps&#34;&gt;长时间运行的工作&lt;/a&gt;&lt;a href=&#34;https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents&#34;&gt;设计 harness&lt;/a&gt;。贯穿这些工作的一个共同点是，harness 会编码关于 Claude 不能独立完成什么的假设。然而，随着模型不断进步，这些假设需要被频繁质疑，因为它们可能会&lt;a href=&#34;http://www.incompleteideas.net/IncIdeas/BitterLesson.html&#34;&gt;过时&lt;/a&gt;。&lt;/p&gt;&#xA;&lt;p&gt;仅举一个例子，在此前的工作中，&lt;a href=&#34;https://www.anthropic.com/engineering/harness-design-long-running-apps&#34;&gt;我们发现&lt;/a&gt;，当 Claude Sonnet 4.5 感知到自己正在接近上下文限制时，会过早结束任务，这种行为有时被称为“上下文焦虑”。我们通过在 harness 中加入上下文重置来解决这个问题。但当我们在 Claude Opus 4.5 上使用同一个 harness 时，我们发现这种行为消失了。那些重置已经变成了累赘。&lt;/p&gt;&#xA;&lt;p&gt;我们预期 harness 会继续演化。因此，我们构建了 Managed Agents：这是 Claude Platform 中的一项托管服务，可以代表你运行长周期 agent，并通过一小组接口工作，这些接口的设计目标是比任何特定实现都更持久，包括我们今天运行的那些实现。&lt;/p&gt;&#xA;&lt;p&gt;构建 Managed Agents 意味着要解决计算领域的一个老问题：如何为“&lt;a href=&#34;http://www.catb.org/esr/writings/taoup/html/ch03s01.html&#34;&gt;尚未被设想出来的程序&lt;/a&gt;”设计系统。几十年前，操作系统通过把硬件虚拟化为足够通用的抽象来解决这个问题，例如 &lt;em&gt;process, file&lt;/em&gt;，这些抽象可以服务于当时还不存在的程序。抽象比硬件更持久。&lt;code&gt;read()&lt;/code&gt; 命令并不关心它访问的是 20 世纪 70 年代的磁盘组，还是现代 SSD。上层抽象保持稳定，而底层实现可以自由变化。&lt;/p&gt;&#xA;&lt;p&gt;Managed Agents 遵循同样的模式。我们虚拟化了 agent 的组成部分：session（记录发生过的一切的仅追加日志）、harness（调用 Claude 并把 Claude 的工具调用路由到相关基础设施的循环），以及 sandbox（Claude 可以在其中运行代码和编辑文件的执行环境）。这使得每个部分的实现都可以被替换，而不会干扰其他部分。我们对这些接口的形状有明确主张，但不对接口背后运行的东西抱有执念。&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://example.org/images/blog/scaling-managed-agents/managed-agents-components.png&#34; alt=&#34;Managed Agents 组件示意图&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;我们一开始把所有 agent 组件都放进一个容器里，这意味着 session、agent harness 和 sandbox 共享同一个环境。这种方法有一些好处，包括文件编辑就是直接的系统调用，而且不需要设计服务边界。&lt;/p&gt;&#xA;&lt;p&gt;但通过把所有东西耦合进一个容器，我们遇到了一个古老的基础设施问题：我们收养了一只 &lt;a href=&#34;https://cloudscaling.com/blog/cloud-computing/the-history-of-pets-vs-cattle/&#34;&gt;&lt;em&gt;pet&lt;/em&gt;&lt;/a&gt;。在 pets-vs-cattle 的类比中，pet 是一个有名字、需要人工照料、你承受不起失去它的个体，而 cattle 是可以互换的。在我们的场景里，服务器变成了那只 pet；如果容器失败，session 就会丢失。如果容器没有响应，我们就不得不把它照料回健康状态。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

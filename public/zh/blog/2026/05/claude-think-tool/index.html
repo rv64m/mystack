@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <script>
+    (() => {
+      const key = 'site-theme';
+      const stored = localStorage.getItem(key);
+      const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>“think” 工具：让 Claude 停下来思考 — Alex Chen</title>
+<meta name="description" content="设计师与开发者，构建安静而有意图的软件。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+
+</head>
+<body>
+  <nav class="site-nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="/zh/" class="nav-wordmark">Alex Chen</a>
+    <ul class="nav-links" id="nav-links">
+      
+        <li><a href="/zh/blog/" class="">博客</a></li>
+      
+        <li><a href="/zh/projects/" class="">项目</a></li>
+      
+        <li><a href="/zh/memos/" class="">随笔</a></li>
+      
+        <li><a href="/zh/about/" class="">关于</a></li>
+      
+    </ul>
+    <div class="nav-actions">
+      <div class="language-switcher" aria-label="Language switcher">
+        
+          
+          
+          
+            
+            
+              
+            
+          
+          <a href="/" class="" hreflang="en">English</a>
+        
+          
+          
+          
+            
+          
+          <a href="/zh/blog/2026/05/claude-think-tool/" class="is-active" hreflang="zh">中文</a>
+        
+      </div>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="Switch to dark mode"
+        aria-pressed="false"
+      >
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
+        </svg>
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+  <main id="main">
+    
+
+<article class="story-shell container">
+  <header class="story-hero">
+    <div class="story-hero-copy">
+      <p class="section-kicker">Essay</p>
+      <h1 class="story-title">“think” 工具：让 Claude 停下来思考</h1>
+      <div class="story-meta">
+        <span><time datetime="2026-05-16">May 16, 2026</time></span>
+        <span>5 min read</span>
+        <span>Agent Notes</span>
+      </div>
+    </div>
+    
+      <div class="story-tags">
+        
+          <a href="/tags/ai" class="tag-pill">ai</a>
+        
+          <a href="/tags/agents" class="tag-pill">agents</a>
+        
+          <a href="/tags/tools" class="tag-pill">tools</a>
+        
+      </div>
+    
+  </header>
+
+  <div class="story-body-wrap">
+    <div class="article-body story-body">
+      <ul>
+<li>Extended thinking capabilities 自首次发布以来已有改进，因此在大多数情况下，我们建议使用该功能，而不是专门的 think tool。Extended thinking 提供类似收益，也就是给 Claude 留出空间推理复杂问题，同时有更好的集成和性能。实现细节请参阅我们的 extended thinking 文档。</li>
+</ul>
+<p>随着我们持续增强 Claude 的复杂问题解决能力，我们发现了一种特别有效的方法：“think” 工具，它会在复杂任务期间为结构化思考创建专用空间。</p>
+<p>这项简单但强大的技术不同于 Claude 新的 “<a href="https://www.anthropic.com/research/visible-extended-thinking">extended thinking</a>” 能力（<a href="https://platform.claude.com/docs/en/build-with-claude/extended-thinking">extended thinking implementation details</a> 见此），下文会解释区别。它显著改善了 Claude 的 agentic tool use 能力，包括遵循 policies、做出一致决策，以及处理多步骤问题，而且实现开销很小。</p>
+<p>在这篇文章中，我们会探索如何在不同应用中实现 “think” 工具，并基于经过验证的 benchmark results，为开发者分享实用指导。</p>
+<h3 id="什么是-think-工具">什么是 “think” 工具？</h3>
+<p>通过 “think” 工具，我们赋予 Claude 在得到最终答案之前加入一个额外思考步骤的能力，而且这个步骤有自己指定的空间。</p>
+<p>虽然它听起来类似 extended thinking，但这是不同概念。Extended thinking 关注的是 Claude 在开始生成回答之前做什么。使用 extended thinking 时，Claude 会在采取行动之前深入考虑并迭代自己的计划。“think” 工具则用于 Claude 一旦开始生成回答后，添加一步，让它停下来思考自己是否拥有继续前进所需的全部信息。当 Claude 执行长链条工具调用，或与用户进行长时间多步骤对话时，这尤其有帮助。</p>
+<p>这使得 “think” 工具更适合以下情况：Claude 无法仅凭用户 query 获得制定回答所需的全部信息，并且需要处理外部信息（例如工具调用结果中的信息）。Claude 使用 “think” 工具执行的推理，不如 extended thinking 所能获得的推理全面，而是更聚焦于模型发现的<em>新</em>信息。</p>
+<p>对于更简单的工具使用场景，例如非顺序工具调用或直接的指令遵循，我们建议使用 extended thinking。当你不需要 Claude 调用工具时，extended thinking 也适用于 coding、math 和 physics 等 use cases。“think” 工具更适合 Claude 需要调用复杂工具、在长工具调用链中仔细分析工具输出、在带有详细指南的 policy-heavy environments 中导航，或做出顺序决策的场景，其中每一步都建立在前一步之上，而且错误代价很高。</p>
+<p>下面是一个使用来自 <a href="https://arxiv.org/abs/2406.12045">τ-Bench</a> 的标准工具规范格式的示例实现：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  &#34;name&#34;: &#34;think&#34;,
+</span></span><span style="display:flex;"><span>  &#34;description&#34;: &#34;Use the tool to think about something. It will not obtain new information or change the database, but just append the thought to the log. Use it when complex reasoning or some cache memory is needed.&#34;,
+</span></span><span style="display:flex;"><span>  &#34;input_schema&#34;: {
+</span></span><span style="display:flex;"><span>    &#34;type&#34;: &#34;object&#34;,
+</span></span><span style="display:flex;"><span>    &#34;properties&#34;: {
+</span></span><span style="display:flex;"><span>      &#34;thought&#34;: {
+</span></span><span style="display:flex;"><span>        &#34;type&#34;: &#34;string&#34;,
+</span></span><span style="display:flex;"><span>        &#34;description&#34;: &#34;A thought to think about.&#34;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    &#34;required&#34;: [&#34;thought&#34;]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>我们使用 τ-bench（tau-bench）评估了 “think” 工具。τ-bench 是一个综合 benchmark，旨在测试模型在真实客户服务场景中使用工具的能力，其中 “think” 工具是评测标准环境的一部分。</p>
+<p>τ-bench 评估 Claude 的能力包括：</p>
+<ul>
+<li>在与模拟用户的真实对话中导航；</li>
+<li>一致地遵循复杂客户服务 agent policy guidelines；</li>
+<li>使用多种工具访问和操作环境数据库。</li>
+</ul>
+<p>τ-bench 使用的主要评估指标是 pass^<em>k</em>，它衡量对于给定任务，<em>k</em> 次独立任务试验全部成功的概率，并在所有任务上取平均。不同于其他 LLM evaluations 中常见的 pass@<em>k</em> 指标（衡量 <em>k</em> 次试验中是否至少一次成功），pass^<em>k</em> 评估一致性和可靠性。这些是客户服务应用中的关键品质，因为在那里，一致遵守 policies 至关重要。</p>
+<p>我们的评估比较了几种不同配置：</p>
+<ol>
+<li>Baseline（没有 “think” 工具，没有 extended thinking mode）</li>
+<li>仅 extended thinking mode</li>
+<li>仅 “think” 工具</li>
+<li>“think” 工具加 optimized prompt（用于 airline domain）</li>
+</ol>
+<p>结果显示，当 Claude 3.7 在 benchmark 的 “airline” 和 “retail” 客户服务领域中有效使用 “think” 工具时，带来了显著提升：</p>
+<ul>
+<li><strong>Airline domain</strong>：带 optimized prompt 的 “think” 工具在 pass^1 指标上达到 0.570，而 baseline 只有 0.370，相对提升 54%；</li>
+<li><strong>Retail domain</strong>：仅 “think” 工具达到 0.812，而 baseline 为 0.783。</li>
+</ul>
+<p><img src="/images/blog/claude-think-tool/airline-domain-results.jpg" alt="Claude 3.7 Sonnet 在 Tau-Bench airline domain 上的表现"></p>
+<p>Claude 3.7 Sonnet 在 Tau-Bench eval 的 “airline” domain 中，在四种不同配置下的表现。</p>
+<table>
+  <thead>
+      <tr>
+          <th>Configuration</th>
+          <th><em>k</em>=1</th>
+          <th><em>k</em>=2</th>
+          <th><em>k</em>=3</th>
+          <th><em>k</em>=4</th>
+          <th><em>k</em>=5</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>&ldquo;Think&rdquo; + Prompt</td>
+          <td>0.584</td>
+          <td>0.444</td>
+          <td>0.384</td>
+          <td>0.356</td>
+          <td>0.340</td>
+      </tr>
+      <tr>
+          <td>&ldquo;Think&rdquo;</td>
+          <td>0.404</td>
+          <td>0.254</td>
+          <td>0.186</td>
+          <td>0.140</td>
+          <td>0.100</td>
+      </tr>
+      <tr>
+          <td>Extended thinking</td>
+          <td>0.412</td>
+          <td>0.290</td>
+          <td>0.232</td>
+          <td>0.192</td>
+          <td>0.160</td>
+      </tr>
+      <tr>
+          <td>Baseline</td>
+          <td>0.332</td>
+          <td>0.206</td>
+          <td>0.148</td>
+          <td>0.116</td>
+          <td>0.100</td>
+      </tr>
+  </tbody>
+</table>
+<p>四种不同配置的评估结果。分数是比例。</p>
+<p>Airline domain 中的最佳表现，是将 “think” 工具与 optimized prompt 配对获得的，该 prompt 给出了在分析客户请求时应使用的推理方法示例。下面是 optimized prompt 的一个例子：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>## Using the think tool
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Before taking any action or responding to the user after receiving tool results, use the think tool as a scratchpad to:
+</span></span><span style="display:flex;"><span>- List the specific rules that apply to the current request
+</span></span><span style="display:flex;"><span>- Check if all required information is collected
+</span></span><span style="display:flex;"><span>- Verify that the planned action complies with all policies
+</span></span><span style="display:flex;"><span>- Iterate over tool results for correctness
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Here are some examples of what to iterate over inside the think tool:
+</span></span><span style="display:flex;"><span>&lt;think_tool_example_1&gt;
+</span></span><span style="display:flex;"><span>User wants to cancel flight ABC123
+</span></span><span style="display:flex;"><span>- Need to verify: user ID, reservation ID, reason
+</span></span><span style="display:flex;"><span>- Check cancellation rules:
+</span></span><span style="display:flex;"><span>  * Is it within 24h of booking?
+</span></span><span style="display:flex;"><span>  * If not, check ticket class and insurance
+</span></span><span style="display:flex;"><span>- Verify no segments flown or are in the past
+</span></span><span style="display:flex;"><span>- Plan: collect missing info, verify rules, get confirmation
+</span></span><span style="display:flex;"><span>&lt;/think_tool_example_1&gt;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>&lt;think_tool_example_2&gt;
+</span></span><span style="display:flex;"><span>User wants to book 3 tickets to NYC with 2 checked bags each
+</span></span><span style="display:flex;"><span>- Need user ID to check:
+</span></span><span style="display:flex;"><span>  * Membership tier for baggage allowance
+</span></span><span style="display:flex;"><span>  * Which payments methods exist in profile
+</span></span><span style="display:flex;"><span>- Baggage calculation:
+</span></span><span style="display:flex;"><span>  * Economy class × 3 passengers
+</span></span><span style="display:flex;"><span>  * If regular member: 1 free bag each → 3 extra bags = $150
+</span></span><span style="display:flex;"><span>  * If silver member: 2 free bags each → 0 extra bags = $0
+</span></span><span style="display:flex;"><span>  * If gold member: 3 free bags each → 0 extra bags = $0
+</span></span><span style="display:flex;"><span>- Payment rules to verify:
+</span></span><span style="display:flex;"><span>  * Max 1 travel certificate, 1 credit card, 3 gift cards
+</span></span><span style="display:flex;"><span>  * All payment methods must be in profile
+</span></span><span style="display:flex;"><span>  * Travel certificate remainder goes to waste
+</span></span><span style="display:flex;"><span>- Plan:
+</span></span><span style="display:flex;"><span>1. Get user ID
+</span></span><span style="display:flex;"><span>2. Verify membership level for bag fees
+</span></span><span style="display:flex;"><span>3. Check which payment methods in profile and if their combination is allowed
+</span></span><span style="display:flex;"><span>4. Calculate total: ticket price + any bag fees
+</span></span><span style="display:flex;"><span>5. Get explicit confirmation for booking
+</span></span><span style="display:flex;"><span>&lt;/think_tool_example_2&gt;
+</span></span></code></pre></div><p>特别有意思的是不同方法之间的比较。带 optimized prompt 的 “think” 工具显著优于 extended thinking mode（后者表现类似未提示的 “think” 工具）。仅使用 “think” 工具（不加 prompting）相较 baseline 提升了表现，但仍不及 optimized approach。</p>
+<p>“think” 工具与 optimized prompting 的组合以显著优势提供了最强表现，这很可能是因为 benchmark 中 <a href="https://github.com/sierra-research/tau-bench/blob/main/tau_bench/envs/airline/wiki.md">airline policy</a> 部分复杂度很高，模型从如何“think”的示例中获益最大。</p>
+<p>在 retail domain 中，我们也测试了各种配置，以理解每种方法的具体影响。</p>
+<p><img src="/images/blog/claude-think-tool/retail-domain-results.jpg" alt="Claude 3.7 Sonnet 在 Tau-Bench retail domain 上的表现"></p>
+<p>Claude 3.7 Sonnet 在 Tau-Bench eval 的 “retail” domain 中，在三种不同配置下的表现。</p>
+<table>
+  <thead>
+      <tr>
+          <th>Configuration</th>
+          <th><em>k</em>=1</th>
+          <th><em>k</em>=2</th>
+          <th><em>k</em>=3</th>
+          <th><em>k</em>=4</th>
+          <th><em>k</em>=5</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>&ldquo;Think&rdquo; + no prompt</td>
+          <td>0.812</td>
+          <td>0.735</td>
+          <td>0.685</td>
+          <td>0.650</td>
+          <td>0.626</td>
+      </tr>
+      <tr>
+          <td>Extended thinking</td>
+          <td>0.770</td>
+          <td>0.681</td>
+          <td>0.623</td>
+          <td>0.581</td>
+          <td>0.548</td>
+      </tr>
+      <tr>
+          <td>Baseline</td>
+          <td>0.783</td>
+          <td>0.695</td>
+          <td>0.643</td>
+          <td>0.607</td>
+          <td>0.583</td>
+      </tr>
+  </tbody>
+</table>
+<p>三种不同配置的评估结果。分数是比例。</p>
+<p>“think” 工具即使没有额外 prompting，也取得了最高的 pass^1 分数 0.812。与 airline domain 相比，<a href="https://github.com/sierra-research/tau-bench/blob/main/tau_bench/envs/retail/wiki.md">retail policy</a> 明显更容易导航，Claude 只要有一个思考空间，就能在没有进一步指导的情况下改善表现。</p>
+<p>我们的详细分析揭示了几个模式，可以帮助你有效实现 “think” 工具：</p>
+<ol>
+<li><strong>Prompting 在困难领域中非常重要</strong>。仅让 “think” 工具可用，可能会在一定程度上改善表现，但将它与 optimized prompting 配对，会在困难领域中带来显著更好的结果。不过，较简单的领域可能仅通过获得 “think” 访问权限就能受益。</li>
+<li><strong>跨 trials 的一致性提高</strong>。使用 “think” 带来的提升在 pass^k 一直到 k=5 时都得以保持，这表明该工具帮助 Claude 更有效处理边界情况和异常场景。</li>
+</ol>
+<p>在评估 Claude 3.7 Sonnet 时，我们也向 SWE-bench 设置中加入了类似的 “think” 工具，它对达到 state-of-the-art 分数 0.623 有所贡献。适配后的 “think” 工具定义如下：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>  &#34;name&#34;: &#34;think&#34;,
+</span></span><span style="display:flex;"><span>  &#34;description&#34;: &#34;Use the tool to think about something. It will not obtain new information or make any changes to the repository, but just log the thought. Use it when complex reasoning or brainstorming is needed. For example, if you explore the repo and discover the source of a bug, call this tool to brainstorm several unique ways of fixing the bug, and assess which change(s) are likely to be simplest and most effective. Alternatively, if you receive some test results, call this tool to brainstorm ways to fix the failing tests.&#34;,
+</span></span><span style="display:flex;"><span>  &#34;input_schema&#34;: {
+</span></span><span style="display:flex;"><span>    &#34;type&#34;: &#34;object&#34;,
+</span></span><span style="display:flex;"><span>    &#34;properties&#34;: {
+</span></span><span style="display:flex;"><span>      &#34;thought&#34;: {
+</span></span><span style="display:flex;"><span>        &#34;type&#34;: &#34;string&#34;,
+</span></span><span style="display:flex;"><span>        &#34;description&#34;: &#34;Your thoughts.&#34;
+</span></span><span style="display:flex;"><span>      }
+</span></span><span style="display:flex;"><span>    },
+</span></span><span style="display:flex;"><span>    &#34;required&#34;: [&#34;thought&#34;]
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><p>我们的实验（带 “think” 工具 <em>n</em>=30 samples，不带 <em>n</em>=144 samples）显示，单独加入该工具的效果平均提升了 1.6%（Welch&rsquo;s <em>t</em>-test: <em>t</em>(38.89) = 6.71, <em>p</em> &lt; .001, <em>d</em> = 1.47）。</p>
+<p>基于这些评估结果，我们识别出 Claude 最能从 “think” 工具中受益的具体场景：</p>
+<ol>
+<li><strong>工具输出分析。</strong> 当 Claude 需要在行动前仔细处理此前工具调用的输出，并且可能需要回溯自己的方法时；</li>
+<li><strong>Policy-heavy environments</strong>。当 Claude 需要遵循详细指南并验证合规性时；以及</li>
+<li><strong>顺序决策</strong>。当每个动作都建立在此前动作之上，而且错误代价很高时（常见于多步骤领域）。</li>
+</ol>
+<p>为了让 Claude 最大化利用 “think” 工具，我们基于 τ-bench 实验推荐以下实现实践。</p>
+<p>最有效的方法，是提供关于何时以及如何使用 “think” 工具的清晰说明，例如 τ-bench airline domain 中使用的说明。提供针对你具体 use case 的示例，会显著改善模型使用 “think” 工具的有效性：</p>
+<ul>
+<li>推理过程中预期的细节程度；</li>
+<li>如何把复杂指令拆解成可执行步骤；</li>
+<li>处理常见场景的决策树；以及</li>
+<li>如何检查所有必要信息是否已被收集。</li>
+</ul>
+<p>我们发现，当关于 “think” 工具的说明较长和/或复杂时，把这些说明放在 system prompt 中，比放在工具描述本身中更有效。这种方法提供更广泛的上下文，并帮助模型更好地把思考过程整合进整体行为中。</p>
+<p>虽然 “think” 工具可以带来显著提升，但它不适用于所有 tool use use cases，并且会增加 prompt 长度和 output tokens。具体来说，我们发现 “think” 工具在以下 use cases 中不会提供任何提升：</p>
+<ol>
+<li><strong>非顺序工具调用</strong>。如果 Claude 只需要进行单个工具调用，或多个并行调用即可完成任务，那么加入 “think” 不太可能带来任何提升。</li>
+<li><strong>简单指令遵循</strong>。当 Claude 需要遵守的约束不多，且默认行为已经足够好时，额外的 “think”-ing 不太可能带来收益。</li>
+</ol>
+<p>“think” 工具是 Claude 实现中的一个直接补充，只需几步就可能产生有意义的改进：</p>
+<ol>
+<li><strong>用 agentic tool use 场景测试。</strong> 从有挑战的 use cases 开始，也就是 Claude 目前在长工具调用链中的 policy compliance 或复杂推理上挣扎的场景。</li>
+<li><strong>添加工具定义</strong>。实现一个针对你的领域定制的 “think” 工具。它需要的代码很少，但能启用更结构化的推理。也可以考虑在 system prompt 中加入何时以及如何使用工具的说明，并加入与你领域相关的示例。</li>
+<li><strong>监控并 refine</strong>。观察 Claude 在实践中如何使用该工具，并调整 prompts，以鼓励更有效的思考模式。</li>
+</ol>
+<p>最好的部分是，添加这个工具在性能结果上几乎没有 downside。除非 Claude 决定使用它，否则它不会改变外部行为，也不会干扰你现有的 tools 或 workflows。</p>
+<p>我们的研究表明，“think” 工具可以显著增强 Claude 3.7 Sonnet 在复杂任务上的表现，这些任务要求在长工具调用链中遵守 policy 并进行推理。“Think” 不是一刀切方案，但对正确 use cases 来说，它以极低实现复杂度提供了显著收益。</p>
+<p>我们期待看到你如何使用 “think” 工具，用 Claude 构建更有能力、更可靠、更透明的 AI systems。</p>
+<ol>
+<li>虽然我们的 τ-Bench 结果聚焦于 Claude 3.7 Sonnet 通过 “think” 工具获得的提升，但实验显示 Claude 3.5 Sonnet (New) 在与 3.7 Sonnet 相同配置下也能获得性能收益，说明这种提升也可以泛化到其他 Claude models。</li>
+</ol>
+
+    </div>
+  </div>
+
+  <nav class="story-nav">
+    <div class="article-nav-inner">
+      
+        <div class="article-nav-prev">
+          <p class="article-nav-label">Previous</p>
+          <a href="/zh/blog/2026/05/writing-tools-for-agents/" class="article-nav-title">为 AI agents 编写有效工具：用 AI agents</a>
+        </div>
+      
+      
+        <div class="article-nav-next">
+          <p class="article-nav-label">Next</p>
+          <a href="/zh/blog/2026/05/claude-swe-bench-performance/" class="article-nav-title">Claude 在 SWE-bench 上的表现</a>
+        </div>
+      
+    </div>
+  </nav>
+</article>
+
+
+  </main>
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copyright">&copy; 2026 Alex Chen</span>
+    <nav class="footer-nav">
+      
+        <a href="/zh/blog/">博客</a>
+      
+        <a href="/zh/projects/">项目</a>
+      
+        <a href="/zh/memos/">随笔</a>
+      
+        <a href="/zh/about/">关于</a>
+      
+    </nav>
+    <div class="footer-social">
+      <a href="/zh/index.xml" aria-label="RSS Feed">RSS</a>
+    </div>
+  </div>
+</footer>
+
+  
+  <script src="/js/main.js"></script>
+</body>
+</html>

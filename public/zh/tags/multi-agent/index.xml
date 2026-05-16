@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Multi-Agent on Alex Chen</title>
+    <link>https://example.org/zh/tags/multi-agent/</link>
+    <description>Recent content in Multi-Agent on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 06:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/multi-agent/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>我们如何构建 multi-agent research system</title>
+      <link>https://example.org/zh/blog/2026/05/multi-agent-research-system/</link>
+      <pubDate>Sat, 16 May 2026 06:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/multi-agent-research-system/</guid>
+      <description>&lt;p&gt;Claude 现在具备 &lt;a href=&#34;https://www.anthropic.com/news/research&#34;&gt;Research capabilities&lt;/a&gt;，可以跨 web、Google Workspace 以及任何 integrations 进行搜索，以完成复杂任务。&lt;/p&gt;&#xA;&lt;p&gt;这个 multi-agent system 从 prototype 到 production 的历程，教会了我们关于系统架构、工具设计和 prompt engineering 的关键经验。Multi-agent system 由多个 agents（自主使用工具循环工作的 LLMs）协同组成。我们的 Research feature 包含一个 agent，它会根据用户 queries 规划研究过程，然后使用工具创建并行 agents，让它们同时搜索信息。包含多个 agents 的系统会在 agent coordination、evaluation 和 reliability 上引入新的挑战。&lt;/p&gt;&#xA;&lt;p&gt;这篇文章会拆解对我们有效的原则。我们希望你在构建自己的 multi-agent systems 时也会发现它们有用。&lt;/p&gt;&#xA;&lt;p&gt;Research work 涉及开放式问题，很难提前预测所需步骤。你无法为探索复杂主题 hardcode 一条固定路径，因为这个过程本质上是动态且 path-dependent 的。人们进行研究时，往往会根据发现持续更新方法，并追随调查过程中出现的线索。&lt;/p&gt;&#xA;&lt;p&gt;这种不可预测性让 AI agents 特别适合 research tasks。Research 要求在调查展开时具备 pivot 或探索切线联系的灵活性。模型必须自主运行许多轮，并基于中间发现决定要追求哪些方向。线性的 one-shot pipeline 无法处理这些任务。&lt;/p&gt;&#xA;&lt;p&gt;Search 的本质是压缩：从庞大 corpus 中提炼 insights。Subagents 通过并行运行并拥有自己的 context windows 来促进压缩，它们会同时探索问题的不同方面，然后为 lead research agent 浓缩最重要的 tokens。每个 subagent 还提供 separation of concerns，也就是不同的工具、prompts 和探索轨迹，这减少了 path dependency，并支持彻底、独立的调查。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

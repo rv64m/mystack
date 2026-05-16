@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Claude on Alex Chen</title>
+    <link>https://example.org/zh/tags/claude/</link>
+    <description>Recent content in Claude on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 17:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/claude/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Claude Opus 4.6 的 BrowseComp 表现中的 eval awareness</title>
+      <link>https://example.org/zh/blog/2026/05/eval-awareness-browsecomp/</link>
+      <pubDate>Sat, 16 May 2026 17:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/eval-awareness-browsecomp/</guid>
+      <description>&lt;p&gt;BrowseComp 是一个 evaluation，旨在测试 models 在 web 上寻找难以定位信息的能力。像许多 benchmarks 一样，它容易受到 contamination 影响：answers 会通过 academic papers、blog posts 和 GitHub issues 泄漏到 public web 上，而运行 eval 的 model 可能会在 search results 中遇到它们。当我们在 multi-agent configuration 中评估 Claude Opus 4.6 的 BrowseComp 表现时，我们在 1,266 个 BrowseComp problems 中发现了 9 个这种 contamination 的例子。&lt;/p&gt;&#xA;&lt;p&gt;然而，我们还见证了两个 novel contamination pattern 的 cases。Claude Opus 4.6 并不是无意中遇到泄漏答案，而是独立 hypothesized 自己正在被 evaluated，识别出自己正在运行哪个 benchmark，然后定位并 decrypt 了 answer key。据我们所知，这是首次 documented instance：一个 model 在不知道正在被 administer 哪个 benchmark 的情况下怀疑自己正在被 evaluated，然后反向工作，成功识别并解决 evaluation 本身。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>在 Claude Developer Platform 上引入 advanced tool use</title>
+      <link>https://example.org/zh/blog/2026/05/advanced-tool-use/</link>
+      <pubDate>Sat, 16 May 2026 13:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/advanced-tool-use/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://example.org/images/blog/advanced-tool-use/advanced-tool-use.svg&#34; alt=&#34;Illustration for advanced tool use article.&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Advanced tool use 文章的插图。&lt;/p&gt;&#xA;&lt;p&gt;AI agents 的未来，是 models 可以在数百或数千个 tools 之间无缝工作。一个 IDE assistant 可以集成 git operations、file manipulation、package managers、testing frameworks 和 deployment pipelines。一个 operations coordinator 可以同时连接 Slack、GitHub、Google Drive、Jira、company databases 和数十个 MCP servers。&lt;/p&gt;&#xA;&lt;p&gt;为了 &lt;a href=&#34;https://www.anthropic.com/research/building-effective-agents&#34;&gt;build effective agents&lt;/a&gt;，它们需要使用 unlimited tool libraries，而不是预先把每个 definition 都塞进 context。我们关于使用 &lt;a href=&#34;https://www.anthropic.com/engineering/code-execution-with-mcp&#34;&gt;code execution with MCP&lt;/a&gt; 的 blog article 讨论了 tool results 和 definitions 有时如何在 agent 读取 request 之前就消耗 50,000+ tokens。Agents 应该按需发现和加载 tools，只保留与当前 task 相关的内容。&lt;/p&gt;&#xA;&lt;p&gt;Agents 也需要从 code 中调用 tools 的能力。使用 natural language tool calling 时，每次 invocation 都需要一次完整 inference pass，而且 intermediate results 会堆积在 context 中，无论它们是否有用。Code 天然适合 orchestration logic，例如 loops、conditionals 和 data transformations。Agents 需要根据手头 task，在 code execution 和 inference 之间选择的灵活性。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>用 Agent Skills 为现实世界装备 agents</title>
+      <link>https://example.org/zh/blog/2026/05/agent-skills-real-world/</link>
+      <pubDate>Sat, 16 May 2026 10:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/agent-skills-real-world/</guid>
+      <description>&lt;p&gt;&lt;em&gt;更新：我们已将&lt;/em&gt; &lt;a href=&#34;https://agentskills.io/&#34;&gt;&lt;em&gt;Agent Skills&lt;/em&gt;&lt;/a&gt; &lt;em&gt;发布为一个用于 cross-platform portability 的 open standard。（2025 年 12 月 18 日）&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;随着 model capabilities 改善，我们现在可以构建与完整 computing environments 交互的 general-purpose agents。例如，&lt;a href=&#34;https://claude.com/product/claude-code&#34;&gt;Claude Code&lt;/a&gt; 可以使用 local code execution 和 filesystems，跨 domains 完成复杂 tasks。但随着这些 agents 变得更强大，我们需要更 composable、scalable 和 portable 的方式，为它们装备 domain-specific expertise。&lt;/p&gt;&#xA;&lt;p&gt;这促使我们创建了 &lt;a href=&#34;https://www.anthropic.com/news/skills&#34;&gt;&lt;strong&gt;Agent Skills&lt;/strong&gt;&lt;/a&gt;：由 instructions、scripts 和 resources 组成的有组织 folders，agents 可以发现并动态加载它们，以便在特定 tasks 上表现更好。Skills 通过把你的 expertise 打包成 Claude 可组合使用的 resources 来扩展 Claude 的 capabilities，把 general-purpose agents 转变成适合你需求的 specialized agents。&lt;/p&gt;&#xA;&lt;p&gt;为 agent 构建 skill，就像为新员工整理 onboarding guide。现在，任何人都可以通过捕捉并分享自己的 procedural knowledge，用 composable capabilities 来 specialize their agents，而不是为每个 use case 构建碎片化、custom-designed agents。在这篇文章中，我们会解释 Skills 是什么，展示它们如何工作，并分享构建你自己的 Skills 的 best practices。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>面向 AI agents 的有效 context engineering</title>
+      <link>https://example.org/zh/blog/2026/05/effective-context-engineering-for-ai-agents/</link>
+      <pubDate>Sat, 16 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/effective-context-engineering-for-ai-agents/</guid>
+      <description>&lt;p&gt;在 prompt engineering 成为 applied AI 关注焦点几年之后，一个新术语开始变得突出：&lt;strong&gt;context engineering&lt;/strong&gt;。使用 language models 构建应用，正在逐渐少一些关于为 prompts 找到正确 words 和 phrases 的工作，多一些关于回答更广泛问题的工作：“什么样的 context configuration 最可能生成我们希望 model 表现出的 behavior？”&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Context&lt;/strong&gt; 指的是从 large-language model (LLM) 采样时包含的一组 tokens。手头的 &lt;strong&gt;engineering&lt;/strong&gt; problem，是在 LLMs 的固有限制下优化这些 tokens 的 utility，以持续实现期望 outcome。有效驾驭 LLMs 往往需要 &lt;em&gt;thinking in context&lt;/em&gt;，换句话说：考虑 LLM 在任何给定时间可用的整体 state，以及这种 state 可能产生哪些 potential behaviors。&lt;/p&gt;&#xA;&lt;p&gt;在这篇文章中，我们会探索 context engineering 这一新兴技艺，并为构建 steerable、effective agents 提供一个更精炼的 mental model。&lt;/p&gt;&#xA;&lt;p&gt;在 Anthropic，我们把 context engineering 视为 prompt engineering 的自然进展。Prompt engineering 指的是为获得最佳 outcomes 而编写和组织 LLM instructions 的方法（可查看 &lt;a href=&#34;https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview&#34;&gt;our docs&lt;/a&gt;，其中有 overview 和有用的 prompt engineering strategies）。&lt;strong&gt;Context engineering&lt;/strong&gt; 指的是在 LLM inference 期间策划和维护最优 tokens（information）集合的一组 strategies，包括除 prompts 之外也可能进入 context 的所有其他 information。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Anthropic 三个近期问题的事后复盘</title>
+      <link>https://example.org/zh/blog/2026/05/anthropic-three-recent-issues-postmortem/</link>
+      <pubDate>Sat, 16 May 2026 08:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/anthropic-three-recent-issues-postmortem/</guid>
+      <description>&lt;p&gt;8 月到 9 月初期间，三个 infrastructure bugs 间歇性降低了 Claude 的 response quality。我们现在已经解决了这些问题，并希望解释发生了什么。&lt;/p&gt;&#xA;&lt;p&gt;8 月初，一些用户开始报告 Claude responses 出现 degraded。这些初始报告很难与用户反馈中的正常波动区分开。到 8 月下旬，这些报告的频率和持续性不断增加，促使我们开启 investigation，并由此发现了三个独立的 infrastructure bugs。&lt;/p&gt;&#xA;&lt;p&gt;直说就是：我们从不会因为 demand、time of day 或 server load 而降低 model quality。用户报告的问题完全由 infrastructure bugs 导致。&lt;/p&gt;&#xA;&lt;p&gt;我们认识到，用户期望 Claude 保持一致的质量，而我们也为确保 infrastructure changes 不影响 model outputs 维持极高标准。在这些近期 incidents 中，我们没有达到这个标准。下面的 postmortem 会解释哪里出了问题，为什么 detection 和 resolution 花了比我们希望更久的时间，以及我们正在做哪些改变来防止未来出现类似 incidents。&lt;/p&gt;&#xA;&lt;p&gt;我们通常不会分享这种技术细节层级的 infrastructure 信息，但这些问题的 scope 和 complexity 值得更全面地解释。&lt;/p&gt;&#xA;&lt;p&gt;我们通过 first-party API、Amazon Bedrock 和 Google Cloud 的 Vertex AI 向数百万用户提供 Claude。我们在多个 hardware platforms 上部署 Claude，也就是 AWS Trainium、NVIDIA GPUs 和 Google TPUs。这种方法提供了服务全球用户所需的 capacity 和 geographic distribution。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

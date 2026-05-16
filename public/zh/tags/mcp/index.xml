@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Mcp on Alex Chen</title>
+    <link>https://example.org/zh/tags/mcp/</link>
+    <description>Recent content in Mcp on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 12:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/mcp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 MCP 进行 code execution：构建更高效的 AI agents</title>
+      <link>https://example.org/zh/blog/2026/05/code-execution-with-mcp/</link>
+      <pubDate>Sat, 16 May 2026 12:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/code-execution-with-mcp/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://modelcontextprotocol.io/&#34;&gt;Model Context Protocol (MCP)&lt;/a&gt; 是一个用于把 AI agents 连接到 external systems 的 open standard。把 agents 连接到 tools 和 data，传统上需要为每一组 pairing 做 custom integration，这会造成 fragmentation 和 duplicated effort，使真正 connected systems 难以 scale。MCP 提供了一个 universal protocol：developers 只需在自己的 agent 中实现一次 MCP，就能解锁整个 integrations ecosystem。&lt;/p&gt;&#xA;&lt;p&gt;自 2024 年 11 月推出 MCP 以来，采用速度很快：community 已经构建了数千个 &lt;a href=&#34;https://github.com/modelcontextprotocol/servers&#34;&gt;MCP servers&lt;/a&gt;，&lt;a href=&#34;https://modelcontextprotocol.io/docs/sdk&#34;&gt;SDKs&lt;/a&gt; 已覆盖所有主流 programming languages，industry 也已采用 MCP 作为把 agents 连接到 tools 和 data 的 de-facto standard。&lt;/p&gt;&#xA;&lt;p&gt;今天，developers 经常构建能访问数十个 MCP servers 上数百甚至数千个 tools 的 agents。然而，随着 connected tools 数量增长，预先加载所有 tool definitions，并通过 context window 传递 intermediate results，会拖慢 agents 并增加 costs。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>为 AI agents 编写有效工具：用 AI agents</title>
+      <link>https://example.org/zh/blog/2026/05/writing-tools-for-agents/</link>
+      <pubDate>Sat, 16 May 2026 07:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/writing-tools-for-agents/</guid>
+      <description>&lt;p&gt;这是一幅用于 Engineering Blog 文章《Writing effective tools for agents &amp;ndash; with agents》的抽象插图。&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://modelcontextprotocol.io/docs/getting-started/intro&#34;&gt;Model Context Protocol (MCP)&lt;/a&gt; 可以让 LLM agents 拥有可能多达数百个工具，以解决现实世界任务。但我们如何让这些工具最大程度有效？&lt;/p&gt;&#xA;&lt;p&gt;在这篇文章中，我们描述了在各种 agentic AI systems 中提升性能最有效的技术&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;&#xA;&lt;p&gt;我们首先会介绍你如何：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;构建并测试工具 prototypes&lt;/li&gt;&#xA;&lt;li&gt;创建并运行全面的工具 evaluations，让 agents 使用这些工具&lt;/li&gt;&#xA;&lt;li&gt;与 Claude Code 这样的 agents 协作，自动提升工具性能&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;最后，我们会总结一路识别出的编写高质量工具的关键原则：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;选择正确的工具来实现（以及不实现）&lt;/li&gt;&#xA;&lt;li&gt;对工具进行 namespacing，以定义清晰的功能边界&lt;/li&gt;&#xA;&lt;li&gt;从工具向 agents 返回有意义的 context&lt;/li&gt;&#xA;&lt;li&gt;优化工具 responses 的 token efficiency&lt;/li&gt;&#xA;&lt;li&gt;对工具 descriptions 和 specs 进行 prompt-engineering&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://example.org/images/blog/writing-tools-for-agents/evaluation-loop.png&#34; alt=&#34;Building an evaluation allows you to systematically measure the performance of your tools.&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;构建 evaluation 可以让你系统性地衡量工具性能。你可以使用 Claude Code 根据这个 evaluation 自动优化你的工具。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

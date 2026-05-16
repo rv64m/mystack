@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Compiler on Alex Chen</title>
+    <link>https://example.org/zh/tags/compiler/</link>
+    <description>Recent content in Compiler on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 15:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/compiler/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用一队并行 Claudes 构建 C 编译器</title>
+      <link>https://example.org/zh/blog/2026/05/building-c-compiler-parallel-claudes/</link>
+      <pubDate>Sat, 16 May 2026 15:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/building-c-compiler-parallel-claudes/</guid>
+      <description>&lt;p&gt;&lt;em&gt;本文由 Nicholas Carlini 撰写，他是我们 Safeguards team 的 researcher。&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;我一直在试验一种监督 language models 的新方法，我们称之为 “agent teams”。&lt;/p&gt;&#xA;&lt;p&gt;使用 agent teams 时，多个 Claude instances 会在没有 active human intervention 的情况下，并行处理一个 shared codebase。这种方法极大扩展了 LLM agents 可以实现的范围。&lt;/p&gt;&#xA;&lt;p&gt;为了 stress test 它，我给 16 个 agents 分配了一个任务：从零开始编写一个基于 Rust 的 C compiler，能够编译 Linux kernel。在近 2,000 个 Claude Code sessions 和 20,000 美元 API 成本之后，这个 agent team 产出了一个 100,000 行的 compiler，可以在 x86、ARM 和 RISC-V 上构建 Linux 6.9。&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://example.org/images/blog/building-c-compiler-parallel-claudes/parallel-claudes-video.jpg&#34; alt=&#34;Asynchronous software development with a team of Claudes&#34;&gt;&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

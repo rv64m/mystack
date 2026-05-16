@@ -2,169 +2,310 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:52954/zh/series/agent-notes/</loc>
+    <loc>https://example.org/zh/series/agent-notes/</loc>
+    <lastmod>2026-05-16T17:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://example.org/series/agent-notes/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://example.org/zh/series/agent-notes/"
+                />
+  </url><url>
+    <loc>https://example.org/zh/tags/ai/</loc>
+    <lastmod>2026-05-16T17:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://example.org/tags/ai/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://example.org/zh/tags/ai/"
+                />
+  </url><url>
+    <loc>https://example.org/zh/</loc>
+    <lastmod>2026-05-16T17:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://example.org/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://example.org/zh/"
+                />
+  </url><url>
+    <loc>https://example.org/zh/tags/browsecomp/</loc>
+    <lastmod>2026-05-16T17:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/claude/</loc>
+    <lastmod>2026-05-16T17:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/eval-awareness-browsecomp/</loc>
+    <lastmod>2026-05-16T17:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/evaluations/</loc>
+    <lastmod>2026-05-16T17:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/series/</loc>
+    <lastmod>2026-05-16T17:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://example.org/series/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://example.org/zh/series/"
+                />
+  </url><url>
+    <loc>https://example.org/zh/tags/</loc>
+    <lastmod>2026-05-16T17:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://example.org/tags/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://example.org/zh/tags/"
+                />
+  </url><url>
+    <loc>https://example.org/zh/blog/</loc>
+    <lastmod>2026-05-16T17:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://example.org/blog/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://example.org/zh/blog/"
+                />
+  </url><url>
+    <loc>https://example.org/zh/tags/coding-agents/</loc>
+    <lastmod>2026-05-16T16:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/infrastructure/</loc>
+    <lastmod>2026-05-16T16:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/infrastructure-noise-agentic-coding-evals/</loc>
+    <lastmod>2026-05-16T16:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/agents/</loc>
+    <lastmod>2026-05-16T15:00:00+08:00</lastmod>
+    <xhtml:link
+                rel="alternate"
+                hreflang="en-us"
+                href="https://example.org/tags/agents/"
+                />
+    <xhtml:link
+                rel="alternate"
+                hreflang="zh-cn"
+                href="https://example.org/zh/tags/agents/"
+                />
+  </url><url>
+    <loc>https://example.org/zh/tags/claude-code/</loc>
+    <lastmod>2026-05-16T15:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/compiler/</loc>
+    <lastmod>2026-05-16T15:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/building-c-compiler-parallel-claudes/</loc>
+    <lastmod>2026-05-16T15:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/engineering/</loc>
+    <lastmod>2026-05-16T14:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/hiring/</loc>
+    <lastmod>2026-05-16T14:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/ai-resistant-technical-evaluations/</loc>
+    <lastmod>2026-05-16T14:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/tools/</loc>
+    <lastmod>2026-05-16T13:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/advanced-tool-use/</loc>
+    <lastmod>2026-05-16T13:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/code-execution/</loc>
+    <lastmod>2026-05-16T12:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/mcp/</loc>
+    <lastmod>2026-05-16T12:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/code-execution-with-mcp/</loc>
+    <lastmod>2026-05-16T12:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/sandboxing/</loc>
+    <lastmod>2026-05-16T11:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/security/</loc>
+    <lastmod>2026-05-16T11:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/claude-code-sandboxing/</loc>
+    <lastmod>2026-05-16T11:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/claude-code-auto-mode/</loc>
+    <lastmod>2026-05-16T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/skills/</loc>
+    <lastmod>2026-05-16T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/agent-skills-real-world/</loc>
+    <lastmod>2026-05-16T10:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/harness/</loc>
+    <lastmod>2026-05-16T09:30:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/harness-design-long-running-apps/</loc>
+    <lastmod>2026-05-16T09:30:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/architecture/</loc>
+    <lastmod>2026-05-16T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/context-engineering/</loc>
+    <lastmod>2026-05-16T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/scaling-managed-agents/</loc>
+    <lastmod>2026-05-16T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/effective-context-engineering-for-ai-agents/</loc>
+    <lastmod>2026-05-16T09:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/contextual-retrieval/</loc>
+    <lastmod>2026-05-16T08:30:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/rag/</loc>
+    <lastmod>2026-05-16T08:30:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/retrieval/</loc>
+    <lastmod>2026-05-16T08:30:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/anthropic-three-recent-issues-postmortem/</loc>
+    <lastmod>2026-05-16T08:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/postmortem/</loc>
+    <lastmod>2026-05-16T08:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/workflows/</loc>
+    <lastmod>2026-05-16T08:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/building-effective-agents/</loc>
+    <lastmod>2026-05-16T08:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/claude-swe-bench-performance/</loc>
+    <lastmod>2026-05-16T07:30:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/coding/</loc>
+    <lastmod>2026-05-16T07:30:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/swe-bench/</loc>
+    <lastmod>2026-05-16T07:30:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/claude-think-tool/</loc>
+    <lastmod>2026-05-16T07:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/writing-tools-for-agents/</loc>
+    <lastmod>2026-05-16T07:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/claude-code-best-practices/</loc>
+    <lastmod>2026-05-16T06:30:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/workflow/</loc>
+    <lastmod>2026-05-16T06:30:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/multi-agent/</loc>
+    <lastmod>2026-05-16T06:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/tags/research/</loc>
+    <lastmod>2026-05-16T06:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/multi-agent-research-system/</loc>
+    <lastmod>2026-05-16T06:00:00+08:00</lastmod>
+  </url><url>
+    <loc>https://example.org/zh/blog/2026/05/agent-memory-needs-time/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/series/agent-notes/"
+                href="https://example.org/blog/2026/05/agent-memory-needs-time/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/series/agent-notes/"
+                href="https://example.org/zh/blog/2026/05/agent-memory-needs-time/"
                 />
   </url><url>
-    <loc>http://localhost:52954/zh/blog/2026/05/agent-memory-needs-time/</loc>
+    <loc>https://example.org/zh/tags/memory/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/blog/2026/05/agent-memory-needs-time/"
+                href="https://example.org/tags/memory/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/blog/2026/05/agent-memory-needs-time/"
+                href="https://example.org/zh/tags/memory/"
                 />
   </url><url>
-    <loc>http://localhost:52954/zh/tags/agents/</loc>
-    <lastmod>2026-05-15T10:00:00+08:00</lastmod>
+    <loc>https://example.org/zh/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/tags/agents/"
+                href="https://example.org/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/tags/agents/"
+                href="https://example.org/zh/categories/"
                 />
   </url><url>
-    <loc>http://localhost:52954/zh/tags/ai/</loc>
-    <lastmod>2026-05-15T10:00:00+08:00</lastmod>
+    <loc>https://example.org/zh/about/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/tags/ai/"
+                href="https://example.org/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/tags/ai/"
+                href="https://example.org/zh/about/"
                 />
   </url><url>
-    <loc>http://localhost:52954/zh/</loc>
-    <lastmod>2026-05-15T10:00:00+08:00</lastmod>
+    <loc>https://example.org/zh/memos/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/"
+                href="https://example.org/memos/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/"
+                href="https://example.org/zh/memos/"
                 />
   </url><url>
-    <loc>http://localhost:52954/zh/tags/memory/</loc>
-    <lastmod>2026-05-15T10:00:00+08:00</lastmod>
+    <loc>https://example.org/zh/projects/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/tags/memory/"
+                href="https://example.org/projects/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/tags/memory/"
-                />
-  </url><url>
-    <loc>http://localhost:52954/zh/series/</loc>
-    <lastmod>2026-05-15T10:00:00+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-us"
-                href="http://localhost:52954/series/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://localhost:52954/zh/series/"
-                />
-  </url><url>
-    <loc>http://localhost:52954/zh/tags/</loc>
-    <lastmod>2026-05-15T10:00:00+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-us"
-                href="http://localhost:52954/tags/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://localhost:52954/zh/tags/"
-                />
-  </url><url>
-    <loc>http://localhost:52954/zh/blog/</loc>
-    <lastmod>2026-05-15T10:00:00+08:00</lastmod>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-us"
-                href="http://localhost:52954/blog/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://localhost:52954/zh/blog/"
-                />
-  </url><url>
-    <loc>http://localhost:52954/zh/categories/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-us"
-                href="http://localhost:52954/categories/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://localhost:52954/zh/categories/"
-                />
-  </url><url>
-    <loc>http://localhost:52954/zh/about/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-us"
-                href="http://localhost:52954/about/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://localhost:52954/zh/about/"
-                />
-  </url><url>
-    <loc>http://localhost:52954/zh/memos/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-us"
-                href="http://localhost:52954/memos/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://localhost:52954/zh/memos/"
-                />
-  </url><url>
-    <loc>http://localhost:52954/zh/projects/</loc>
-    <xhtml:link
-                rel="alternate"
-                hreflang="en-us"
-                href="http://localhost:52954/projects/"
-                />
-    <xhtml:link
-                rel="alternate"
-                hreflang="zh-cn"
-                href="http://localhost:52954/zh/projects/"
+                href="https://example.org/zh/projects/"
                 />
   </url>
 </urlset>

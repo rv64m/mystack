@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Rag on Alex Chen</title>
+    <link>https://example.org/zh/tags/rag/</link>
+    <description>Recent content in Rag on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 08:30:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/rag/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>AI 系统中的 Contextual Retrieval</title>
+      <link>https://example.org/zh/blog/2026/05/contextual-retrieval/</link>
+      <pubDate>Sat, 16 May 2026 08:30:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/contextual-retrieval/</guid>
+      <description>&lt;p&gt;为了让 AI 模型在特定上下文中有用，它通常需要访问背景知识。例如，客户支持聊天机器人需要了解它所服务的具体业务，法律分析机器人则需要了解大量过往案例。&lt;/p&gt;&#xA;&lt;p&gt;开发者通常使用 Retrieval-Augmented Generation（RAG）来增强 AI 模型的知识。RAG 是一种从知识库中检索相关信息，并将其附加到用户 prompt 中的方法，它能显著增强模型的回答。问题在于，传统 RAG 解决方案在编码信息时会移除上下文，这常常导致系统无法从知识库中检索到相关信息。&lt;/p&gt;&#xA;&lt;p&gt;在这篇文章中，我们概述了一种能显著改善 RAG 检索步骤的方法。这个方法叫做“Contextual Retrieval”，使用两项子技术：Contextual Embeddings 和 Contextual BM25。这个方法可以将失败检索数量减少 49%，在结合 reranking 时减少 67%。这些代表了检索准确率的显著提升，而检索准确率会直接转化为下游任务中更好的表现。&lt;/p&gt;&#xA;&lt;p&gt;你可以使用&lt;a href=&#34;https://platform.claude.com/cookbook/capabilities-contextual-embeddings-guide&#34;&gt;我们的 cookbook&lt;/a&gt;，轻松用 Claude 部署自己的 Contextual Retrieval 解决方案。&lt;/p&gt;&#xA;&lt;p&gt;有时最简单的解决方案就是最好的。如果你的知识库小于 200,000 tokens（约 500 页材料），你可以直接把整个知识库放进给模型的 prompt 中，无需 RAG 或类似方法。&lt;/p&gt;&#xA;&lt;p&gt;几周前，我们为 Claude 发布了 &lt;a href=&#34;https://docs.anthropic.com/en/docs/build-with-claude/prompt-caching&#34;&gt;prompt caching&lt;/a&gt;，让这种方法显著更快且更具成本效益。开发者现在可以在 API 调用之间缓存频繁使用的 prompts，将延迟降低 2 倍以上，并将成本最多降低 90%（你可以阅读我们的 &lt;a href=&#34;https://platform.claude.com/cookbook/misc-prompt-caching&#34;&gt;prompt caching cookbook&lt;/a&gt; 了解它如何工作）。&lt;/p&gt;&#xA;&lt;p&gt;然而，随着知识库增长，你会需要一个更可扩展的解决方案。这就是 Contextual Retrieval 登场的地方。&lt;/p&gt;&#xA;&lt;h2 id=&#34;rag-入门扩展到更大的知识库&#34;&gt;RAG 入门：扩展到更大的知识库&lt;/h2&gt;&#xA;&lt;p&gt;对于无法放入上下文窗口的大型知识库，RAG 是典型解决方案。RAG 通过以下步骤预处理知识库：&lt;/p&gt;&#xA;&lt;ol&gt;&#xA;&lt;li&gt;将知识库（文档“corpus”）拆成更小的文本 chunks，通常不超过几百个 tokens；&lt;/li&gt;&#xA;&lt;li&gt;使用 embedding model 将这些 chunks 转换为编码语义的 vector embeddings；&lt;/li&gt;&#xA;&lt;li&gt;将这些 embeddings 存储在 vector database 中，以便按语义相似度搜索。&lt;/li&gt;&#xA;&lt;/ol&gt;&#xA;&lt;p&gt;在运行时，当用户向模型输入 query 时，vector database 会根据与 query 的语义相似度，找出最相关的 chunks。然后，最相关的 chunks 会被添加到发送给生成模型的 prompt 中。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

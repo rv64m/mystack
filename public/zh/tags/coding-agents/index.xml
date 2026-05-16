@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Coding-Agents on Alex Chen</title>
+    <link>https://example.org/zh/tags/coding-agents/</link>
+    <description>Recent content in Coding-Agents on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 16:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/coding-agents/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>量化 agentic coding evals 中的 infrastructure noise</title>
+      <link>https://example.org/zh/blog/2026/05/infrastructure-noise-agentic-coding-evals/</link>
+      <pubDate>Sat, 16 May 2026 16:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/infrastructure-noise-agentic-coding-evals/</guid>
+      <description>&lt;p&gt;像 SWE-bench 和 Terminal-Bench 这样的 agentic coding benchmarks，常被用于比较 frontier models 的 software engineering capabilities，而 leaderboards 上的头部名次往往只相差几个百分点。这些分数经常被视为 relative model capability 的精确测量，并且越来越多地影响关于部署哪些 models 的决策。然而，我们发现，仅 infrastructure configuration 就能产生超过这些 margin 的差异。在内部实验中，Terminal-Bench 2.0 上资源最多和资源最少 setup 之间的差距为 6 个百分点（p &amp;lt; 0.01）。&lt;/p&gt;&#xA;&lt;p&gt;Static benchmarks 会直接给 model 的 output 打分，runtime environment 不会影响结果。Agentic coding evals 则不同：models 会获得一个完整 environment，在其中编写 programs、运行 tests、安装 dependencies，并跨多轮迭代。Runtime 不再是一个 passive container，而是 problem-solving process 的 integral component。两个拥有不同 resource budgets 和 time limits 的 agents，并不是在参加同一场 test。&lt;/p&gt;&#xA;&lt;p&gt;Eval developers 已经开始考虑这一点。例如，Terminal-Bench 2.0 在最新 2.0 release 中，为每个 task 指定了推荐 CPU 和 RAM。然而，指定 resources 并不等于一致地 enforce 它们。此外，我们发现 enforcement methodology 会改变 benchmark 最终实际测量的东西。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

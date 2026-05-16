@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <script>
+    (() => {
+      const key = 'site-theme';
+      const stored = localStorage.getItem(key);
+      const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>用 sandboxing 让 Claude Code 更安全、更自主 — Alex Chen</title>
+<meta name="description" content="设计师与开发者，构建安静而有意图的软件。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+
+</head>
+<body>
+  <nav class="site-nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="/zh/" class="nav-wordmark">Alex Chen</a>
+    <ul class="nav-links" id="nav-links">
+      
+        <li><a href="/zh/blog/" class="">博客</a></li>
+      
+        <li><a href="/zh/projects/" class="">项目</a></li>
+      
+        <li><a href="/zh/memos/" class="">随笔</a></li>
+      
+        <li><a href="/zh/about/" class="">关于</a></li>
+      
+    </ul>
+    <div class="nav-actions">
+      <div class="language-switcher" aria-label="Language switcher">
+        
+          
+          
+          
+            
+            
+              
+            
+          
+          <a href="/" class="" hreflang="en">English</a>
+        
+          
+          
+          
+            
+          
+          <a href="/zh/blog/2026/05/claude-code-sandboxing/" class="is-active" hreflang="zh">中文</a>
+        
+      </div>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="Switch to dark mode"
+        aria-pressed="false"
+      >
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
+        </svg>
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+  <main id="main">
+    
+
+<article class="story-shell container">
+  <header class="story-hero">
+    <div class="story-hero-copy">
+      <p class="section-kicker">Essay</p>
+      <h1 class="story-title">用 sandboxing 让 Claude Code 更安全、更自主</h1>
+      <div class="story-meta">
+        <span><time datetime="2026-05-16">May 16, 2026</time></span>
+        <span>3 min read</span>
+        <span>Agent Notes</span>
+      </div>
+    </div>
+    
+      <div class="story-tags">
+        
+          <a href="/tags/ai" class="tag-pill">ai</a>
+        
+          <a href="/tags/claude-code" class="tag-pill">claude-code</a>
+        
+          <a href="/tags/security" class="tag-pill">security</a>
+        
+          <a href="/tags/sandboxing" class="tag-pill">sandboxing</a>
+        
+      </div>
+    
+  </header>
+
+  <div class="story-body-wrap">
+    <div class="article-body story-body">
+      <p>在 <a href="https://www.claude.com/product/claude-code">Claude Code</a> 中，Claude 会在你身边编写、测试和调试代码，navigate 你的 codebase、编辑多个 files，并运行 commands 来验证自己的工作。给予 Claude 这么多对 codebase 和 files 的 access 可能引入 risks，尤其是在 prompt injection 的情况下。</p>
+<p>为了帮助解决这个问题，我们在 Claude Code 中引入了两个基于 sandboxing 构建的新 features，二者都旨在为 developers 提供一个更安全的工作地点，同时也允许 Claude 更自主地运行，并减少 permission prompts。在我们的内部使用中，我们发现 sandboxing 可以安全地减少 84% 的 permission prompts。通过定义 Claude 可以自由工作的设定 boundaries，它们提升了 security 和 agency。</p>
+<p>Claude Code 运行在 permission-based model 上：默认情况下，它是 read-only 的，这意味着它在进行 modifications 或运行任何 commands 之前会请求 permission。这里有一些例外：我们会 auto-allow 像 echo 或 cat 这样的 safe commands，但大多数 operations 仍然需要 explicit approval。</p>
+<p>不断点击 “approve” 会拖慢 development cycles，并可能导致 “approval fatigue”，也就是 users 可能不会认真注意自己正在批准什么，进而让 development 变得不那么安全。</p>
+<p>为了解决这个问题，我们为 Claude Code 发布了 sandboxing。</p>
+<p>Sandboxing 创建预定义 boundaries，Claude 可以在这些 boundaries 内更自由地工作，而不是为每个 action 请求 permission。启用 sandboxing 后，你会获得大幅减少的 permission prompts 和更高的 safety。</p>
+<p>我们的 sandboxing 方法构建在 operating system-level features 之上，以启用两个 boundaries：</p>
+<ol>
+<li><strong>Filesystem isolation</strong>，确保 Claude 只能访问或修改 specific directories。这在防止被 prompt-injected 的 Claude 修改 sensitive system files 时尤其重要。</li>
+<li><strong>Network isolation</strong>，确保 Claude 只能连接到 approved servers。这可以防止被 prompt-injected 的 Claude 泄露 sensitive information 或下载 malware。</li>
+</ol>
+<p>值得注意的是，有效的 sandboxing 需要 <em>同时</em> 具备 filesystem 和 network isolation。没有 network isolation，compromised agent 可能会 exfiltrate SSH keys 等 sensitive files；没有 filesystem isolation，compromised agent 则可以轻易 escape sandbox 并获得 network access。正是同时使用这两种技术，我们才能为 Claude Code users 提供更安全、更快速的 agentic experience。</p>
+<p>我们正在推出 <a href="https://docs.claude.com/en/docs/claude-code/sandboxing">a new sandbox runtime</a>，它作为 research preview 以 beta 形式提供，让你无需承担启动和管理 container 的 overhead，就能精确定义 agent 可以访问哪些 directories 和 network hosts。它可用于 sandbox 任意 processes、agents 和 MCP servers。它也作为 <a href="https://github.com/anthropic-experimental/sandbox-runtime">an open source research preview</a> 提供。</p>
+<p>在 Claude Code 中，我们使用这个 runtime 来 sandbox bash tool，让 Claude 可以在你设置的 defined limits 内运行 commands。在安全 sandbox 内，Claude 可以更自主地运行，并安全执行 commands 而无需 permission prompts。如果 Claude 试图访问 sandbox <em>之外</em> 的内容，你会立即收到通知，并可以选择是否允许。</p>
+<p>我们基于 <a href="https://github.com/containers/bubblewrap">Linux bubblewrap</a> 和 MacOS seatbelt 等 OS level primitives 构建了这一功能，以在 OS level enforce 这些 restrictions。它们不仅覆盖 Claude Code 的直接 interactions，也覆盖 command 生成的任何 scripts、programs 或 subprocesses。如上所述，这个 sandbox 同时 enforce：</p>
+<ol>
+<li><strong>Filesystem isolation</strong>，通过允许对 current working directory 的 read 和 write access，但阻止修改其外部的任何 files。</li>
+<li><strong>Network isolation</strong>，通过只允许经由 unix domain socket 连接到 sandbox 外 proxy server 的 internet access。这个 proxy server 会 enforce process 可连接 domains 的 restrictions，并处理新请求 domains 的 user confirmation。如果你希望进一步提高 security，我们也支持自定义这个 proxy，以对 outgoing traffic enforce arbitrary rules。</li>
+</ol>
+<p>这两个 components 都是 configurable 的：你可以轻松选择 allow 或 disallow specific file paths 或 domains。</p>
+<p><img src="/images/blog/claude-code-sandboxing/sandboxing-architecture.png" alt="Claude Code sandboxing architecture"></p>
+<p>Claude Code 的 sandboxing architecture 使用 filesystem 和 network controls 隔离 code execution，自动允许 safe operations、阻止 malicious ones，并只在需要时请求 permission。</p>
+<p>Sandboxing 确保即使 prompt injection 成功，也会被完全隔离，并且无法影响整体 user security。这样，一个 compromised Claude Code 无法窃取你的 SSH keys，也无法向 attacker&rsquo;s server phone home。</p>
+<p>要开始使用这个 feature，请在 Claude Code 中运行 /sandbox，并查看关于我们 security model 的 <a href="https://docs.claude.com/en/docs/claude-code/sandboxing">more technical details</a>。</p>
+<p>为了让其他 teams 更容易构建更安全的 agents，我们已经 <a href="https://github.com/anthropic-experimental/sandbox-runtime">open sourced</a> 这个 feature。我们相信，其他人应该考虑为自己的 agents 采用这项技术，以增强其 agents 的 security posture。</p>
+<h3 id="web-上的-claude-code在-cloud-中安全运行-claude-code"><strong>Web 上的 Claude Code：在 cloud 中安全运行 Claude Code</strong></h3>
+<p>今天，我们也发布了 <a href="https://docs.claude.com/en/docs/claude-code/claude-code-on-the-web">Claude Code on the web</a>，让 users 可以在 cloud 中的 isolated sandbox 里运行 Claude Code。Claude Code on the web 会在 isolated sandbox 中执行每个 Claude Code session，在安全可靠的方式下，它对自己的 server 拥有 full access。我们设计这个 sandbox，是为了确保 sensitive credentials（例如 git credentials 或 signing keys）永远不会和 Claude Code 一起位于 sandbox 内。这样，即使 sandbox 中运行的 code 被 compromised，user 也能免受进一步伤害。</p>
+<p>Claude Code on the web 使用 custom proxy service 透明处理所有 git interactions。在 sandbox 内，git client 使用 custom-built scoped credential 向这个 service 进行 authentication。Proxy 会验证这个 credential 和 git interaction 的 contents（例如确保它只 push 到 configured branch），然后在把 request 发送到 GitHub 前附加正确的 authentication token。</p>
+<p><img src="/images/blog/claude-code-sandboxing/git-proxy.png" alt="Claude Code Git integration proxy"></p>
+<p>Claude Code 的 Git integration 会把 commands 路由通过 secure proxy，该 proxy 验证 authentication tokens、branch names 和 repository destinations，从而允许 safe version control workflows，同时防止 unauthorized pushes。</p>
+<p>我们的新 sandboxed bash tool 和 Claude Code on the web，为使用 Claude 进行 engineering work 的 developers 在 security 和 productivity 两方面都提供了实质性改进。</p>
+<p>要开始使用这些 tools：</p>
+<ol>
+<li>在 Claude 中运行 <code>/sandbox</code>，并查看 <a href="https://docs.claude.com/en/docs/claude-code/sandboxing">our docs</a> 了解如何 configure 这个 sandbox。</li>
+</ol>
+<p>或者，如果你正在构建自己的 agents，请查看我们的 <a href="https://github.com/anthropic-experimental/sandbox-runtime">open-sourced sandboxing code</a>，并考虑把它集成到你的工作中。我们期待看到你会构建什么。</p>
+<p>要了解更多关于 Claude Code on the web 的信息，请查看我们的 <a href="https://www.anthropic.com/news/claude-code-on-the-web">launch blog post</a>。</p>
+<p>文章由 David Dworken 和 Oliver Weller-Davies 撰写，并感谢 Meaghan Choi、Catherine Wu、Molly Vorwerck、Alex Isken、Kier Bradwell 和 Kevin Garcia 的贡献。</p>
+
+    </div>
+  </div>
+
+  <nav class="story-nav">
+    <div class="article-nav-inner">
+      
+        <div class="article-nav-prev">
+          <p class="article-nav-label">Previous</p>
+          <a href="/zh/blog/2026/05/claude-code-auto-mode/" class="article-nav-title">Claude Code auto mode：一种更安全的跳过权限方式</a>
+        </div>
+      
+      
+        <div class="article-nav-next">
+          <p class="article-nav-label">Next</p>
+          <a href="/zh/blog/2026/05/code-execution-with-mcp/" class="article-nav-title">使用 MCP 进行 code execution：构建更高效的 AI agents</a>
+        </div>
+      
+    </div>
+  </nav>
+</article>
+
+
+  </main>
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copyright">&copy; 2026 Alex Chen</span>
+    <nav class="footer-nav">
+      
+        <a href="/zh/blog/">博客</a>
+      
+        <a href="/zh/projects/">项目</a>
+      
+        <a href="/zh/memos/">随笔</a>
+      
+        <a href="/zh/about/">关于</a>
+      
+    </nav>
+    <div class="footer-social">
+      <a href="/zh/index.xml" aria-label="RSS Feed">RSS</a>
+    </div>
+  </div>
+</footer>
+
+  
+  <script src="/js/main.js"></script>
+</body>
+</html>

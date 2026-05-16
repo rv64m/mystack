@@ -2,31 +2,220 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on Alex Chen</title>
-    <link>http://localhost:52954/zh/tags/</link>
+    <link>https://example.org/zh/tags/</link>
     <description>Recent content in Tags on Alex Chen</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
-    <lastBuildDate>Fri, 15 May 2026 10:00:00 +0800</lastBuildDate>
-    <atom:link href="http://localhost:52954/zh/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 16 May 2026 17:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Agents</title>
-      <link>http://localhost:52954/zh/tags/agents/</link>
-      <pubDate>Fri, 15 May 2026 10:00:00 +0800</pubDate>
-      <guid>http://localhost:52954/zh/tags/agents/</guid>
+      <title>Ai</title>
+      <link>https://example.org/zh/tags/ai/</link>
+      <pubDate>Sat, 16 May 2026 17:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/ai/</guid>
       <description></description>
     </item>
     <item>
-      <title>Ai</title>
-      <link>http://localhost:52954/zh/tags/ai/</link>
-      <pubDate>Fri, 15 May 2026 10:00:00 +0800</pubDate>
-      <guid>http://localhost:52954/zh/tags/ai/</guid>
+      <title>Browsecomp</title>
+      <link>https://example.org/zh/tags/browsecomp/</link>
+      <pubDate>Sat, 16 May 2026 17:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/browsecomp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Claude</title>
+      <link>https://example.org/zh/tags/claude/</link>
+      <pubDate>Sat, 16 May 2026 17:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/claude/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Evaluations</title>
+      <link>https://example.org/zh/tags/evaluations/</link>
+      <pubDate>Sat, 16 May 2026 17:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/evaluations/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Coding-Agents</title>
+      <link>https://example.org/zh/tags/coding-agents/</link>
+      <pubDate>Sat, 16 May 2026 16:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/coding-agents/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Infrastructure</title>
+      <link>https://example.org/zh/tags/infrastructure/</link>
+      <pubDate>Sat, 16 May 2026 16:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/infrastructure/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Agents</title>
+      <link>https://example.org/zh/tags/agents/</link>
+      <pubDate>Sat, 16 May 2026 15:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/agents/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Claude-Code</title>
+      <link>https://example.org/zh/tags/claude-code/</link>
+      <pubDate>Sat, 16 May 2026 15:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/claude-code/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Compiler</title>
+      <link>https://example.org/zh/tags/compiler/</link>
+      <pubDate>Sat, 16 May 2026 15:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/compiler/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Engineering</title>
+      <link>https://example.org/zh/tags/engineering/</link>
+      <pubDate>Sat, 16 May 2026 14:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/engineering/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Hiring</title>
+      <link>https://example.org/zh/tags/hiring/</link>
+      <pubDate>Sat, 16 May 2026 14:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/hiring/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Tools</title>
+      <link>https://example.org/zh/tags/tools/</link>
+      <pubDate>Sat, 16 May 2026 13:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/tools/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Code-Execution</title>
+      <link>https://example.org/zh/tags/code-execution/</link>
+      <pubDate>Sat, 16 May 2026 12:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/code-execution/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Mcp</title>
+      <link>https://example.org/zh/tags/mcp/</link>
+      <pubDate>Sat, 16 May 2026 12:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/mcp/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Sandboxing</title>
+      <link>https://example.org/zh/tags/sandboxing/</link>
+      <pubDate>Sat, 16 May 2026 11:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/sandboxing/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Security</title>
+      <link>https://example.org/zh/tags/security/</link>
+      <pubDate>Sat, 16 May 2026 11:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/security/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Skills</title>
+      <link>https://example.org/zh/tags/skills/</link>
+      <pubDate>Sat, 16 May 2026 10:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/skills/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Harness</title>
+      <link>https://example.org/zh/tags/harness/</link>
+      <pubDate>Sat, 16 May 2026 09:30:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/harness/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Architecture</title>
+      <link>https://example.org/zh/tags/architecture/</link>
+      <pubDate>Sat, 16 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/architecture/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Context-Engineering</title>
+      <link>https://example.org/zh/tags/context-engineering/</link>
+      <pubDate>Sat, 16 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/context-engineering/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Rag</title>
+      <link>https://example.org/zh/tags/rag/</link>
+      <pubDate>Sat, 16 May 2026 08:30:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/rag/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Retrieval</title>
+      <link>https://example.org/zh/tags/retrieval/</link>
+      <pubDate>Sat, 16 May 2026 08:30:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/retrieval/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Postmortem</title>
+      <link>https://example.org/zh/tags/postmortem/</link>
+      <pubDate>Sat, 16 May 2026 08:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/postmortem/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Workflows</title>
+      <link>https://example.org/zh/tags/workflows/</link>
+      <pubDate>Sat, 16 May 2026 08:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/workflows/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Coding</title>
+      <link>https://example.org/zh/tags/coding/</link>
+      <pubDate>Sat, 16 May 2026 07:30:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/coding/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Swe-Bench</title>
+      <link>https://example.org/zh/tags/swe-bench/</link>
+      <pubDate>Sat, 16 May 2026 07:30:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/swe-bench/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Workflow</title>
+      <link>https://example.org/zh/tags/workflow/</link>
+      <pubDate>Sat, 16 May 2026 06:30:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/workflow/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Multi-Agent</title>
+      <link>https://example.org/zh/tags/multi-agent/</link>
+      <pubDate>Sat, 16 May 2026 06:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/multi-agent/</guid>
+      <description></description>
+    </item>
+    <item>
+      <title>Research</title>
+      <link>https://example.org/zh/tags/research/</link>
+      <pubDate>Sat, 16 May 2026 06:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/tags/research/</guid>
       <description></description>
     </item>
     <item>
       <title>Memory</title>
-      <link>http://localhost:52954/zh/tags/memory/</link>
+      <link>https://example.org/zh/tags/memory/</link>
       <pubDate>Fri, 15 May 2026 10:00:00 +0800</pubDate>
-      <guid>http://localhost:52954/zh/tags/memory/</guid>
+      <guid>https://example.org/zh/tags/memory/</guid>
       <description></description>
     </item>
   </channel>

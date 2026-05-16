@@ -2,24 +2,24 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Series on Alex Chen</title>
-    <link>http://localhost:52954/series/</link>
+    <link>https://example.org/series/</link>
     <description>Recent content in Series on Alex Chen</description>
     <generator>Hugo</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 15 May 2026 10:00:00 +0800</lastBuildDate>
-    <atom:link href="http://localhost:52954/series/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://example.org/series/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Agent Notes</title>
-      <link>http://localhost:52954/series/agent-notes/</link>
+      <link>https://example.org/series/agent-notes/</link>
       <pubDate>Fri, 15 May 2026 10:00:00 +0800</pubDate>
-      <guid>http://localhost:52954/series/agent-notes/</guid>
+      <guid>https://example.org/series/agent-notes/</guid>
       <description></description>
     </item>
     <item>
       <title>Web Fundamentals</title>
-      <link>http://localhost:52954/series/web-fundamentals/</link>
+      <link>https://example.org/series/web-fundamentals/</link>
       <pubDate>Fri, 10 Apr 2026 09:00:00 +0800</pubDate>
-      <guid>http://localhost:52954/series/web-fundamentals/</guid>
+      <guid>https://example.org/series/web-fundamentals/</guid>
       <description></description>
     </item>
   </channel>

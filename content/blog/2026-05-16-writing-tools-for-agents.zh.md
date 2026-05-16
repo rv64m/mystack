@@ -1,0 +1,207 @@
+---
+title: "为 AI agents 编写有效工具：用 AI agents"
+date: 2026-05-16T07:00:00+08:00
+slug: "writing-tools-for-agents"
+tags: ["ai", "agents", "tools", "mcp"]
+series: "Agent Notes"
+source_url: "https://www.anthropic.com/engineering/writing-tools-for-agents"
+translationKey: "writing-tools-for-agents"
+---
+
+这是一幅用于 Engineering Blog 文章《Writing effective tools for agents -- with agents》的抽象插图。
+
+[Model Context Protocol (MCP)](https://modelcontextprotocol.io/docs/getting-started/intro) 可以让 LLM agents 拥有可能多达数百个工具，以解决现实世界任务。但我们如何让这些工具最大程度有效？
+
+在这篇文章中，我们描述了在各种 agentic AI systems 中提升性能最有效的技术[^1]。
+
+我们首先会介绍你如何：
+
+- 构建并测试工具 prototypes
+- 创建并运行全面的工具 evaluations，让 agents 使用这些工具
+- 与 Claude Code 这样的 agents 协作，自动提升工具性能
+
+最后，我们会总结一路识别出的编写高质量工具的关键原则：
+
+- 选择正确的工具来实现（以及不实现）
+- 对工具进行 namespacing，以定义清晰的功能边界
+- 从工具向 agents 返回有意义的 context
+- 优化工具 responses 的 token efficiency
+- 对工具 descriptions 和 specs 进行 prompt-engineering
+
+![Building an evaluation allows you to systematically measure the performance of your tools.](/images/blog/writing-tools-for-agents/evaluation-loop.png)
+
+构建 evaluation 可以让你系统性地衡量工具性能。你可以使用 Claude Code 根据这个 evaluation 自动优化你的工具。
+
+## 什么是工具？
+
+在计算中，deterministic systems 在给定相同输入时每次都会产生相同输出，而 *non-deterministic* systems（例如 agents）即使在相同起始条件下也可能生成不同 responses。
+
+当我们传统地编写软件时，我们是在 deterministic systems 之间建立 contract。比如，像 `getWeather("NYC")` 这样的函数调用，每次被调用时都会以完全相同的方式获取纽约市天气。
+
+Tools 是一种新的软件，它反映的是 deterministic systems 与 non-deterministic agents 之间的 contract。当用户问“我今天应该带伞吗？”时，agent 可能会调用 weather tool、根据通用知识回答，甚至先询问关于 location 的澄清问题。偶尔，agent 可能会 hallucinate，甚至无法理解如何使用某个工具。
+
+这意味着我们在为 agents 编写软件时，需要从根本上重新思考方法：不要像为其他 developers 或 systems 编写 functions 和 APIs 那样编写 tools 和 [MCP servers](https://modelcontextprotocol.io/)，而需要为 agents 设计它们。
+
+我们的目标是扩大 agents 能够有效解决广泛任务的 surface area，让它们可以使用工具追求各种成功策略。幸运的是，根据我们的经验，对 agents 最“ergonomic”的工具，最终对人类来说也会出人意料地直观易懂。
+
+在这一部分中，我们会描述你如何与 agents 协作，既编写工具，也改善你给它们的工具。先快速搭建一个工具 prototype，并在本地测试。接下来，运行一个全面 evaluation 来衡量后续变更。与 agents 一起工作时，你可以重复 evaluation 和改进工具的过程，直到你的 agents 在现实世界任务上达到强性能。
+
+如果不亲自上手，很难预判 agents 会觉得哪些工具 ergonomic、哪些不会。先快速搭建工具 prototype。如果你使用 [Claude Code](https://www.anthropic.com/claude-code) 编写工具（可能是 one-shot），把工具会依赖的任何 software libraries、APIs 或 SDKs（可能包括 [MCP SDK](https://modelcontextprotocol.io/docs/sdk)）的文档提供给 Claude 会很有帮助。LLM-friendly documentation 通常可以在官方文档站点上的扁平 `llms.txt` 文件中找到（这里是我们的 [API 的](https://docs.anthropic.com/llms.txt)）。
+
+把你的工具包装在 [local MCP server](https://modelcontextprotocol.io/docs/develop/connect-local-servers) 或 [Desktop extension](https://www.anthropic.com/engineering/desktop-extensions) (DXT) 中，可以让你在 Claude Code 或 Claude Desktop app 中连接并测试工具。
+
+要把你的 local MCP server 连接到 Claude Code，运行 `claude mcp add <name> <command> [args...]`。
+
+要把你的 local MCP server 或 DXT 连接到 Claude Desktop app，分别导航到 `Settings > Developer` 或 `Settings > Extensions`。
+
+Tools 也可以直接传入 [Anthropic API](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/overview) calls，用于 programmatic testing。
+
+自己测试这些工具，以识别任何 rough edges。收集用户反馈，围绕你期望工具支持的 use-cases 和 prompts 建立直觉。
+
+接下来，你需要通过运行 evaluation 来衡量 Claude 使用你的工具的效果。先生成大量 evaluation tasks，这些 tasks 要扎根于真实世界用法。我们建议与 agent 协作，帮助分析结果并确定如何改进工具。你可以在我们的 [tool evaluation cookbook](https://platform.claude.com/cookbook/tool-evaluation-tool-evaluation) 中查看这个端到端过程。
+
+![Held-out test set performance of our internal Slack tools](/images/blog/writing-tools-for-agents/slack-tools-performance.png)
+
+Held-out test set performance of our internal Slack tools
+
+**生成 evaluation tasks**
+
+有了早期 prototype，Claude Code 可以快速探索你的工具，并创建数十个 prompt 和 response pairs。Prompts 应该受现实世界用法启发，并基于真实的数据源和服务（例如 internal knowledge bases 和 microservices）。我们建议避免过于简单或表面的 “sandbox” environments，因为它们无法用足够复杂度 stress-test 你的工具。强 evaluation tasks 可能需要多次 tool calls，甚至可能是几十次。
+
+下面是一些强 tasks 的例子：
+
+- 下周安排一次与 Jane 的会议，讨论我们最新的 Acme Corp project。附上我们上一次 project planning meeting 的 notes，并预订一间 conference room。
+- Customer ID 9182 报告说他们为一次购买尝试被扣费三次。找到所有相关 log entries，并判断是否还有其他 customers 受到同一问题影响。
+- Customer Sarah Chen 刚刚提交了 cancellation request。准备一个 retention offer。判断：(1) 她为什么离开，(2) 哪个 retention offer 最有吸引力，以及 (3) 在提出 offer 之前我们应该注意哪些 risk factors。
+
+下面是一些较弱 tasks：
+
+- 下周安排一次与 jane@acme.corp 的会议。
+- 在 payment logs 中搜索 `purchase_complete` 和 `customer_id=9182`。
+- 通过 Customer ID 45892 找到 cancellation request。
+
+每个 evaluation prompt 都应该与一个可验证的 response 或 outcome 配对。你的 verifier 可以简单到对 ground truth 和 sampled responses 进行 exact string comparison，也可以高级到请 Claude 判断 response。避免过于严格的 verifiers，因为它们可能会因为 formatting、punctuation 或有效的 alternative phrasings 等无关差异而拒绝正确 responses。
+
+对于每个 prompt-response pair，你还可以选择指定你期望 agent 在解决 task 时调用的工具，以衡量 agents 在 evaluation 中是否成功理解了每个工具的 purpose。然而，由于可能存在多条有效路径来正确解决 tasks，尽量避免 overspecifying 或 overfitting 到某些 strategies。
+
+**运行 evaluation**
+
+我们建议使用 direct LLM API calls，以 programmatic 方式运行 evaluation。使用简单的 agentic loops（用 `while` loops 包裹交替的 LLM API 和 tool calls）：每个 evaluation task 一个 loop。每个 evaluation agent 都应该获得单个 task prompt 和你的工具。
+
+在 evaluation agents 的 system prompts 中，我们建议指示 agents 不只输出 structured response blocks（用于 verification），也输出 reasoning 和 feedback blocks。指示 agents 在 tool call 和 response blocks *之前*输出这些内容，可能会通过触发 chain-of-thought (CoT) behaviors 来提高 LLMs 的有效 intelligence。
+
+如果你使用 Claude 运行 evaluation，可以开启 [interleaved thinking](https://docs.anthropic.com/en/docs/build-with-claude/extended-thinking#interleaved-thinking) 来获得类似的 “off-the-shelf” 功能。这会帮助你探查 agents 为什么调用或不调用某些工具，并突出 tool descriptions 和 specs 中需要改进的具体区域。
+
+除了 top-level accuracy，我们还建议收集其他 metrics，例如单个 tool calls 和 tasks 的总 runtime、tool calls 总数、总 token consumption 以及 tool errors。跟踪 tool calls 可以帮助揭示 agents 追求的常见 workflows，并提供一些合并工具的机会。
+
+![Held-out test set performance of our internal Asana tools](/images/blog/writing-tools-for-agents/asana-tools-performance.png)
+
+Held-out test set performance of our internal Asana tools
+
+**分析结果**
+
+Agents 是你的有用伙伴，可以发现问题，并对从矛盾的 tool descriptions 到低效 tool implementations、混乱 tool schemas 的各类问题提供反馈。不过要记住，agents 在反馈和 responses 中遗漏的内容，往往可能比它们包含的内容更重要。LLMs 并不总是 [say what they mean](https://www.anthropic.com/research/tracing-thoughts-language-model)。
+
+观察 agents 在哪里卡住或困惑。通读 evaluation agents 的 reasoning 和 feedback（或 CoT），识别 rough edges。查看 raw transcripts（包括 tool calls 和 tool responses），捕捉 agent 的 CoT 中没有明确描述的任何行为。读懂字里行间；记住你的 evaluation agents 不一定知道正确答案和策略。
+
+分析你的 tool calling metrics。大量 redundant tool calls 可能表明有必要对 pagination 或 token limit parameters 进行 rightsizing；大量由 invalid parameters 导致的 tool errors 可能表明 tools 需要更清晰的 descriptions 或更好的 examples。当我们发布 Claude 的 [web search tool](https://www.anthropic.com/news/web-search) 时，我们发现 Claude 会不必要地把 `2025` 附加到工具的 `query` parameter 上，使 search results 产生偏差并降低性能（我们通过改进 tool description 把 Claude 引导到了正确方向）。
+
+你甚至可以让 agents 为你分析结果并改进工具。只需把 evaluation agents 的 transcripts 拼接起来，粘贴到 Claude Code 中。Claude 擅长分析 transcripts 并一次性 refactor 许多工具，例如在做出新变更时，确保 tool implementations 和 descriptions 保持 self-consistent。
+
+事实上，这篇文章中的大多数建议都来自我们反复用 Claude Code 优化内部 tool implementations。我们的 evaluations 是在内部 workspace 上创建的，映射了内部 workflows 的复杂度，包括真实 projects、documents 和 messages。
+
+我们依赖 held-out test sets 来确保我们没有 overfit 到“training” evaluations。这些 test sets 显示，即便超越我们用“expert” tool implementations 达到的水平，我们仍然能够提取额外的性能改进，无论这些工具是由我们的 researchers 手动编写，还是由 Claude 自己生成。
+
+在下一部分，我们会分享从这个过程中学到的一些东西。
+
+在这一部分中，我们把经验提炼成几个编写有效工具的 guiding principles。
+
+更多工具并不总是带来更好结果。我们观察到的一个常见错误，是工具只是包装已有的软件功能或 API endpoints，不管这些工具是否适合 agents。这是因为 agents 相对于传统软件有不同的 “affordances”，也就是说，它们感知可以通过这些工具采取的潜在 actions 的方式不同。
+
+LLM agents 的 “context” 有限（也就是说，它们一次能处理的信息量有限），而 computer memory 便宜且充足。考虑在 address book 中搜索 contact 的任务。传统软件程序可以高效存储并一次处理一个 contacts 列表，在移动到下一个之前检查每一个。
+
+然而，如果 LLM agent 使用的工具返回 ALL contacts，然后不得不逐 token 阅读每一个 contact，它就在把有限的 context space 浪费在无关信息上（想象一下通过从上到下阅读每一页，也就是通过 brute-force search，在你的 address book 中搜索某个 contact）。对 agents 和 humans 而言，更好且更自然的方法，是先跳到相关页面（也许按字母顺序找到它）。
+
+我们建议构建少数经过深思熟虑、针对具体 high-impact workflows 的工具，这些工具与你的 evaluation tasks 匹配，并从那里扩展。在 address book 案例中，你可能会选择实现 `search_contacts` 或 `message_contact` tool，而不是 `list_contacts` tool。
+
+Tools 可以合并功能，在底层处理可能 *多个* 独立 operations（或 API calls）。例如，tools 可以用相关 metadata 丰富 tool responses，或在单个 tool call 中处理经常串联的 multi-step tasks。
+
+下面是一些例子：
+
+- 与其实现 `list_users`、`list_events` 和 `create_event` tools，不如考虑实现一个 `schedule_event` tool，用来查找 availability 并安排 event。
+- 与其实现 `read_logs` tool，不如考虑实现一个 `search_logs` tool，它只返回相关 log lines 和一些周边 context。
+- 与其实现 `get_customer_by_id`、`list_transactions` 和 `list_notes` tools，不如实现一个 `get_customer_context` tool，它一次性编译某个 customer 的所有 recent & relevant information。
+
+确保你构建的每个 tool 都有清晰、独特的 purpose。Tools 应该让 agents 能够以与人类类似的方式 subdivide 并解决 tasks，前提是它们能访问相同的底层 resources，同时减少本来会被 intermediate outputs 消耗的 context。
+
+太多工具或 overlapping tools 也会让 agents 分心，无法追求高效 strategies。仔细且有选择地规划你构建（或不构建）的 tools，确实会带来回报。
+
+你的 AI agents 可能会获得访问数十个 MCP servers 和数百个不同 tools 的能力，包括其他 developers 编写的工具。当 tools 在功能上重叠或 purpose 模糊时，agents 可能会困惑该使用哪些工具。
+
+Namespacing（把相关 tools 归组到共同 prefixes 下）可以帮助在许多 tools 之间划定边界；MCP clients 有时默认会这样做。例如，按 service（如 `asana_search`、`jira_search`）和按 resource（如 `asana_projects_search`、`asana_users_search`）对 tools 进行 namespacing，可以帮助 agents 在正确时间选择正确 tools。
+
+我们发现，在 tool-use evaluations 中，在 prefix-based 和 suffix-based namespacing 之间选择，会产生 non-trivial effects。Effects 因 LLM 而异，我们鼓励你根据自己的 evaluations 选择 naming scheme。
+
+Agents 可能会调用错误工具、用错误 parameters 调用正确工具、调用太少工具，或错误处理 tool responses。通过有选择地实现名称反映 tasks 自然 subdivisions 的工具，你同时减少了加载进 agent context 的工具数量和 tool descriptions，并把 agentic computation 从 agent context 转移回 tool calls 本身。这会降低 agent 总体出错风险。
+
+同样，tool implementations 应该注意只向 agents 返回 high signal information。它们应该优先考虑 contextual relevance 而不是 flexibility，并避免低层级 technical identifiers（例如：`uuid`、`256px_image_url`、`mime_type`）。像 `name`、`image_url` 和 `file_type` 这样的 fields 更可能直接告知 agents 后续 actions 和 responses。
+
+Agents 处理 natural language names、terms 或 identifiers 的能力，也往往显著强于处理 cryptic identifiers。我们发现，仅仅把任意 alphanumeric UUIDs 解析成更具语义、更可解释的语言（甚至是 0-indexed ID scheme），就能通过减少 hallucinations 显著提升 Claude 在 retrieval tasks 中的 precision。
+
+在某些情况下，agents 可能需要同时与 natural language 和 technical identifiers outputs 交互的灵活性，哪怕只是为了触发 downstream tool calls（例如 `search_user(name='jane')` → `send_message(id=12345)`）。你可以通过在 tool 中公开一个简单的 `response_format` enum parameter 来同时启用两者，让你的 agent 控制 tools 返回 `“concise”` 还是 `“detailed”` responses（见下方图片）。
+
+你可以添加更多 formats 以获得更大灵活性，类似 GraphQL 中你可以精确选择想接收哪些信息。下面是一个用于控制 tool response verbosity 的 ResponseFormat enum 示例：
+
+![ResponseFormat enum example](/images/blog/writing-tools-for-agents/response-format-enum.png)
+
+这段 code snippet 展示了 detailed tool response 的一个示例。
+
+下面是 concise tool response 的一个示例（72 tokens）：
+
+![Concise tool response example](/images/blog/writing-tools-for-agents/concise-tool-response.png)
+
+Slack threads 和 thread replies 由唯一的 thread_ts 标识，获取 thread replies 时需要它。thread_ts 和其他 IDs（channel_id、user_id）可以从 “detailed” tool response 中检索，以启用需要这些 IDs 的进一步 tool calls。“concise” tool responses 只返回 thread content 并排除 IDs。在这个例子中，我们使用 “concise” tool responses 时只用了约 ⅓ 的 tokens。
+
+即便是 tool response structure（例如 XML、JSON 或 Markdown）也可能影响 evaluation performance：不存在 one-size-fits-all 的解决方案。这是因为 LLMs 训练于 next-token prediction，往往在匹配其训练数据的 formats 上表现更好。最佳 response structure 会因 task 和 agent 而差异很大。我们鼓励你根据自己的 evaluation 选择最佳 response structure。
+
+优化返回给 agents 的 context 质量很重要。但优化 tool responses 中返回给 agents 的 context *数量*也很重要。
+
+我们建议对任何可能消耗大量 context 的 tool responses，实现 pagination、range selection、filtering 和/或 truncation 的某种组合，并设置合理的 default parameter values。对于 Claude Code，我们默认把 tool responses 限制为 25,000 tokens。我们预计 agents 的有效 context length 会随着时间增长，但对 context-efficient tools 的需求仍会存在。
+
+如果你选择 truncate responses，一定要用有帮助的 instructions 引导 agents。你可以直接鼓励 agents 追求更 token-efficient 的 strategies，例如在 knowledge retrieval task 中进行多次小而 targeted searches，而不是一次 broad search。类似地，如果 tool call 抛出 error（例如 input validation 期间），你可以对 error responses 进行 prompt-engineering，让它们清楚传达具体且可执行的改进，而不是 opaque error codes 或 tracebacks。
+
+下面是 truncated tool response 的一个示例：
+
+![Truncated tool response example](/images/blog/writing-tools-for-agents/truncated-tool-response.png)
+
+这张图展示了 truncated tool response 的一个示例。
+
+下面是 unhelpful error response 的一个示例：
+
+![Unhelpful error response example](/images/blog/writing-tools-for-agents/unhelpful-error-response.png)
+
+这张图展示了 unhelpful tool response 的一个示例。
+
+下面是 helpful error response 的一个示例：
+
+![Helpful error response example](/images/blog/writing-tools-for-agents/helpful-error-response.png)
+
+Tool truncation 和 error responses 可以引导 agents 走向更 token-efficient 的 tool-use behaviors（使用 filters 或 pagination），或给出正确格式 tool inputs 的 examples。
+
+现在我们来到改进工具最有效的方法之一：对你的 tool descriptions 和 specs 进行 prompt-engineering。因为这些内容会被加载到 agents 的 context 中，它们可以共同引导 agents 形成有效的 tool-calling behaviors。
+
+编写 tool descriptions 和 specs 时，想象你会如何向团队新员工描述你的工具。考虑你可能隐含带入的 context，例如 specialized query formats、niche terminology 的定义、底层 resources 之间的 relationships，并把它们显式写出来。通过清楚描述（并用 strict data models enforce）期望 inputs 和 outputs 来避免 ambiguity。尤其是 input parameters 应该有明确命名：与其命名为 `user`，不如尝试命名为 `user_id`。
+
+通过你的 evaluation，你可以更有信心地衡量 prompt engineering 的影响。即便是对 tool descriptions 的小幅 refinement，也可能产生显著改进。Claude Sonnet 3.5 在我们对 tool descriptions 做出 precise refinements 后，在 [SWE-bench Verified](https://www.anthropic.com/engineering/swe-bench-sonnet) evaluation 上达到了 state-of-the-art performance，大幅降低 error rates 并改善 task completion。
+
+你可以在我们的 [Developer Guide](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use#best-practices-for-tool-definitions) 中找到关于 tool definitions 的其他 best practices。如果你在为 Claude 构建 tools，我们也建议阅读 tools 如何被动态加载进 Claude 的 [system prompt](https://docs.anthropic.com/en/docs/agents-and-tools/tool-use/implement-tool-use#tool-use-system-prompt)。最后，如果你在为 MCP server 编写 tools，[tool annotations](https://modelcontextprotocol.io/specification/2025-06-18/server/tools) 有助于披露哪些 tools 需要 open-world access 或会进行 destructive changes。
+
+要为 agents 构建有效工具，我们需要把软件开发实践从 predictable、deterministic patterns 重新转向 non-deterministic patterns。
+
+通过本文描述的 iterative、evaluation-driven process，我们识别出了让工具成功的一致模式：Effective tools 被有意且清晰地定义，审慎使用 agent context，可以在多样 workflows 中组合，并让 agents 能够直观地解决现实世界 tasks。
+
+未来，我们预计 agents 与世界交互的具体 mechanisms 会继续演化，从 MCP protocol 的 updates 到底层 LLMs 自身的 upgrades。通过系统性的、evaluation-driven 的方法来改进 agent 工具，我们可以确保随着 agents 变得更有能力，它们使用的工具也会随之演化。
+
+作者：Ken Aizawa，并感谢 Research（Barry Zhang、Zachary Witten、Daniel Jiang、Sami Al-Sheikh、Matt Bell、Maggie Vo）、MCP（Theodora Chu、John Welsh、David Soria Parra、Adam Jones）、Product Engineering（Santiago Seira）、Marketing（Molly Vorwerck）、Design（Drew Roper）以及 Applied AI（Christian Ryan、Alexander Bricken）各位同事的宝贵贡献。
+
+[^1]: 超出训练底层 LLMs 本身之外。

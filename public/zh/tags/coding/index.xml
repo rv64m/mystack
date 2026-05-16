@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Coding on Alex Chen</title>
+    <link>https://example.org/zh/tags/coding/</link>
+    <description>Recent content in Coding on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 07:30:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/coding/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Claude 在 SWE-bench 上的表现</title>
+      <link>https://example.org/zh/blog/2026/05/claude-swe-bench-performance/</link>
+      <pubDate>Sat, 16 May 2026 07:30:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/claude-swe-bench-performance/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://example.org/images/blog/claude-swe-bench-performance/hero.svg&#34; alt=&#34;Claude SWE-bench Performance&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;em&gt;我们的最新模型，升级版 &lt;a href=&#34;https://www.anthropic.com/news/3-5-models-and-computer-use&#34;&gt;Claude 3.5 Sonnet&lt;/a&gt;，在 SWE-bench Verified 这个软件工程评测上取得了 49% 的成绩，超过了此前 state-of-the-art 模型的 45%。这篇文章解释了我们围绕该模型构建的 “agent”，旨在帮助开发者从 Claude 3.5 Sonnet 中获得尽可能好的表现。&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://www.swebench.com/&#34;&gt;SWE-bench&lt;/a&gt; 是一个 AI evaluation benchmark，用来评估模型完成真实世界软件工程任务的能力。具体来说，它测试模型如何解决来自热门开源 Python repositories 的 GitHub issues。对于 benchmark 中的每个任务，AI 模型都会得到一个已经设置好的 Python 环境，以及该 issue 被解决之前的 repository checkout（本地工作副本）。随后，模型需要理解、修改并测试代码，再提交它提出的解决方案。&lt;/p&gt;&#xA;&lt;p&gt;每个解决方案都会根据关闭原始 GitHub issue 的 pull request 中的真实 unit tests 进行评分。这会测试 AI 模型是否能够实现与该 PR 的原始人类作者相同的功能。&lt;/p&gt;&#xA;&lt;p&gt;SWE-bench 评估的不只是孤立的 AI 模型，而是整个 “agent” 系统。在这个上下文中，“agent” 指的是 AI 模型及其周围软件 scaffolding 的组合。这个 scaffolding 负责生成输入模型的 prompts、解析模型输出以采取行动，并管理交互循环，其中模型上一次动作的结果会被整合进下一次 prompt。即使使用同一个底层 AI 模型，agent 在 SWE-bench 上的表现也可能因为 scaffolding 而显著不同。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

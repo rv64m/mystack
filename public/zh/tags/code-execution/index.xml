@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Code-Execution on Alex Chen</title>
+    <link>https://example.org/zh/tags/code-execution/</link>
+    <description>Recent content in Code-Execution on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 12:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/code-execution/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>使用 MCP 进行 code execution：构建更高效的 AI agents</title>
+      <link>https://example.org/zh/blog/2026/05/code-execution-with-mcp/</link>
+      <pubDate>Sat, 16 May 2026 12:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/code-execution-with-mcp/</guid>
+      <description>&lt;p&gt;&lt;a href=&#34;https://modelcontextprotocol.io/&#34;&gt;Model Context Protocol (MCP)&lt;/a&gt; 是一个用于把 AI agents 连接到 external systems 的 open standard。把 agents 连接到 tools 和 data，传统上需要为每一组 pairing 做 custom integration，这会造成 fragmentation 和 duplicated effort，使真正 connected systems 难以 scale。MCP 提供了一个 universal protocol：developers 只需在自己的 agent 中实现一次 MCP，就能解锁整个 integrations ecosystem。&lt;/p&gt;&#xA;&lt;p&gt;自 2024 年 11 月推出 MCP 以来，采用速度很快：community 已经构建了数千个 &lt;a href=&#34;https://github.com/modelcontextprotocol/servers&#34;&gt;MCP servers&lt;/a&gt;，&lt;a href=&#34;https://modelcontextprotocol.io/docs/sdk&#34;&gt;SDKs&lt;/a&gt; 已覆盖所有主流 programming languages，industry 也已采用 MCP 作为把 agents 连接到 tools 和 data 的 de-facto standard。&lt;/p&gt;&#xA;&lt;p&gt;今天，developers 经常构建能访问数十个 MCP servers 上数百甚至数千个 tools 的 agents。然而，随着 connected tools 数量增长，预先加载所有 tool definitions，并通过 context window 传递 intermediate results，会拖慢 agents 并增加 costs。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

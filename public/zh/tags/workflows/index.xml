@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Workflows on Alex Chen</title>
+    <link>https://example.org/zh/tags/workflows/</link>
+    <description>Recent content in Workflows on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 08:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/workflows/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>构建有效的 AI Agents</title>
+      <link>https://example.org/zh/blog/2026/05/building-effective-agents/</link>
+      <pubDate>Sat, 16 May 2026 08:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/building-effective-agents/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://example.org/images/blog/building-effective-agents/hero.svg&#34; alt=&#34;Building Effective AI Agents&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;过去一年里，我们与数十个跨行业构建 large language model（LLM）agents 的团队合作。我们持续看到，最成功的实现并没有使用复杂框架或专门库。相反，它们使用的是简单、可组合的模式。&lt;/p&gt;&#xA;&lt;p&gt;在这篇文章中，我们会分享自己从客户合作和亲自构建 agents 中学到的东西，并为开发者构建有效 agents 提供实用建议。&lt;/p&gt;&#xA;&lt;h2 id=&#34;什么是-agents&#34;&gt;什么是 agents？&lt;/h2&gt;&#xA;&lt;p&gt;“Agent”可以有多种定义。一些客户把 agents 定义为完全自主的系统，能够在较长时间内独立运行，并使用各种工具完成复杂任务。另一些客户则用这个词描述更具规定性的实现，它们遵循预定义 workflows。在 Anthropic，我们把所有这些变体都归类为 &lt;strong&gt;agentic systems&lt;/strong&gt;，但在 &lt;strong&gt;workflows&lt;/strong&gt; 和 &lt;strong&gt;agents&lt;/strong&gt; 之间划出一个重要的架构区别：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;&lt;strong&gt;Workflows&lt;/strong&gt; 是 LLMs 和工具通过预定义代码路径被编排起来的系统。&lt;/li&gt;&#xA;&lt;li&gt;&lt;strong&gt;Agents&lt;/strong&gt; 则是 LLMs 动态指导自身流程和工具使用，并保持对如何完成任务的控制权的系统。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;下面，我们会详细探索这两类 agentic systems。在 Appendix 1（“Agents in Practice”）中，我们描述了客户在使用这类系统时发现特别有价值的两个领域。&lt;/p&gt;&#xA;&lt;h2 id=&#34;何时使用-agents以及何时不使用&#34;&gt;何时使用 agents，以及何时不使用&lt;/h2&gt;&#xA;&lt;p&gt;在使用 LLMs 构建应用时，我们建议找到尽可能简单的解决方案，并只在需要时增加复杂度。这可能意味着根本不构建 agentic systems。Agentic systems 通常会用延迟和成本换取更好的任务表现，你应该考虑什么时候这种权衡有意义。&lt;/p&gt;&#xA;&lt;p&gt;当确实需要更多复杂度时，workflows 为定义明确的任务提供可预测性和一致性，而当需要大规模的灵活性和模型驱动决策时，agents 是更好的选择。然而，对于许多应用来说，用 retrieval 和 in-context examples 优化单次 LLM 调用通常就足够了。&lt;/p&gt;&#xA;&lt;p&gt;有许多框架能让 agentic systems 更容易实现，包括：&lt;/p&gt;&#xA;&lt;p&gt;这些框架通过简化一些标准低层任务，让入门变得容易，例如调用 LLMs、定义和解析工具，以及把调用链接起来。然而，它们经常创建额外的抽象层，遮蔽底层 prompts 和 responses，使调试更困难。它们也可能诱使你在更简单设置足够时添加复杂度。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

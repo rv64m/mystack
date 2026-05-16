@@ -2,213 +2,213 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>http://localhost:52954/blog/2026/05/agent-memory-needs-time/</loc>
+    <loc>https://example.org/blog/2026/05/agent-memory-needs-time/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/blog/2026/05/agent-memory-needs-time/"
+                href="https://example.org/zh/blog/2026/05/agent-memory-needs-time/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/blog/2026/05/agent-memory-needs-time/"
+                href="https://example.org/blog/2026/05/agent-memory-needs-time/"
                 />
   </url><url>
-    <loc>http://localhost:52954/series/agent-notes/</loc>
+    <loc>https://example.org/series/agent-notes/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/series/agent-notes/"
+                href="https://example.org/zh/series/agent-notes/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/series/agent-notes/"
+                href="https://example.org/series/agent-notes/"
                 />
   </url><url>
-    <loc>http://localhost:52954/tags/agents/</loc>
+    <loc>https://example.org/tags/agents/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/tags/agents/"
+                href="https://example.org/zh/tags/agents/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/tags/agents/"
+                href="https://example.org/tags/agents/"
                 />
   </url><url>
-    <loc>http://localhost:52954/tags/ai/</loc>
+    <loc>https://example.org/tags/ai/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/tags/ai/"
+                href="https://example.org/zh/tags/ai/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/tags/ai/"
+                href="https://example.org/tags/ai/"
                 />
   </url><url>
-    <loc>http://localhost:52954/</loc>
+    <loc>https://example.org/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/"
+                href="https://example.org/zh/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/"
+                href="https://example.org/"
                 />
   </url><url>
-    <loc>http://localhost:52954/tags/memory/</loc>
+    <loc>https://example.org/tags/memory/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/tags/memory/"
+                href="https://example.org/zh/tags/memory/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/tags/memory/"
+                href="https://example.org/tags/memory/"
                 />
   </url><url>
-    <loc>http://localhost:52954/series/</loc>
+    <loc>https://example.org/series/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/series/"
+                href="https://example.org/zh/series/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/series/"
+                href="https://example.org/series/"
                 />
   </url><url>
-    <loc>http://localhost:52954/tags/</loc>
+    <loc>https://example.org/tags/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/tags/"
+                href="https://example.org/zh/tags/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/tags/"
+                href="https://example.org/tags/"
                 />
   </url><url>
-    <loc>http://localhost:52954/blog/</loc>
+    <loc>https://example.org/blog/</loc>
     <lastmod>2026-05-15T10:00:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/blog/"
+                href="https://example.org/zh/blog/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/blog/"
+                href="https://example.org/blog/"
                 />
   </url><url>
-    <loc>http://localhost:52954/memos/2026/04/2026-04-18-afternoon-code/</loc>
+    <loc>https://example.org/memos/2026/04/2026-04-18-afternoon-code/</loc>
     <lastmod>2026-04-18T11:15:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/tags/code/</loc>
+    <loc>https://example.org/tags/code/</loc>
     <lastmod>2026-04-18T11:15:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/memos/</loc>
+    <loc>https://example.org/memos/</loc>
     <lastmod>2026-04-18T11:15:00+08:00</lastmod>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/memos/"
+                href="https://example.org/zh/memos/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/memos/"
+                href="https://example.org/memos/"
                 />
   </url><url>
-    <loc>http://localhost:52954/tags/design/</loc>
+    <loc>https://example.org/tags/design/</loc>
     <lastmod>2026-04-18T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/blog/2026/04/designing-quiet-software/</loc>
+    <loc>https://example.org/blog/2026/04/designing-quiet-software/</loc>
     <lastmod>2026-04-18T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/tags/essay/</loc>
+    <loc>https://example.org/tags/essay/</loc>
     <lastmod>2026-04-18T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/memos/2026/04/2026-04-18-morning-thoughts/</loc>
+    <loc>https://example.org/memos/2026/04/2026-04-18-morning-thoughts/</loc>
     <lastmod>2026-04-18T08:30:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/tags/thought/</loc>
+    <loc>https://example.org/tags/thought/</loc>
     <lastmod>2026-04-18T08:30:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/memos/2026/04/2026-04-17-design-systems/</loc>
+    <loc>https://example.org/memos/2026/04/2026-04-17-design-systems/</loc>
     <lastmod>2026-04-17T10:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/tags/css/</loc>
+    <loc>https://example.org/tags/css/</loc>
     <lastmod>2026-04-10T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/tags/tutorial/</loc>
+    <loc>https://example.org/tags/tutorial/</loc>
     <lastmod>2026-04-10T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/tags/typography/</loc>
+    <loc>https://example.org/tags/typography/</loc>
     <lastmod>2026-04-10T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/blog/2026/04/typography-on-the-web-a-practical-guide/</loc>
+    <loc>https://example.org/blog/2026/04/typography-on-the-web-a-practical-guide/</loc>
     <lastmod>2026-04-10T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/series/web-fundamentals/</loc>
+    <loc>https://example.org/series/web-fundamentals/</loc>
     <lastmod>2026-04-10T09:00:00+08:00</lastmod>
   </url><url>
-    <loc>http://localhost:52954/about/</loc>
+    <loc>https://example.org/about/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/about/"
+                href="https://example.org/zh/about/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/about/"
+                href="https://example.org/about/"
                 />
   </url><url>
-    <loc>http://localhost:52954/categories/</loc>
+    <loc>https://example.org/categories/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/categories/"
+                href="https://example.org/zh/categories/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/categories/"
+                href="https://example.org/categories/"
                 />
   </url><url>
-    <loc>http://localhost:52954/projects/design-system-kit/</loc>
+    <loc>https://example.org/projects/design-system-kit/</loc>
   </url><url>
-    <loc>http://localhost:52954/projects/quiet-reader/</loc>
+    <loc>https://example.org/projects/quiet-reader/</loc>
   </url><url>
-    <loc>http://localhost:52954/projects/</loc>
+    <loc>https://example.org/projects/</loc>
     <xhtml:link
                 rel="alternate"
                 hreflang="zh-cn"
-                href="http://localhost:52954/zh/projects/"
+                href="https://example.org/zh/projects/"
                 />
     <xhtml:link
                 rel="alternate"
                 hreflang="en-us"
-                href="http://localhost:52954/projects/"
+                href="https://example.org/projects/"
                 />
   </url>
 </urlset>

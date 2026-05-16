@@ -2,17 +2,17 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Memory on Alex Chen</title>
-    <link>http://localhost:52954/zh/tags/memory/</link>
+    <link>https://example.org/zh/tags/memory/</link>
     <description>Recent content in Memory on Alex Chen</description>
     <generator>Hugo</generator>
     <language>zh-cn</language>
     <lastBuildDate>Fri, 15 May 2026 10:00:00 +0800</lastBuildDate>
-    <atom:link href="http://localhost:52954/zh/tags/memory/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://example.org/zh/tags/memory/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Agent 记忆需要一只时钟</title>
-      <link>http://localhost:52954/zh/blog/2026/05/agent-memory-needs-time/</link>
+      <link>https://example.org/zh/blog/2026/05/agent-memory-needs-time/</link>
       <pubDate>Fri, 15 May 2026 10:00:00 +0800</pubDate>
-      <guid>http://localhost:52954/zh/blog/2026/05/agent-memory-needs-time/</guid>
+      <guid>https://example.org/zh/blog/2026/05/agent-memory-needs-time/</guid>
       <description>&lt;p&gt;Mem0 这篇关于 Memory Decay 的文章，讲清了 Agent 记忆里一个很实际的问题：记得更多，不等于记得更好。长期运行的 Agent 需要时间感，因为上个月重要的上下文，不应该和用户今天早上刚触碰过的信息拥有完全相同的权重。&lt;/p&gt;&#xA;&lt;p&gt;Mem0 这次引入的功能并不激进。它不会删除旧记忆，不会用硬过滤把旧内容藏起来，也不要求开发者迁移已有数据。它改变的是检索排序：最近被访问过的记忆会得到加权提升，长期没有被使用的记忆会被温和降权。如果一条旧记忆仍然是语义上最匹配的结果，它依然可以被召回。&lt;/p&gt;&#xA;&lt;p&gt;这个差异很关键。好的记忆系统应该保留历史，但不能让历史把当下压平。&lt;/p&gt;&#xA;&lt;h2 id=&#34;为什么新鲜度重要&#34;&gt;为什么新鲜度重要&lt;/h2&gt;&#xA;&lt;p&gt;大多数记忆层一开始承诺的是：保存用户的事实、偏好、决定和过往上下文，让 Agent 之后还能找回来。这个承诺对演示和短会话足够了。但一旦一个助手连续运行几周或几个月，问题就会出现。&lt;/p&gt;&#xA;&lt;p&gt;想象一个编程 Agent 同时记得旧副项目、当前 sprint，以及昨天刚讨论过的重构方案。再想象一个个人助理同时记得去年某次偶然的咖啡馆点单，以及这周真正稳定下来的早餐习惯。纯语义相关性可能会把旧细节拉回答案里，因为它们在文本上看起来相关，即使它们在当前场景里已经不那么重要。&lt;/p&gt;&#xA;&lt;p&gt;时间不是相关性的替代品。它是额外的信号，让相关性更接近人类注意力的工作方式。&lt;/p&gt;&#xA;&lt;h2 id=&#34;memory-decay-改变了什么&#34;&gt;Memory Decay 改变了什么&lt;/h2&gt;&#xA;&lt;p&gt;Mem0 把 Memory Decay 设计成项目级开关。开启之后，每条记忆会记录近期被检索的历史。在搜索时，Mem0 会把这个历史变成相关性分数上的缩放因子：新鲜的记忆往上走，沉寂太久的记忆往下走。&lt;/p&gt;&#xA;&lt;p&gt;关键是，这个缩放不会降到零。旧记忆只是被降权，不是被丢弃。相比严格的时间窗口，这种方式更宽容。六个月前的事实如果确实匹配当前问题，仍然可以出现；但它不会再和今天被频繁使用的上下文平起平坐。&lt;/p&gt;&#xA;&lt;p&gt;这更适合长期个性化。记忆层负责保留连续性，排序层负责让工作集保持清爽。&lt;/p&gt;&#xA;&lt;h2 id=&#34;为什么这是好的产品设计&#34;&gt;为什么这是好的产品设计&lt;/h2&gt;&#xA;&lt;p&gt;我喜欢这个功能，是因为它把记忆当成一种会被持续使用的东西，而不只是被存起来的东西。Agent 记忆真正困难的地方，不只是捕获信息，而是维护信息。一个不断增长的记忆库需要泄压机制，否则每一条保存下来的事实都会慢慢变成潜在噪音。&lt;/p&gt;&#xA;&lt;p&gt;搜索时衰减也很务实。它避免了重新索引和迁移，已有的 add 与 search 代码可以继续工作。开发者可以先给项目打开这个行为，观察回答是否变得更贴近近期上下文，而不用改变数据结构。&lt;/p&gt;&#xA;&lt;p&gt;这里还有一个更一般的产品启示：当一个系统会积累上下文，它就需要一种让上下文自然老化的方式。旧的不一定错，新的也不一定对，但当下应该进入排序函数。&lt;/p&gt;&#xA;&lt;h2 id=&#34;最先受益的场景&#34;&gt;最先受益的场景&lt;/h2&gt;&#xA;&lt;p&gt;最明显的受益者，是那些会被反复使用的 Agent：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;编程 Agent 可以把当前项目或 sprint 放在旧实现细节之上。&lt;/li&gt;&#xA;&lt;li&gt;个人助理可以适应最近的习惯，同时不忘记长期偏好。&lt;/li&gt;&#xA;&lt;li&gt;客服机器人可以优先处理当前工单和近期互动，而不是反复召回已经解决的历史问题。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;这些变化不炫，但会让 Agent 显得更不分心。助手不再像是在搜索档案馆，而更像是在维护一个当前工作上下文。&lt;/p&gt;&#xA;&lt;h2 id=&#34;下一步&#34;&gt;下一步&lt;/h2&gt;&#xA;&lt;p&gt;Mem0 还提到了按类别加权和项目级自动调参。这里会更有意思。健康信息、身份偏好、安全约束、临时观察，不应该以同样的速度衰减。有些记忆是长期承诺，有些只是路过的天气。&lt;/p&gt;&#xA;&lt;p&gt;更深的趋势已经很清楚：Agent 记忆需要多种排序信号，包括语义匹配、新鲜度、类别、重要性、置信度，甚至用户纠正历史。Memory Decay 是通往这种更丰富模型的一小步，但也是必要的一步。&lt;/p&gt;&#xA;&lt;p&gt;目前最有用的结论很简单：一个什么都记得的 Agent，仍然需要知道什么是新鲜的。&lt;/p&gt;</description>
     </item>
   </channel>

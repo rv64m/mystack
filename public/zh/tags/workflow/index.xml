@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Workflow on Alex Chen</title>
+    <link>https://example.org/zh/tags/workflow/</link>
+    <description>Recent content in Workflow on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 06:30:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/workflow/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Claude Code 最佳实践</title>
+      <link>https://example.org/zh/blog/2026/05/claude-code-best-practices/</link>
+      <pubDate>Sat, 16 May 2026 06:30:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/claude-code-best-practices/</guid>
+      <description>&lt;blockquote&gt;&#xA;&lt;p&gt;&lt;strong&gt;Documentation Index&lt;/strong&gt;&lt;/p&gt;&#xA;&lt;p&gt;在 &lt;a href=&#34;https://code.claude.com/docs/llms.txt&#34;&gt;https://code.claude.com/docs/llms.txt&lt;/a&gt; 获取完整文档索引。&#xA;在进一步探索之前，请使用这个文件发现所有可用页面。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;h1 id=&#34;claude-code-最佳实践&#34;&gt;Claude Code 最佳实践&lt;/h1&gt;&#xA;&lt;blockquote&gt;&#xA;&lt;p&gt;从配置环境到扩展并行 sessions，帮助你最大化发挥 Claude Code 的提示和模式。&lt;/p&gt;&#xA;&lt;/blockquote&gt;&#xA;&lt;p&gt;Claude Code 是一个 agentic coding environment。不同于回答问题然后等待的聊天机器人，Claude Code 可以读取你的文件、运行命令、进行修改，并在你观察、重定向或完全离开时自主处理问题。&lt;/p&gt;&#xA;&lt;p&gt;这改变了你的工作方式。你不再是自己写代码并要求 Claude 审查，而是描述你想要什么，然后 Claude 弄清楚如何构建它。Claude 会探索、规划并实现。&lt;/p&gt;&#xA;&lt;p&gt;但这种自主性仍然有学习曲线。Claude 在一些你需要理解的约束中工作。&lt;/p&gt;&#xA;&lt;p&gt;本指南覆盖了一些已被证明有效的模式，这些模式来自 Anthropic 内部团队，以及在各种 codebases、languages 和 environments 中使用 Claude Code 的工程师。关于 agentic loop 在底层如何工作，请见 &lt;a href=&#34;https://www.notion.so/en/how-claude-code-works&#34;&gt;How Claude Code works&lt;/a&gt;。&lt;/p&gt;&#xA;&lt;hr&gt;&#xA;&lt;p&gt;大多数最佳实践都基于一个约束：Claude 的上下文窗口填得很快，而且随着填满，性能会下降。&lt;/p&gt;&#xA;&lt;p&gt;Claude 的上下文窗口保存你的整个对话，包括每条消息、Claude 读取的每个文件，以及每个命令输出。然而，它可能很快填满。一次 debugging session 或 codebase exploration 可能会生成并消耗数万 tokens。&lt;/p&gt;&#xA;&lt;p&gt;这很重要，因为随着上下文填满，LLM 性能会下降。当上下文窗口快满时，Claude 可能开始“忘记”早先指令，或犯更多错误。上下文窗口是最重要的管理资源。要了解 session 在实践中如何填满，可以&lt;a href=&#34;https://www.notion.so/en/context-window&#34;&gt;观看交互式 walkthrough&lt;/a&gt;，了解启动时加载了什么，以及每次文件读取消耗多少。用 &lt;a href=&#34;https://www.notion.so/en/statusline&#34;&gt;custom status line&lt;/a&gt; 持续跟踪上下文使用情况，并参阅 &lt;a href=&#34;https://www.notion.so/en/costs#reduce-token-usage&#34;&gt;Reduce token usage&lt;/a&gt; 获取减少 token 使用的策略。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

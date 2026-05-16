@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <script>
+    (() => {
+      const key = 'site-theme';
+      const stored = localStorage.getItem(key);
+      const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anthropic 三个近期问题的事后复盘 — Alex Chen</title>
+<meta name="description" content="设计师与开发者，构建安静而有意图的软件。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+
+</head>
+<body>
+  <nav class="site-nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="/zh/" class="nav-wordmark">Alex Chen</a>
+    <ul class="nav-links" id="nav-links">
+      
+        <li><a href="/zh/blog/" class="">博客</a></li>
+      
+        <li><a href="/zh/projects/" class="">项目</a></li>
+      
+        <li><a href="/zh/memos/" class="">随笔</a></li>
+      
+        <li><a href="/zh/about/" class="">关于</a></li>
+      
+    </ul>
+    <div class="nav-actions">
+      <div class="language-switcher" aria-label="Language switcher">
+        
+          
+          
+          
+            
+            
+              
+            
+          
+          <a href="/" class="" hreflang="en">English</a>
+        
+          
+          
+          
+            
+          
+          <a href="/zh/blog/2026/05/anthropic-three-recent-issues-postmortem/" class="is-active" hreflang="zh">中文</a>
+        
+      </div>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="Switch to dark mode"
+        aria-pressed="false"
+      >
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
+        </svg>
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+  <main id="main">
+    
+
+<article class="story-shell container">
+  <header class="story-hero">
+    <div class="story-hero-copy">
+      <p class="section-kicker">Essay</p>
+      <h1 class="story-title">Anthropic 三个近期问题的事后复盘</h1>
+      <div class="story-meta">
+        <span><time datetime="2026-05-16">May 16, 2026</time></span>
+        <span>5 min read</span>
+        <span>Agent Notes</span>
+      </div>
+    </div>
+    
+      <div class="story-tags">
+        
+          <a href="/tags/ai" class="tag-pill">ai</a>
+        
+          <a href="/tags/infrastructure" class="tag-pill">infrastructure</a>
+        
+          <a href="/tags/postmortem" class="tag-pill">postmortem</a>
+        
+          <a href="/tags/claude" class="tag-pill">claude</a>
+        
+      </div>
+    
+  </header>
+
+  <div class="story-body-wrap">
+    <div class="article-body story-body">
+      <p>8 月到 9 月初期间，三个 infrastructure bugs 间歇性降低了 Claude 的 response quality。我们现在已经解决了这些问题，并希望解释发生了什么。</p>
+<p>8 月初，一些用户开始报告 Claude responses 出现 degraded。这些初始报告很难与用户反馈中的正常波动区分开。到 8 月下旬，这些报告的频率和持续性不断增加，促使我们开启 investigation，并由此发现了三个独立的 infrastructure bugs。</p>
+<p>直说就是：我们从不会因为 demand、time of day 或 server load 而降低 model quality。用户报告的问题完全由 infrastructure bugs 导致。</p>
+<p>我们认识到，用户期望 Claude 保持一致的质量，而我们也为确保 infrastructure changes 不影响 model outputs 维持极高标准。在这些近期 incidents 中，我们没有达到这个标准。下面的 postmortem 会解释哪里出了问题，为什么 detection 和 resolution 花了比我们希望更久的时间，以及我们正在做哪些改变来防止未来出现类似 incidents。</p>
+<p>我们通常不会分享这种技术细节层级的 infrastructure 信息，但这些问题的 scope 和 complexity 值得更全面地解释。</p>
+<p>我们通过 first-party API、Amazon Bedrock 和 Google Cloud 的 Vertex AI 向数百万用户提供 Claude。我们在多个 hardware platforms 上部署 Claude，也就是 AWS Trainium、NVIDIA GPUs 和 Google TPUs。这种方法提供了服务全球用户所需的 capacity 和 geographic distribution。</p>
+<p>每种 hardware platform 都有不同特性，并需要特定 optimizations。尽管存在这些差异，我们对 model implementations 有严格的 equivalence standards。我们的目标是，无论哪个 platform 服务用户请求，用户都应该获得相同质量的 responses。这种 complexity 意味着，任何 infrastructure change 都需要在所有 platforms 和 configurations 上进行仔细 validation。</p>
+<h2 id="事件时间线">事件时间线</h2>
+<p><img src="/images/blog/anthropic-three-recent-issues-postmortem/timeline.png" alt="Illustrative timeline of events on the Claude API."></p>
+<p>Claude API 上事件的 illustrative timeline。黄色：issue detected，红色：degradation worsened，绿色：fix deployed。</p>
+<p>这些 bugs 相互重叠的性质让 diagnosis 尤其具有挑战性。第一个 bug 在 8 月 5 日引入，影响了约 0.8% 发往 Sonnet 4 的 requests。另外两个 bugs 来自 8 月 25 日和 26 日的 deployments。</p>
+<p>虽然初始影响有限，但 8 月 29 日的一次 load balancing change 开始增加受影响 traffic。这导致更多用户遇到问题，而其他用户仍然看到正常 performance，产生了令人困惑且相互矛盾的 reports。</p>
+<p>下面我们描述造成 degradation 的三个 bugs、它们发生的时间，以及我们如何解决它们：</p>
+<h3 id="1-context-window-routing-bug">1. Context window routing bug</h3>
+<p>8 月 5 日，一些 Sonnet 4 requests 被错误路由到为即将推出的 <a href="https://docs.claude.com/en/docs/build-with-claude/context-windows#1m-token-context-window">1M token</a> <a href="https://docs.claude.com/en/docs/build-with-claude/context-windows">context window</a> 配置的 servers。这个 bug 最初影响了 0.8% 的 requests。8 月 29 日，一次 routine load balancing change 无意中增加了被路由到 1M context servers 的 short-context requests 数量。在 8 月 31 日受影响最严重的一个小时中，16% 的 Sonnet 4 requests 受到影响。</p>
+<p>在此期间发起 requests 的 Claude Code users 中，约 30% 至少有一条 message 被路由到错误的 server type，导致 responses degraded。在 Amazon Bedrock 上，从 8 月 12 日开始，misrouted traffic 峰值达到所有 Sonnet 4 requests 的 0.18%。8 月 27 日至 9 月 16 日期间，错误 routing 影响了 Google Cloud 的 Vertex AI 上少于 0.0004% 的 requests。</p>
+<p>不过，一些用户受到的影响更严重，因为我们的 routing 是 “sticky” 的。这意味着一旦某个 request 由错误 server 服务，后续 follow-ups 很可能也由同一个错误 server 服务。</p>
+<p><strong>Resolution:</strong> 我们修复了 routing logic，确保 short- 和 long-context requests 被导向正确的 server pools。我们在 9 月 4 日部署了 fix。到 9 月 16 日，我们在 first-party platform 和 Google Cloud 的 Vertex AI 上完成 rollout；到 9 月 18 日，在 AWS Bedrock 上完成 rollout。</p>
+<h3 id="2-tpu-random-corruption">2. TPU random corruption</h3>
+<p>8 月 25 日，我们向 Claude API TPU servers 部署了一个 misconfiguration，导致 token generation 期间出现 error。由 runtime performance optimization 引发的 issue，偶尔会给在给定 context 下本应很少产生的 tokens 分配高 probability，例如在回应 English prompts 时产生 Thai 或 Chinese characters，或在 code 中产生明显 syntax errors。例如，一小部分用 English 提问的用户可能会在 response 中间看到 “สวัสดี”。</p>
+<p>这种 corruption 影响了 8 月 25 日至 28 日发往 Opus 4.1 和 Opus 4 的 requests，以及 8 月 25 日至 9 月 2 日发往 Sonnet 4 的 requests。Third-party platforms 没有受到这个 issue 影响。</p>
+<p><strong>Resolution:</strong> 我们识别了这个 issue，并在 9 月 2 日 rollback 了 change。我们已经把 unexpected character outputs 的 detection tests 添加到 deployment process 中。</p>
+<h3 id="3-approximate-top-k-xlatpu-miscompilation">3. Approximate top-k XLA:TPU miscompilation</h3>
+<p>8 月 25 日，我们部署了代码来改善 Claude 在 text generation 期间选择 tokens 的方式。这个 change 无意中触发了 XLA:TPU<sup id="fnref:1"><a href="#fn:1" class="footnote-ref" role="doc-noteref">1</a></sup> compiler 中的 latent bug，并已确认会影响 Claude Haiku 3.5 的 requests。</p>
+<p>我们也认为这可能影响 Claude API 上 Sonnet 4 和 Opus 3 的一部分 requests。Third-party platforms 没有受到这个 issue 影响。</p>
+<p><strong>Resolution:</strong> 我们首先观察到这个 bug 影响 Haiku 3.5，并在 9 月 4 日 rollback。后来我们注意到用户关于 Opus 3 问题的 reports 与这个 bug 相符，并在 9 月 12 日 rollback。经过广泛 investigation 后，我们无法在 Sonnet 4 上 reproduce 这个 bug，但出于充分谨慎，也决定 rollback。</p>
+<p>同时，我们已经 (a) 与 XLA:TPU team 合作修复 compiler bug，并 (b) rollout 了使用 enhanced precision 的 exact top-k fix。详情请见下面的 deep dive。</p>
+<h2 id="更近距离观察-xla-compiler-bug">更近距离观察 XLA compiler bug</h2>
+<p>为了说明这些 issues 的 complexity，下面是 XLA compiler bug 如何表现，以及它为什么特别难以 diagnosis。</p>
+<p>当 Claude 生成 text 时，它会为每个可能的 next word 计算 probabilities，然后从这个 probability distribution 中随机选择一个 sample。我们使用 “top-p sampling” 来避免 nonsensical outputs，也就是只考虑 cumulative probability 达到 threshold（通常为 0.99 或 0.999）的 words。在 TPUs 上，我们的 models 跨多个 chips 运行，probability calculations 发生在不同 locations。为了对这些 probabilities 进行排序，我们需要在 chips 之间协调 data，这很复杂。<sup id="fnref:2"><a href="#fn:2" class="footnote-ref" role="doc-noteref">2</a></sup></p>
+<p>2024 年 12 月，我们发现我们的 TPU implementation 在 <a href="https://docs.claude.com/en/docs/about-claude/glossary#temperature">temperature</a> 为零时，偶尔会丢弃 most probable token。我们部署了一个 workaround 来修复这种情况。</p>
+<p><img src="/images/blog/anthropic-three-recent-issues-postmortem/december-2024-patch.png" alt="Code snippet of a December 2024 patch."></p>
+<p>2024 年 12 月 patch 的 code snippet，用来 workaround temperature = 0 时 unexpected dropped token bug。</p>
+<p>Root cause 涉及 mixed precision arithmetic。我们的 models 使用 <a href="https://github.com/tensorflow/tensorflow/blob/f41959ccb2d9d4c722fe8fc3351401d53bcf4900/tensorflow/core/framework/bfloat16.h">bf16</a>（16-bit floating point）计算 next-token probabilities。不过 vector processor 是 <a href="https://dl.acm.org/doi/pdf/10.1145/3360307">fp32-native</a>，因此 TPU compiler (XLA) 可以通过把某些 operations 转换为 fp32（32-bit）来优化 runtime。这个 optimization pass 由 <code>xla_allow_excess_precision</code> flag guard，默认值为 true。</p>
+<p>这造成了 mismatch：本该在 highest probability token 上一致的 operations，运行在不同 precision levels。Precision mismatch 意味着它们对哪个 token 拥有 highest probability 无法达成一致。这导致 highest probability token 有时会完全从 consideration 中消失。</p>
+<p>8 月 26 日，我们部署了 sampling code 的 rewrite，以修复 precision issues，并改善我们如何处理达到 top-p threshold 边界的 probabilities。但在修复这些问题时，我们暴露了一个更棘手的问题。</p>
+<p><img src="/images/blog/anthropic-three-recent-issues-postmortem/minimized-reproducer.png" alt="Code snippet showing a minimized reproducer."></p>
+<p>Code snippet 展示了作为 8 月 11 日 change 一部分合并的 minimized reproducer，它 root-caused 了 2024 年 12 月正在 workaround 的 “bug”。实际上，这是 <code>xla_allow_excess_precision</code> flag 的 expected behavior。</p>
+<p>我们的 fix 移除了 12 月的 workaround，因为我们认为已经解决了 root cause。这导致 <a href="https://docs.jax.dev/en/latest/_autosummary/jax.lax.approx_max_k.html">approximate top-k</a> operation 中一个更深层的 bug 暴露出来，approximate top-k 是一种快速找出 highest probability tokens 的 performance optimization。<sup id="fnref:3"><a href="#fn:3" class="footnote-ref" role="doc-noteref">3</a></sup> 这种 approximation 有时会返回完全错误的结果，但只会在某些 batch sizes 和 model configurations 下发生。12 月的 workaround 无意中 mask 了这个问题。</p>
+<p><img src="/images/blog/anthropic-three-recent-issues-postmortem/approximate-top-k-reproducer.png" alt="Reproducer of the underlying approximate top-k bug."></p>
+<p>Underlying approximate top-k bug 的 reproducer，已分享给 <a href="https://arxiv.org/pdf/2206.14286">developed the algorithm</a> 的 XLA:TPU engineers。这段 code 在 CPUs 上运行时会返回正确结果。</p>
+<p>这个 bug 的行为令人沮丧地 inconsistent。它会根据无关因素而变化，例如它之前或之后运行了哪些 operations，以及 debugging tools 是否启用。同一个 prompt 可能在一个 request 上完全正常，而在下一个 request 上失败。</p>
+<p>在 investigation 期间，我们还发现 exact top-k operation 不再有过去那种 prohibitive performance penalty。我们从 approximate 切换到 exact top-k，并把一些额外 operations 标准化为 fp32 precision。<sup id="fnref:4"><a href="#fn:4" class="footnote-ref" role="doc-noteref">4</a></sup> Model quality 不容妥协，所以我们接受了轻微的 efficiency impact。</p>
+<h2 id="为什么我们没有更早发现">为什么我们没有更早发现？</h2>
+<p>我们的 validation process 通常依赖 benchmarks，以及 safety evaluations 和 performance metrics。Engineering teams 会执行 spot checks，并先部署到小规模 “canary” groups。</p>
+<p>这些 issues 暴露出我们本应更早识别的关键 gaps。我们运行的 evaluations 根本没有捕捉到用户报告的 degradation，部分原因是 Claude 通常能很好地从 isolated mistakes 中恢复。我们自己的 privacy practices 也给 investigation reports 带来了挑战。我们的内部 privacy 和 security controls 限制 engineers 访问用户与 Claude interactions 的方式和时间，尤其是在这些 interactions 未作为 feedback 报告给我们时。这保护了用户隐私，但也阻止 engineers 检查识别或 reproduce bugs 所需的问题 interactions。</p>
+<p>每个 bug 在不同 platforms 上以不同 rates 产生不同 symptoms。这创造了一组令人困惑的 reports，无法指向任何单一原因。它看起来像 random、inconsistent degradation。</p>
+<p>更根本的是，我们过度依赖 noisy evaluations。虽然我们知道 online reports 有所增加，但缺乏清晰方法把这些 reports 与每个 recent changes 联系起来。当 8 月 29 日 negative reports 激增时，我们没有立即把它与一次 otherwise standard 的 load balancing change 联系起来。</p>
+<h2 id="我们正在改变什么">我们正在改变什么</h2>
+<p>随着我们继续改进 infrastructure，我们也在改进评估和防止上述 bugs 这类问题的方式，覆盖我们提供 Claude 的所有 platforms。下面是我们正在改变的内容：</p>
+<ul>
+<li><strong>更敏感的 evaluations：</strong> 为了帮助发现任何给定 issue 的 root cause，我们开发了能够更可靠地区分 working 和 broken implementations 的 evaluations。我们会持续改进这些 evaluations，以更密切关注 model quality。</li>
+<li><strong>在更多地方进行 quality evaluations：</strong> 虽然我们会对 systems 运行 regular evaluations，但我们会在 true production systems 上持续运行它们，以捕捉 context window load balancing error 这类 issues。</li>
+<li><strong>更快的 debugging tooling：</strong> 我们会开发 infrastructure 和 tooling，以便在不牺牲用户隐私的情况下更好地 debug community-sourced feedback。此外，这次开发的一些 bespoke tools 会在未来类似 incidents 发生时，用于减少 remediation time。</li>
+</ul>
+<h2 id="用户反馈的重要性">用户反馈的重要性</h2>
+<p>Evals 和 monitoring 很重要。但这些 incidents 表明，当 Claude responses 没有达到通常标准时，我们也需要来自用户的 continuous signal。关于观察到的具体 changes 的 reports、遇到的 unexpected behavior examples，以及不同 use cases 中的 patterns，都帮助我们 isolate 这些 issues。</p>
+<p>用户继续直接向我们发送 feedback 仍然尤其有帮助。你可以使用 Claude Code 中的 <code>/bug</code> command，或使用 Claude apps 中的 “thumbs down” button 来做到这一点。Developers 和 researchers 经常会创建新颖有趣的方法来 evaluate model quality，补充我们的 internal testing。如果你想分享你的方法，请联系 <a href="mailto:feedback@anthropic.com">feedback@anthropic.com</a>。</p>
+<p>我们仍然感谢 community 的这些贡献。</p>
+<p>作者：Sam McAllister，并感谢 Stuart Ritchie、Jonathan Gray、Kashyap Murali、Brennan Saeta、Oliver Rausch、Alex Palcuie 以及许多其他人。</p>
+<div class="footnotes" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn:1">
+<p>XLA:TPU 是 optimizing compiler，它把 <a href="https://openxla.org/xla/architecture">XLA</a> High Level Optimizing language（通常使用 <a href="https://docs.jax.dev/en/latest">JAX</a> 编写）转换为 TPU machine instructions。&#160;<a href="#fnref:1" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:2">
+<p>我们的 models 对单个 chips 来说太大，因此被 partitioned 到数十个或更多 chips 上，这使我们的 sorting operation 成为 distributed sort。TPUs（就像 GPUs 和 Trainium 一样）也有不同于 CPUs 的 performance characteristics，需要使用 vectorized operations 而不是 serial algorithms 的不同 implementation techniques。&#160;<a href="#fnref:2" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:3">
+<p>我们一直使用这个 approximate operation，因为它带来了显著 performance improvements。这个 approximation 通过接受 lowest probability tokens 中的潜在 inaccuracies 来工作，而这些 inaccuracies 本不应影响 quality，除非 bug 导致它丢弃的是 highest probability token。&#160;<a href="#fnref:3" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+<li id="fn:4">
+<p>请注意，现在正确的 top-k implementation 可能会导致 top-p threshold 附近 tokens 的 inclusion 出现轻微差异，在罕见情况下，用户可能会受益于重新调优他们选择的 top-p。&#160;<a href="#fnref:4" class="footnote-backref" role="doc-backlink">&#x21a9;&#xfe0e;</a></p>
+</li>
+</ol>
+</div>
+
+    </div>
+  </div>
+
+  <nav class="story-nav">
+    <div class="article-nav-inner">
+      
+        <div class="article-nav-prev">
+          <p class="article-nav-label">Previous</p>
+          <a href="/zh/blog/2026/05/building-effective-agents/" class="article-nav-title">构建有效的 AI Agents</a>
+        </div>
+      
+      
+        <div class="article-nav-next">
+          <p class="article-nav-label">Next</p>
+          <a href="/zh/blog/2026/05/contextual-retrieval/" class="article-nav-title">AI 系统中的 Contextual Retrieval</a>
+        </div>
+      
+    </div>
+  </nav>
+</article>
+
+
+  </main>
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copyright">&copy; 2026 Alex Chen</span>
+    <nav class="footer-nav">
+      
+        <a href="/zh/blog/">博客</a>
+      
+        <a href="/zh/projects/">项目</a>
+      
+        <a href="/zh/memos/">随笔</a>
+      
+        <a href="/zh/about/">关于</a>
+      
+    </nav>
+    <div class="footer-social">
+      <a href="/zh/index.xml" aria-label="RSS Feed">RSS</a>
+    </div>
+  </div>
+</footer>
+
+  
+  <script src="/js/main.js"></script>
+</body>
+</html>

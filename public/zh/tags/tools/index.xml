@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tools on Alex Chen</title>
+    <link>https://example.org/zh/tags/tools/</link>
+    <description>Recent content in Tools on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 13:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/tools/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>在 Claude Developer Platform 上引入 advanced tool use</title>
+      <link>https://example.org/zh/blog/2026/05/advanced-tool-use/</link>
+      <pubDate>Sat, 16 May 2026 13:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/advanced-tool-use/</guid>
+      <description>&lt;p&gt;&lt;img src=&#34;https://example.org/images/blog/advanced-tool-use/advanced-tool-use.svg&#34; alt=&#34;Illustration for advanced tool use article.&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;Advanced tool use 文章的插图。&lt;/p&gt;&#xA;&lt;p&gt;AI agents 的未来，是 models 可以在数百或数千个 tools 之间无缝工作。一个 IDE assistant 可以集成 git operations、file manipulation、package managers、testing frameworks 和 deployment pipelines。一个 operations coordinator 可以同时连接 Slack、GitHub、Google Drive、Jira、company databases 和数十个 MCP servers。&lt;/p&gt;&#xA;&lt;p&gt;为了 &lt;a href=&#34;https://www.anthropic.com/research/building-effective-agents&#34;&gt;build effective agents&lt;/a&gt;，它们需要使用 unlimited tool libraries，而不是预先把每个 definition 都塞进 context。我们关于使用 &lt;a href=&#34;https://www.anthropic.com/engineering/code-execution-with-mcp&#34;&gt;code execution with MCP&lt;/a&gt; 的 blog article 讨论了 tool results 和 definitions 有时如何在 agent 读取 request 之前就消耗 50,000+ tokens。Agents 应该按需发现和加载 tools，只保留与当前 task 相关的内容。&lt;/p&gt;&#xA;&lt;p&gt;Agents 也需要从 code 中调用 tools 的能力。使用 natural language tool calling 时，每次 invocation 都需要一次完整 inference pass，而且 intermediate results 会堆积在 context 中，无论它们是否有用。Code 天然适合 orchestration logic，例如 loops、conditionals 和 data transformations。Agents 需要根据手头 task，在 code execution 和 inference 之间选择的灵活性。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>“think” 工具：让 Claude 停下来思考</title>
+      <link>https://example.org/zh/blog/2026/05/claude-think-tool/</link>
+      <pubDate>Sat, 16 May 2026 07:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/claude-think-tool/</guid>
+      <description>&lt;ul&gt;&#xA;&lt;li&gt;Extended thinking capabilities 自首次发布以来已有改进，因此在大多数情况下，我们建议使用该功能，而不是专门的 think tool。Extended thinking 提供类似收益，也就是给 Claude 留出空间推理复杂问题，同时有更好的集成和性能。实现细节请参阅我们的 extended thinking 文档。&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;随着我们持续增强 Claude 的复杂问题解决能力，我们发现了一种特别有效的方法：“think” 工具，它会在复杂任务期间为结构化思考创建专用空间。&lt;/p&gt;&#xA;&lt;p&gt;这项简单但强大的技术不同于 Claude 新的 “&lt;a href=&#34;https://www.anthropic.com/research/visible-extended-thinking&#34;&gt;extended thinking&lt;/a&gt;” 能力（&lt;a href=&#34;https://platform.claude.com/docs/en/build-with-claude/extended-thinking&#34;&gt;extended thinking implementation details&lt;/a&gt; 见此），下文会解释区别。它显著改善了 Claude 的 agentic tool use 能力，包括遵循 policies、做出一致决策，以及处理多步骤问题，而且实现开销很小。&lt;/p&gt;&#xA;&lt;p&gt;在这篇文章中，我们会探索如何在不同应用中实现 “think” 工具，并基于经过验证的 benchmark results，为开发者分享实用指导。&lt;/p&gt;&#xA;&lt;h3 id=&#34;什么是-think-工具&#34;&gt;什么是 “think” 工具？&lt;/h3&gt;&#xA;&lt;p&gt;通过 “think” 工具，我们赋予 Claude 在得到最终答案之前加入一个额外思考步骤的能力，而且这个步骤有自己指定的空间。&lt;/p&gt;&#xA;&lt;p&gt;虽然它听起来类似 extended thinking，但这是不同概念。Extended thinking 关注的是 Claude 在开始生成回答之前做什么。使用 extended thinking 时，Claude 会在采取行动之前深入考虑并迭代自己的计划。“think” 工具则用于 Claude 一旦开始生成回答后，添加一步，让它停下来思考自己是否拥有继续前进所需的全部信息。当 Claude 执行长链条工具调用，或与用户进行长时间多步骤对话时，这尤其有帮助。&lt;/p&gt;&#xA;&lt;p&gt;这使得 “think” 工具更适合以下情况：Claude 无法仅凭用户 query 获得制定回答所需的全部信息，并且需要处理外部信息（例如工具调用结果中的信息）。Claude 使用 “think” 工具执行的推理，不如 extended thinking 所能获得的推理全面，而是更聚焦于模型发现的&lt;em&gt;新&lt;/em&gt;信息。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>为 AI agents 编写有效工具：用 AI agents</title>
+      <link>https://example.org/zh/blog/2026/05/writing-tools-for-agents/</link>
+      <pubDate>Sat, 16 May 2026 07:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/writing-tools-for-agents/</guid>
+      <description>&lt;p&gt;这是一幅用于 Engineering Blog 文章《Writing effective tools for agents &amp;ndash; with agents》的抽象插图。&lt;/p&gt;&#xA;&lt;p&gt;&lt;a href=&#34;https://modelcontextprotocol.io/docs/getting-started/intro&#34;&gt;Model Context Protocol (MCP)&lt;/a&gt; 可以让 LLM agents 拥有可能多达数百个工具，以解决现实世界任务。但我们如何让这些工具最大程度有效？&lt;/p&gt;&#xA;&lt;p&gt;在这篇文章中，我们描述了在各种 agentic AI systems 中提升性能最有效的技术&lt;sup id=&#34;fnref:1&#34;&gt;&lt;a href=&#34;#fn:1&#34; class=&#34;footnote-ref&#34; role=&#34;doc-noteref&#34;&gt;1&lt;/a&gt;&lt;/sup&gt;。&lt;/p&gt;&#xA;&lt;p&gt;我们首先会介绍你如何：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;构建并测试工具 prototypes&lt;/li&gt;&#xA;&lt;li&gt;创建并运行全面的工具 evaluations，让 agents 使用这些工具&lt;/li&gt;&#xA;&lt;li&gt;与 Claude Code 这样的 agents 协作，自动提升工具性能&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;最后，我们会总结一路识别出的编写高质量工具的关键原则：&lt;/p&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;选择正确的工具来实现（以及不实现）&lt;/li&gt;&#xA;&lt;li&gt;对工具进行 namespacing，以定义清晰的功能边界&lt;/li&gt;&#xA;&lt;li&gt;从工具向 agents 返回有意义的 context&lt;/li&gt;&#xA;&lt;li&gt;优化工具 responses 的 token efficiency&lt;/li&gt;&#xA;&lt;li&gt;对工具 descriptions 和 specs 进行 prompt-engineering&lt;/li&gt;&#xA;&lt;/ul&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://example.org/images/blog/writing-tools-for-agents/evaluation-loop.png&#34; alt=&#34;Building an evaluation allows you to systematically measure the performance of your tools.&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;构建 evaluation 可以让你系统性地衡量工具性能。你可以使用 Claude Code 根据这个 evaluation 自动优化你的工具。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

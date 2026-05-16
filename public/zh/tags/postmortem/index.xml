@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Postmortem on Alex Chen</title>
+    <link>https://example.org/zh/tags/postmortem/</link>
+    <description>Recent content in Postmortem on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 08:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/postmortem/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Anthropic 三个近期问题的事后复盘</title>
+      <link>https://example.org/zh/blog/2026/05/anthropic-three-recent-issues-postmortem/</link>
+      <pubDate>Sat, 16 May 2026 08:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/anthropic-three-recent-issues-postmortem/</guid>
+      <description>&lt;p&gt;8 月到 9 月初期间，三个 infrastructure bugs 间歇性降低了 Claude 的 response quality。我们现在已经解决了这些问题，并希望解释发生了什么。&lt;/p&gt;&#xA;&lt;p&gt;8 月初，一些用户开始报告 Claude responses 出现 degraded。这些初始报告很难与用户反馈中的正常波动区分开。到 8 月下旬，这些报告的频率和持续性不断增加，促使我们开启 investigation，并由此发现了三个独立的 infrastructure bugs。&lt;/p&gt;&#xA;&lt;p&gt;直说就是：我们从不会因为 demand、time of day 或 server load 而降低 model quality。用户报告的问题完全由 infrastructure bugs 导致。&lt;/p&gt;&#xA;&lt;p&gt;我们认识到，用户期望 Claude 保持一致的质量，而我们也为确保 infrastructure changes 不影响 model outputs 维持极高标准。在这些近期 incidents 中，我们没有达到这个标准。下面的 postmortem 会解释哪里出了问题，为什么 detection 和 resolution 花了比我们希望更久的时间，以及我们正在做哪些改变来防止未来出现类似 incidents。&lt;/p&gt;&#xA;&lt;p&gt;我们通常不会分享这种技术细节层级的 infrastructure 信息，但这些问题的 scope 和 complexity 值得更全面地解释。&lt;/p&gt;&#xA;&lt;p&gt;我们通过 first-party API、Amazon Bedrock 和 Google Cloud 的 Vertex AI 向数百万用户提供 Claude。我们在多个 hardware platforms 上部署 Claude，也就是 AWS Trainium、NVIDIA GPUs 和 Google TPUs。这种方法提供了服务全球用户所需的 capacity 和 geographic distribution。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

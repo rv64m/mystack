@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <script>
+    (() => {
+      const key = 'site-theme';
+      const stored = localStorage.getItem(key);
+      const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>使用 MCP 进行 code execution：构建更高效的 AI agents — Alex Chen</title>
+<meta name="description" content="设计师与开发者，构建安静而有意图的软件。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+
+</head>
+<body>
+  <nav class="site-nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="/zh/" class="nav-wordmark">Alex Chen</a>
+    <ul class="nav-links" id="nav-links">
+      
+        <li><a href="/zh/blog/" class="">博客</a></li>
+      
+        <li><a href="/zh/projects/" class="">项目</a></li>
+      
+        <li><a href="/zh/memos/" class="">随笔</a></li>
+      
+        <li><a href="/zh/about/" class="">关于</a></li>
+      
+    </ul>
+    <div class="nav-actions">
+      <div class="language-switcher" aria-label="Language switcher">
+        
+          
+          
+          
+            
+            
+              
+            
+          
+          <a href="/" class="" hreflang="en">English</a>
+        
+          
+          
+          
+            
+          
+          <a href="/zh/blog/2026/05/code-execution-with-mcp/" class="is-active" hreflang="zh">中文</a>
+        
+      </div>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="Switch to dark mode"
+        aria-pressed="false"
+      >
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
+        </svg>
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+  <main id="main">
+    
+
+<article class="story-shell container">
+  <header class="story-hero">
+    <div class="story-hero-copy">
+      <p class="section-kicker">Essay</p>
+      <h1 class="story-title">使用 MCP 进行 code execution：构建更高效的 AI agents</h1>
+      <div class="story-meta">
+        <span><time datetime="2026-05-16">May 16, 2026</time></span>
+        <span>6 min read</span>
+        <span>Agent Notes</span>
+      </div>
+    </div>
+    
+      <div class="story-tags">
+        
+          <a href="/tags/ai" class="tag-pill">ai</a>
+        
+          <a href="/tags/agents" class="tag-pill">agents</a>
+        
+          <a href="/tags/mcp" class="tag-pill">mcp</a>
+        
+          <a href="/tags/code-execution" class="tag-pill">code-execution</a>
+        
+      </div>
+    
+  </header>
+
+  <div class="story-body-wrap">
+    <div class="article-body story-body">
+      <p><a href="https://modelcontextprotocol.io/">Model Context Protocol (MCP)</a> 是一个用于把 AI agents 连接到 external systems 的 open standard。把 agents 连接到 tools 和 data，传统上需要为每一组 pairing 做 custom integration，这会造成 fragmentation 和 duplicated effort，使真正 connected systems 难以 scale。MCP 提供了一个 universal protocol：developers 只需在自己的 agent 中实现一次 MCP，就能解锁整个 integrations ecosystem。</p>
+<p>自 2024 年 11 月推出 MCP 以来，采用速度很快：community 已经构建了数千个 <a href="https://github.com/modelcontextprotocol/servers">MCP servers</a>，<a href="https://modelcontextprotocol.io/docs/sdk">SDKs</a> 已覆盖所有主流 programming languages，industry 也已采用 MCP 作为把 agents 连接到 tools 和 data 的 de-facto standard。</p>
+<p>今天，developers 经常构建能访问数十个 MCP servers 上数百甚至数千个 tools 的 agents。然而，随着 connected tools 数量增长，预先加载所有 tool definitions，并通过 context window 传递 intermediate results，会拖慢 agents 并增加 costs。</p>
+<p>在这篇 blog 中，我们会探索 code execution 如何让 agents 更高效地与 MCP servers 交互，在使用更少 tokens 的同时处理更多 tools。</p>
+<p>随着 MCP usage scale，有两种常见 patterns 会增加 agent cost 和 latency：</p>
+<ol>
+<li>Tool definitions 使 context window 过载；</li>
+<li>Intermediate tool results 消耗额外 tokens。</li>
+</ol>
+<p>大多数 MCP clients 会把所有 tool definitions 直接预先加载到 context 中，并用 direct tool-calling syntax 把它们暴露给 model。这些 tool definitions 可能看起来像这样：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>gdrive.getDocument
+</span></span><span style="display:flex;"><span>     Description: Retrieves a document from Google Drive
+</span></span><span style="display:flex;"><span>     Parameters:
+</span></span><span style="display:flex;"><span>                documentId (required, string): The ID of the document to retrieve
+</span></span><span style="display:flex;"><span>                fields (optional, string): Specific fields to return
+</span></span><span style="display:flex;"><span>     Returns: Document object with title, body content, metadata, permissions, etc.
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>salesforce.updateRecord
+</span></span><span style="display:flex;"><span>    Description: Updates a record in Salesforce
+</span></span><span style="display:flex;"><span>    Parameters:
+</span></span><span style="display:flex;"><span>               objectType (required, string): Type of Salesforce object (Lead, Contact,      Account, etc.)
+</span></span><span style="display:flex;"><span>               recordId (required, string): The ID of the record to update
+</span></span><span style="display:flex;"><span>               data (required, object): Fields to update with their new values
+</span></span><span style="display:flex;"><span>     Returns: Updated record object with confirmation
+</span></span></code></pre></div><p>Tool descriptions 会占用更多 context window space，增加 response time 和 costs。在 agents 连接到数千个 tools 的情况下，它们可能需要先处理数十万 tokens，然后才能读取 request。</p>
+<p>大多数 MCP clients 允许 models 直接调用 MCP tools。例如，你可能会问你的 agent：“从 Google Drive 下载我的 meeting transcript，并把它附加到 Salesforce lead 上。”</p>
+<p>Model 会进行这样的 calls：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>TOOL CALL: gdrive.getDocument(documentId: &#34;abc123&#34;)
+</span></span><span style="display:flex;"><span>        → returns &#34;Discussed Q4 goals...\n[full transcript text]&#34;
+</span></span><span style="display:flex;"><span>           (loaded into model context)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>TOOL CALL: salesforce.updateRecord(
+</span></span><span style="display:flex;"><span>			objectType: &#34;SalesMeeting&#34;,
+</span></span><span style="display:flex;"><span>			recordId: &#34;00Q5f000001abcXYZ&#34;,
+</span></span><span style="display:flex;"><span>  			data: { &#34;Notes&#34;: &#34;Discussed Q4 goals...\n[full transcript text written out]&#34; }
+</span></span><span style="display:flex;"><span>		)
+</span></span><span style="display:flex;"><span>		(model needs to write entire transcript into context again)
+</span></span></code></pre></div><p>每个 intermediate result 都必须通过 model。在这个例子中，完整 call transcript 流经了两次。对于一场 2 小时 sales meeting，这可能意味着额外处理 50,000 tokens。更大的 documents 甚至可能超过 context window limits，破坏 workflow。</p>
+<p>对于大型 documents 或复杂 data structures，models 在 tool calls 之间复制 data 时也更可能出错。</p>
+<p><img src="/images/blog/code-execution-with-mcp/mcp-message-loop.png" alt="MCP client message loop."></p>
+<p>MCP client 会把 tool definitions 加载进 model 的 context window，并 orchestrate 一个 message loop，其中每次 tool call 和 result 都会在 operations 之间通过 model。</p>
+<h2 id="使用-mcp-进行-code-execution-会提高-context-efficiency"><strong>使用 MCP 进行 code execution 会提高 context efficiency</strong></h2>
+<p>随着 code execution environments 对 agents 来说越来越常见，一个解决方案是把 MCP servers 呈现为 code APIs，而不是 direct tool calls。Agent 随后可以编写 code 来与 MCP servers 交互。这种方法同时解决了两个挑战：agents 可以只加载自己需要的 tools，并在 execution environment 中处理 data，然后再把 results 传回 model。</p>
+<p>有很多方法可以做到这一点。一种方法是从 connected MCP servers 中的所有可用 tools 生成 file tree。下面是一个使用 TypeScript 的 implementation：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>servers
+</span></span><span style="display:flex;"><span>├── google-drive
+</span></span><span style="display:flex;"><span>│   ├── getDocument.ts
+</span></span><span style="display:flex;"><span>│   ├── ... (other tools)
+</span></span><span style="display:flex;"><span>│   └── index.ts
+</span></span><span style="display:flex;"><span>├── salesforce
+</span></span><span style="display:flex;"><span>│   ├── updateRecord.ts
+</span></span><span style="display:flex;"><span>│   ├── ... (other tools)
+</span></span><span style="display:flex;"><span>│   └── index.ts
+</span></span><span style="display:flex;"><span>└── ... (other servers)
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>// ./servers/google-drive/getDocument.ts
+</span></span><span style="display:flex;"><span>import { callMCPTool } from &#34;../../../client.js&#34;;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>interface GetDocumentInput {
+</span></span><span style="display:flex;"><span>  documentId: string;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>interface GetDocumentResponse {
+</span></span><span style="display:flex;"><span>  content: string;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>/* Read a document from Google Drive */
+</span></span><span style="display:flex;"><span>export async function getDocument(input: GetDocumentInput): Promise&lt;GetDocumentResponse&gt; {
+</span></span><span style="display:flex;"><span>  return callMCPTool&lt;GetDocumentResponse&gt;(&#39;google_drive__get_document&#39;, input);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>// Read transcript from Google Docs and add to Salesforce prospect
+</span></span><span style="display:flex;"><span>import * as gdrive from &#39;./servers/google-drive&#39;;
+</span></span><span style="display:flex;"><span>import * as salesforce from &#39;./servers/salesforce&#39;;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>const transcript = (await gdrive.getDocument({ documentId: &#39;abc123&#39; })).content;
+</span></span><span style="display:flex;"><span>await salesforce.updateRecord({
+</span></span><span style="display:flex;"><span>  objectType: &#39;SalesMeeting&#39;,
+</span></span><span style="display:flex;"><span>  recordId: &#39;00Q5f000001abcXYZ&#39;,
+</span></span><span style="display:flex;"><span>  data: { Notes: transcript }
+</span></span><span style="display:flex;"><span>});
+</span></span></code></pre></div><p>Agent 通过探索 filesystem 来发现 tools：列出 <code>./servers/</code> directory 以找到可用 servers（例如 <code>google-drive</code> 和 <code>salesforce</code>），然后读取它需要的具体 tool files（例如 <code>getDocument.ts</code> 和 <code>updateRecord.ts</code>）来理解每个 tool 的 interface。这让 agent 只加载当前 task 所需的 definitions。这会把 token usage 从 150,000 tokens 降到 2,000 tokens，节省 98.7% 的时间和成本。</p>
+<p>Cloudflare <a href="https://blog.cloudflare.com/code-mode/">published similar findings</a>，把使用 MCP 的 code execution 称为 “Code Mode”。核心 insight 是一样的：LLMs 擅长编写 code，developers 应该利用这一优势，构建能更高效地与 MCP servers 交互的 agents。</p>
+<h2 id="使用-mcp-进行-code-execution-的好处"><strong>使用 MCP 进行 code execution 的好处</strong></h2>
+<p>使用 MCP 进行 code execution，让 agents 可以通过按需加载 tools、在 data 到达 model 前 filtering data，以及在单步中执行 complex logic 来更高效地使用 context。使用这种方法也带来 security 和 state management 方面的好处。</p>
+<p>Models 非常擅长 navigating filesystems。把 tools 作为 filesystem 上的 code 呈现给 models，允许它们按需读取 tool definitions，而不是预先读取所有 definitions。</p>
+<p>或者，可以向 server 添加一个 <code>search_tools</code> tool 来寻找 relevant definitions。例如，在使用上面假想的 Salesforce server 时，agent 搜索 “salesforce”，并只加载当前 task 所需的那些 tools。在 <code>search_tools</code> tool 中包含 detail level parameter，让 agent 能选择所需的 detail level（例如只要 name、name and description，或带 schemas 的完整 definition），也有助于 agent 节省 context 并高效找到 tools。</p>
+<p>处理大型 datasets 时，agents 可以在返回 results 前用 code 过滤和转换 results。考虑获取一个 10,000 行 spreadsheet：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>// Without code execution - all rows flow through context
+</span></span><span style="display:flex;"><span>TOOL CALL: gdrive.getSheet(sheetId: &#39;abc123&#39;)
+</span></span><span style="display:flex;"><span>        → returns 10,000 rows in context to filter manually
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>// With code execution - filter in the execution environment
+</span></span><span style="display:flex;"><span>const allRows = await gdrive.getSheet({ sheetId: &#39;abc123&#39; });
+</span></span><span style="display:flex;"><span>const pendingOrders = allRows.filter(row =&gt;
+</span></span><span style="display:flex;"><span>  row[&#34;Status&#34;] === &#39;pending&#39;
+</span></span><span style="display:flex;"><span>);
+</span></span><span style="display:flex;"><span>console.log(`Found ${pendingOrders.length} pending orders`);
+</span></span><span style="display:flex;"><span>console.log(pendingOrders.slice(0, 5)); // Only log first 5 for review
+</span></span></code></pre></div><p>Agent 看到的是五行，而不是 10,000 行。类似 patterns 也适用于 aggregations、跨多个 data sources 的 joins，或提取 specific fields，全都不会让 context window bloated。</p>
+<p>Loops、conditionals 和 error handling 可以用熟悉的 code patterns 完成，而不是串联单独的 tool calls。例如，如果你需要 Slack 中的 deployment notification，agent 可以编写：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>let found = false;
+</span></span><span style="display:flex;"><span>while (!found) {
+</span></span><span style="display:flex;"><span>  const messages = await slack.getChannelHistory({ channel: &#39;C123456&#39; });
+</span></span><span style="display:flex;"><span>  found = messages.some(m =&gt; m.text.includes(&#39;deployment complete&#39;));
+</span></span><span style="display:flex;"><span>  if (!found) await new Promise(r =&gt; setTimeout(r, 5000));
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>console.log(&#39;Deployment notification received&#39;);
+</span></span></code></pre></div><p>这种方法比通过 agent loop 在 MCP tool calls 和 sleep commands 之间交替更高效。</p>
+<p>此外，能够写出并执行 conditional tree，也会节省 “time to first token” latency：agent 不必等待 model evaluate 一个 if-statement，而是可以让 code execution environment 来做这件事。</p>
+<p>当 agents 使用 MCP 进行 code execution 时，intermediate results 默认保留在 execution environment 中。这样，agent 只会看到你明确 log 或 return 的内容，意味着你不希望与 model 分享的数据可以流经 workflow，而永远不进入 model 的 context。</p>
+<p>对于更 sensitive workloads，agent harness 可以自动 tokenize sensitive data。例如，想象你需要把 customer contact details 从 spreadsheet 导入 Salesforce。Agent 写道：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>const sheet = await gdrive.getSheet({ sheetId: &#39;abc123&#39; });
+</span></span><span style="display:flex;"><span>for (const row of sheet.rows) {
+</span></span><span style="display:flex;"><span>  await salesforce.updateRecord({
+</span></span><span style="display:flex;"><span>    objectType: &#39;Lead&#39;,
+</span></span><span style="display:flex;"><span>    recordId: row.salesforceId,
+</span></span><span style="display:flex;"><span>    data: {
+</span></span><span style="display:flex;"><span>      Email: row.email,
+</span></span><span style="display:flex;"><span>      Phone: row.phone,
+</span></span><span style="display:flex;"><span>      Name: row.name
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  });
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>console.log(`Updated ${sheet.rows.length} leads`);
+</span></span></code></pre></div><p>MCP client 会拦截 data，并在它到达 model 前 tokenize PII：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>// What the agent would see, if it logged the sheet.rows:
+</span></span><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  { salesforceId: &#39;00Q...&#39;, email: &#39;[EMAIL_1]&#39;, phone: &#39;[PHONE_1]&#39;, name: &#39;[NAME_1]&#39; },
+</span></span><span style="display:flex;"><span>  { salesforceId: &#39;00Q...&#39;, email: &#39;[EMAIL_2]&#39;, phone: &#39;[PHONE_2]&#39;, name: &#39;[NAME_2]&#39; },
+</span></span><span style="display:flex;"><span>  ...
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><p>然后，当 data 在另一个 MCP tool call 中被分享时，它会通过 MCP client 中的 lookup 被 untokenized。真实 email addresses、phone numbers 和 names 会从 Google Sheets 流向 Salesforce，但永远不会经过 model。这可以防止 agent 意外 log 或 process sensitive data。你也可以用它来定义 deterministic security rules，选择 data 可以流向哪里，以及从哪里流出。</p>
+<p>带 filesystem access 的 code execution 允许 agents 跨 operations 维护 state。Agents 可以把 intermediate results 写入 files，从而让它们 resume work 并 track progress：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>const leads = await salesforce.query({
+</span></span><span style="display:flex;"><span>  query: &#39;SELECT Id, Email FROM Lead LIMIT 1000&#39;
+</span></span><span style="display:flex;"><span>});
+</span></span><span style="display:flex;"><span>const csvData = leads.map(l =&gt; `${l.Id},${l.Email}`).join(&#39;\n&#39;);
+</span></span><span style="display:flex;"><span>await fs.writeFile(&#39;./workspace/leads.csv&#39;, csvData);
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>// Later execution picks up where it left off
+</span></span><span style="display:flex;"><span>const saved = await fs.readFile(&#39;./workspace/leads.csv&#39;, &#39;utf-8&#39;);
+</span></span></code></pre></div><p>Agents 也可以把自己的 code 持久化为 reusable functions。一旦 agent 为某个 task 开发出可工作的 code，就可以保存该 implementation 供未来使用：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>// In ./skills/save-sheet-as-csv.ts
+</span></span><span style="display:flex;"><span>import * as gdrive from &#39;./servers/google-drive&#39;;
+</span></span><span style="display:flex;"><span>export async function saveSheetAsCsv(sheetId: string) {
+</span></span><span style="display:flex;"><span>  const data = await gdrive.getSheet({ sheetId });
+</span></span><span style="display:flex;"><span>  const csv = data.map(row =&gt; row.join(&#39;,&#39;)).join(&#39;\n&#39;);
+</span></span><span style="display:flex;"><span>  await fs.writeFile(`./workspace/sheet-${sheetId}.csv`, csv);
+</span></span><span style="display:flex;"><span>  return `./workspace/sheet-${sheetId}.csv`;
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>// Later, in any agent execution:
+</span></span><span style="display:flex;"><span>import { saveSheetAsCsv } from &#39;./skills/save-sheet-as-csv&#39;;
+</span></span><span style="display:flex;"><span>const csvPath = await saveSheetAsCsv(&#39;abc123&#39;);
+</span></span></code></pre></div><p>这与 <a href="https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview">Skills</a> 的概念紧密相关。Skills 是由 reusable instructions、scripts 和 resources 组成的 folders，供 models 在 specialized tasks 上提升 performance。向这些 saved functions 添加一个 SKILL.md 文件，就可以创建一个 models 能 reference 和 use 的 structured skill。随着时间推移，这让你的 agent 可以构建一个 higher-level capabilities toolbox，并演化出它最高效工作所需的 scaffolding。</p>
+<p>请注意，code execution 会引入自身 complexity。运行 agent-generated code 需要一个 secure execution environment，并具备适当的 <a href="https://www.anthropic.com/engineering/claude-code-sandboxing">sandboxing</a>、resource limits 和 monitoring。这些 infrastructure requirements 增加了 direct tool calls 所没有的 operational overhead 和 security considerations。Code execution 的好处，包括 reduced token costs、lower latency 和 improved tool composition，应该与这些 implementation costs 权衡。</p>
+<p>MCP 为 agents 连接许多 tools 和 systems 提供了 foundational protocol。然而，一旦连接了过多 servers，tool definitions 和 results 就可能消耗过多 tokens，降低 agent efficiency。</p>
+<p>虽然这里的许多问题感觉很新，例如 context management、tool composition、state persistence，但它们都有来自 software engineering 的已知 solutions。Code execution 把这些 established patterns 应用于 agents，让它们使用熟悉的 programming constructs 更高效地与 MCP servers 交互。如果你实现这种方法，我们鼓励你与 <a href="https://modelcontextprotocol.io/community/communication">MCP community</a> 分享你的发现。</p>
+<p><em>本文由 Adam Jones 和 Conor Kelly 撰写。感谢 Jeremy Fox、Jerome Swannack、Stuart Ritchie、Molly Vorwerck、Matt Samuels 和 Maggie Vo 对本文 drafts 的反馈。</em></p>
+
+    </div>
+  </div>
+
+  <nav class="story-nav">
+    <div class="article-nav-inner">
+      
+        <div class="article-nav-prev">
+          <p class="article-nav-label">Previous</p>
+          <a href="/zh/blog/2026/05/claude-code-sandboxing/" class="article-nav-title">用 sandboxing 让 Claude Code 更安全、更自主</a>
+        </div>
+      
+      
+        <div class="article-nav-next">
+          <p class="article-nav-label">Next</p>
+          <a href="/zh/blog/2026/05/advanced-tool-use/" class="article-nav-title">在 Claude Developer Platform 上引入 advanced tool use</a>
+        </div>
+      
+    </div>
+  </nav>
+</article>
+
+
+  </main>
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copyright">&copy; 2026 Alex Chen</span>
+    <nav class="footer-nav">
+      
+        <a href="/zh/blog/">博客</a>
+      
+        <a href="/zh/projects/">项目</a>
+      
+        <a href="/zh/memos/">随笔</a>
+      
+        <a href="/zh/about/">关于</a>
+      
+    </nav>
+    <div class="footer-social">
+      <a href="/zh/index.xml" aria-label="RSS Feed">RSS</a>
+    </div>
+  </div>
+</footer>
+
+  
+  <script src="/js/main.js"></script>
+</body>
+</html>

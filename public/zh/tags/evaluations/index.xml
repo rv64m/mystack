@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Evaluations on Alex Chen</title>
+    <link>https://example.org/zh/tags/evaluations/</link>
+    <description>Recent content in Evaluations on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 17:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/evaluations/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Claude Opus 4.6 的 BrowseComp 表现中的 eval awareness</title>
+      <link>https://example.org/zh/blog/2026/05/eval-awareness-browsecomp/</link>
+      <pubDate>Sat, 16 May 2026 17:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/eval-awareness-browsecomp/</guid>
+      <description>&lt;p&gt;BrowseComp 是一个 evaluation，旨在测试 models 在 web 上寻找难以定位信息的能力。像许多 benchmarks 一样，它容易受到 contamination 影响：answers 会通过 academic papers、blog posts 和 GitHub issues 泄漏到 public web 上，而运行 eval 的 model 可能会在 search results 中遇到它们。当我们在 multi-agent configuration 中评估 Claude Opus 4.6 的 BrowseComp 表现时，我们在 1,266 个 BrowseComp problems 中发现了 9 个这种 contamination 的例子。&lt;/p&gt;&#xA;&lt;p&gt;然而，我们还见证了两个 novel contamination pattern 的 cases。Claude Opus 4.6 并不是无意中遇到泄漏答案，而是独立 hypothesized 自己正在被 evaluated，识别出自己正在运行哪个 benchmark，然后定位并 decrypt 了 answer key。据我们所知，这是首次 documented instance：一个 model 在不知道正在被 administer 哪个 benchmark 的情况下怀疑自己正在被 evaluated，然后反向工作，成功识别并解决 evaluation 本身。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>量化 agentic coding evals 中的 infrastructure noise</title>
+      <link>https://example.org/zh/blog/2026/05/infrastructure-noise-agentic-coding-evals/</link>
+      <pubDate>Sat, 16 May 2026 16:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/infrastructure-noise-agentic-coding-evals/</guid>
+      <description>&lt;p&gt;像 SWE-bench 和 Terminal-Bench 这样的 agentic coding benchmarks，常被用于比较 frontier models 的 software engineering capabilities，而 leaderboards 上的头部名次往往只相差几个百分点。这些分数经常被视为 relative model capability 的精确测量，并且越来越多地影响关于部署哪些 models 的决策。然而，我们发现，仅 infrastructure configuration 就能产生超过这些 margin 的差异。在内部实验中，Terminal-Bench 2.0 上资源最多和资源最少 setup 之间的差距为 6 个百分点（p &amp;lt; 0.01）。&lt;/p&gt;&#xA;&lt;p&gt;Static benchmarks 会直接给 model 的 output 打分，runtime environment 不会影响结果。Agentic coding evals 则不同：models 会获得一个完整 environment，在其中编写 programs、运行 tests、安装 dependencies，并跨多轮迭代。Runtime 不再是一个 passive container，而是 problem-solving process 的 integral component。两个拥有不同 resource budgets 和 time limits 的 agents，并不是在参加同一场 test。&lt;/p&gt;&#xA;&lt;p&gt;Eval developers 已经开始考虑这一点。例如，Terminal-Bench 2.0 在最新 2.0 release 中，为每个 task 指定了推荐 CPU 和 RAM。然而，指定 resources 并不等于一致地 enforce 它们。此外，我们发现 enforcement methodology 会改变 benchmark 最终实际测量的东西。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>设计抗 AI 的技术评估</title>
+      <link>https://example.org/zh/blog/2026/05/ai-resistant-technical-evaluations/</link>
+      <pubDate>Sat, 16 May 2026 14:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/ai-resistant-technical-evaluations/</guid>
+      <description>&lt;p&gt;&lt;em&gt;本文由 Tristan Hume 撰写，他是 Anthropic performance optimization team 的负责人之一。Tristan 设计并重新设计了帮助 Anthropic 招聘数十名 performance engineers 的 take-home test。&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;随着 AI capabilities 改善，评估 technical candidates 变得更困难。一个今天能很好地区分人类技能水平的 take-home，明天可能会被 models 轻松解决，从而对 evaluation 变得毫无用处。&lt;/p&gt;&#xA;&lt;p&gt;自 2024 年初以来，我们的 performance engineering team 一直使用一个 take-home test，要求 candidates 为模拟 accelerator 优化代码。超过 1,000 名 candidates 完成了它，其中数十人现在在这里工作，包括 bring up 我们的 Trainium cluster，并 shipping 自 Claude 3 Opus 以来每个 model 的 engineers。&lt;/p&gt;&#xA;&lt;p&gt;但每个新的 Claude model 都迫使我们重新设计这个 test。在给定相同 time limit 时，Claude Opus 4 的表现超过了大多数 human applicants。这仍然让我们能够区分最强 candidates，但随后 Claude Opus 4.5 也匹配了这些人。Human 在给予 unlimited time 时仍然可以 outperform models，但在 take-home test 的 constraints 下，我们已经不再有办法区分 top candidates 的 output 和我们最有能力的 model。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

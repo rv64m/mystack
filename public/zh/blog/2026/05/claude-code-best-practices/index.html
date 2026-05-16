@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <script>
+    (() => {
+      const key = 'site-theme';
+      const stored = localStorage.getItem(key);
+      const theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.dataset.theme = theme;
+    })();
+  </script>
+  <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude Code 最佳实践 — Alex Chen</title>
+<meta name="description" content="设计师与开发者，构建安静而有意图的软件。">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=JetBrains+Mono:wght@400&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;1,6..72,400&display=swap" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/main.min.css">
+
+</head>
+<body>
+  <nav class="site-nav" id="site-nav">
+  <div class="nav-inner">
+    <a href="/zh/" class="nav-wordmark">Alex Chen</a>
+    <ul class="nav-links" id="nav-links">
+      
+        <li><a href="/zh/blog/" class="">博客</a></li>
+      
+        <li><a href="/zh/projects/" class="">项目</a></li>
+      
+        <li><a href="/zh/memos/" class="">随笔</a></li>
+      
+        <li><a href="/zh/about/" class="">关于</a></li>
+      
+    </ul>
+    <div class="nav-actions">
+      <div class="language-switcher" aria-label="Language switcher">
+        
+          
+          
+          
+            
+            
+              
+            
+          
+          <a href="/" class="" hreflang="en">English</a>
+        
+          
+          
+          
+            
+          
+          <a href="/zh/blog/2026/05/claude-code-best-practices/" class="is-active" hreflang="zh">中文</a>
+        
+      </div>
+      <button
+        class="theme-toggle"
+        id="theme-toggle"
+        type="button"
+        aria-label="Switch to dark mode"
+        aria-pressed="false"
+      >
+        <svg class="theme-icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"/>
+          <path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/>
+        </svg>
+        <svg class="theme-icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+      <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+  <main id="main">
+    
+
+<article class="story-shell container">
+  <header class="story-hero">
+    <div class="story-hero-copy">
+      <p class="section-kicker">Essay</p>
+      <h1 class="story-title">Claude Code 最佳实践</h1>
+      <div class="story-meta">
+        <span><time datetime="2026-05-16">May 16, 2026</time></span>
+        <span>10 min read</span>
+        <span>Agent Notes</span>
+      </div>
+    </div>
+    
+      <div class="story-tags">
+        
+          <a href="/tags/ai" class="tag-pill">ai</a>
+        
+          <a href="/tags/claude-code" class="tag-pill">claude-code</a>
+        
+          <a href="/tags/agents" class="tag-pill">agents</a>
+        
+          <a href="/tags/workflow" class="tag-pill">workflow</a>
+        
+      </div>
+    
+  </header>
+
+  <div class="story-body-wrap">
+    <div class="article-body story-body">
+      <blockquote>
+<p><strong>Documentation Index</strong></p>
+<p>在 <a href="https://code.claude.com/docs/llms.txt">https://code.claude.com/docs/llms.txt</a> 获取完整文档索引。
+在进一步探索之前，请使用这个文件发现所有可用页面。</p>
+</blockquote>
+<h1 id="claude-code-最佳实践">Claude Code 最佳实践</h1>
+<blockquote>
+<p>从配置环境到扩展并行 sessions，帮助你最大化发挥 Claude Code 的提示和模式。</p>
+</blockquote>
+<p>Claude Code 是一个 agentic coding environment。不同于回答问题然后等待的聊天机器人，Claude Code 可以读取你的文件、运行命令、进行修改，并在你观察、重定向或完全离开时自主处理问题。</p>
+<p>这改变了你的工作方式。你不再是自己写代码并要求 Claude 审查，而是描述你想要什么，然后 Claude 弄清楚如何构建它。Claude 会探索、规划并实现。</p>
+<p>但这种自主性仍然有学习曲线。Claude 在一些你需要理解的约束中工作。</p>
+<p>本指南覆盖了一些已被证明有效的模式，这些模式来自 Anthropic 内部团队，以及在各种 codebases、languages 和 environments 中使用 Claude Code 的工程师。关于 agentic loop 在底层如何工作，请见 <a href="https://www.notion.so/en/how-claude-code-works">How Claude Code works</a>。</p>
+<hr>
+<p>大多数最佳实践都基于一个约束：Claude 的上下文窗口填得很快，而且随着填满，性能会下降。</p>
+<p>Claude 的上下文窗口保存你的整个对话，包括每条消息、Claude 读取的每个文件，以及每个命令输出。然而，它可能很快填满。一次 debugging session 或 codebase exploration 可能会生成并消耗数万 tokens。</p>
+<p>这很重要，因为随着上下文填满，LLM 性能会下降。当上下文窗口快满时，Claude 可能开始“忘记”早先指令，或犯更多错误。上下文窗口是最重要的管理资源。要了解 session 在实践中如何填满，可以<a href="https://www.notion.so/en/context-window">观看交互式 walkthrough</a>，了解启动时加载了什么，以及每次文件读取消耗多少。用 <a href="https://www.notion.so/en/statusline">custom status line</a> 持续跟踪上下文使用情况，并参阅 <a href="https://www.notion.so/en/costs#reduce-token-usage">Reduce token usage</a> 获取减少 token 使用的策略。</p>
+<hr>
+<h2 id="给-claude-一种验证自己工作的方式">给 Claude 一种验证自己工作的方式</h2>
+<blockquote>
+<p>包含测试、截图或预期输出，让 Claude 能检查自己。这是你能做的单个杠杆最高的事情。</p>
+</blockquote>
+<p>当 Claude 能验证自己的工作时，它表现会显著更好，例如运行测试、比较截图和验证输出。</p>
+<p>如果没有清晰的成功标准，它可能产出看起来正确但实际不可用的东西。你会成为唯一的反馈循环，每个错误都需要你的注意力。</p>
+<table>
+  <thead>
+      <tr>
+          <th>Strategy</th>
+          <th>Before</th>
+          <th>After</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>提供验证标准</strong></td>
+          <td><em>“implement a function that validates email addresses”</em></td>
+          <td><em>“write a validateEmail function. example test cases: <a href="mailto:user@example.com">user@example.com</a> is true, invalid is false, user@.com is false. run the tests after implementing”</em></td>
+      </tr>
+      <tr>
+          <td><strong>可视化验证 UI 变更</strong></td>
+          <td><em>“make the dashboard look better”</em></td>
+          <td><em>“[paste screenshot] implement this design. take a screenshot of the result and compare it to the original. list differences and fix them”</em></td>
+      </tr>
+      <tr>
+          <td><strong>解决根因，而不是症状</strong></td>
+          <td><em>“the build is failing”</em></td>
+          <td><em>“the build fails with this error: [paste error]. fix it and verify the build succeeds. address the root cause, don&rsquo;t suppress the error”</em></td>
+      </tr>
+  </tbody>
+</table>
+<p>UI 变更可以使用 <a href="https://www.notion.so/en/chrome">Claude in Chrome extension</a> 验证。它会在你的浏览器中打开新 tabs，测试 UI，并迭代直到代码可用。</p>
+<p>你的验证也可以是 test suite、linter，或检查输出的 Bash command。投入精力让你的验证坚如磐石。</p>
+<hr>
+<h2 id="先探索再规划再编码">先探索，再规划，再编码</h2>
+<blockquote>
+<p>将研究和规划从实现中分离出来，避免解决错误的问题。</p>
+</blockquote>
+<p>让 Claude 直接跳进编码，可能会产出解决错误问题的代码。使用 <a href="https://www.notion.so/en/permission-modes#analyze-before-you-edit-with-plan-mode">plan mode</a> 将探索和执行分离。</p>
+<p>推荐 workflow 有四个阶段：</p>
+<h3 id="explore">Explore</h3>
+<p>进入 plan mode。Claude 读取文件并回答问题，但不做修改。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>read /src/auth and understand how we handle sessions and login.
+</span></span><span style="display:flex;"><span>also look at how we manage environment variables for secrets.
+</span></span></code></pre></div><h3 id="plan">Plan</h3>
+<p>要求 Claude 创建详细实现计划。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>I want to add Google OAuth. What files need to change?
+</span></span><span style="display:flex;"><span>What&#39;s the session flow? Create a plan.
+</span></span></code></pre></div><p>按 <code>Ctrl+G</code> 在文本编辑器中打开计划，以便在 Claude 继续之前直接编辑。</p>
+<h3 id="implement">Implement</h3>
+<p>退出 plan mode，让 Claude 编码，并对照计划验证。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>implement the OAuth flow from your plan. write tests for the
+</span></span><span style="display:flex;"><span>callback handler, run the test suite and fix any failures.
+</span></span></code></pre></div><h3 id="commit">Commit</h3>
+<p>要求 Claude 用描述性 message commit，并创建 PR。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>commit with a descriptive message and open a PR
+</span></span></code></pre></div><blockquote>
+<p>Plan mode 很有用，但也会增加开销。</p>
+<p>对于 scope 清晰且 fix 很小的任务，例如修 typo、添加 log line、重命名变量，可以直接要求 Claude 做。</p>
+<p>当你不确定方法、变更会修改多个文件，或你不熟悉要修改的代码时，planning 最有用。如果你能用一句话描述 diff，就跳过 plan。</p>
+</blockquote>
+<hr>
+<h2 id="在-prompt-中提供具体上下文">在 prompt 中提供具体上下文</h2>
+<blockquote>
+<p>指令越精确，需要的纠正越少。</p>
+</blockquote>
+<p>Claude 可以推断意图，但不能读心。引用具体文件、说明约束，并指向示例模式。</p>
+<table>
+  <thead>
+      <tr>
+          <th>Strategy</th>
+          <th>Before</th>
+          <th>After</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>限定任务范围。</strong> 指定哪个文件、什么场景，以及测试偏好。</td>
+          <td><em>“add tests for foo.py”</em></td>
+          <td><em>“write a test for foo.py covering the edge case where the user is logged out. avoid mocks.”</em></td>
+      </tr>
+      <tr>
+          <td><strong>指向来源。</strong> 让 Claude 去能回答问题的来源。</td>
+          <td><em>“why does ExecutionFactory have such a weird api?”</em></td>
+          <td><em>“look through ExecutionFactory&rsquo;s git history and summarize how its api came to be”</em></td>
+      </tr>
+      <tr>
+          <td><strong>引用现有模式。</strong> 指向 codebase 中的模式。</td>
+          <td><em>“add a calendar widget”</em></td>
+          <td><em>“look at how existing widgets are implemented on the home page to understand the patterns. HotDogWidget.php is a good example. follow the pattern to implement a new calendar widget that lets the user select a month and paginate forwards/backwards to pick a year. build from scratch without libraries other than the ones already used in the codebase.”</em></td>
+      </tr>
+      <tr>
+          <td><strong>描述症状。</strong> 提供症状、可能位置，以及“修好”的样子。</td>
+          <td><em>“fix the login bug”</em></td>
+          <td><em>“users report that login fails after session timeout. check the auth flow in src/auth/, especially token refresh. write a failing test that reproduces the issue, then fix it”</em></td>
+      </tr>
+  </tbody>
+</table>
+<p>当你在探索且可以承受 course-correct 时，模糊 prompts 也可能有用。像 <code>&quot;what would you improve in this file?&quot;</code> 这样的 prompt 可以浮现你没想到要问的东西。</p>
+<h3 id="提供丰富内容">提供丰富内容</h3>
+<blockquote>
+<p>使用 <code>@</code> 引用文件，粘贴截图/图片，或直接 pipe 数据。</p>
+</blockquote>
+<p>你可以用几种方式向 Claude 提供丰富数据：</p>
+<ul>
+<li><strong>使用 <code>@</code> 引用文件</strong>，而不是描述代码在哪里。Claude 会在回答前读取文件。</li>
+<li><strong>直接粘贴图片</strong>。把图片 copy/paste 或 drag and drop 进 prompt。</li>
+<li><strong>提供 URLs</strong> 用于文档和 API references。使用 <code>/permissions</code> allowlist 常用 domains。</li>
+<li><strong>Pipe in data</strong>，例如运行 <code>cat error.log | claude</code> 直接发送文件内容。</li>
+<li><strong>让 Claude 获取自己需要的东西</strong>。告诉 Claude 用 Bash commands、MCP tools 或读取文件自行拉取上下文。</li>
+</ul>
+<hr>
+<h2 id="配置你的环境">配置你的环境</h2>
+<p>几个设置步骤会让 Claude Code 在所有 sessions 中显著更有效。关于 extension features 的完整概览以及何时使用每个功能，请见 <a href="https://www.notion.so/en/features-overview">Extend Claude Code</a>。</p>
+<h3 id="编写有效的-claudemd">编写有效的 <a href="http://claude.md/">CLAUDE.md</a></h3>
+<blockquote>
+<p>运行 <code>/init</code>，根据当前项目结构生成 starter <a href="http://claude.md/">CLAUDE.md</a> 文件，然后随时间 refine。</p>
+</blockquote>
+<p><a href="http://claude.md/">CLAUDE.md</a> 是一个特殊文件，Claude 会在每次对话开始时读取它。包含 Bash commands、code style 和 workflow rules。这为 Claude 提供了仅凭代码无法推断的持久上下文。</p>
+<p><code>/init</code> 命令会分析你的 codebase，检测 build systems、test frameworks 和 code patterns，为你提供一个可 refine 的坚实基础。</p>
+<p><a href="http://claude.md/">CLAUDE.md</a> 文件没有必需格式，但要保持短小、易读。例如：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span># Code style
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Use ES modules (import/export) syntax, not CommonJS (require)
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Destructure imports when possible (eg. import { foo } from &#39;bar&#39;)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Workflow
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Be sure to typecheck when you&#39;re done making a series of code changes
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Prefer running single tests, and not the whole test suite, for performance
+</span></span></code></pre></div><p><a href="http://claude.md/">CLAUDE.md</a> 每个 session 都会加载，所以只包含广泛适用的内容。对于只在某些时候相关的领域知识或 workflows，请改用 <a href="https://www.notion.so/en/skills">skills</a>。Claude 会按需加载它们，而不会膨胀每次对话。</p>
+<p>保持简洁。对每一行，问自己：<em>“如果移除这行，会导致 Claude 犯错吗？”</em> 如果不会，就删掉。臃肿的 <a href="http://claude.md/">CLAUDE.md</a> 文件会导致 Claude 忽略你的实际指令。</p>
+<table>
+  <thead>
+      <tr>
+          <th>✅ Include</th>
+          <th>❌ Exclude</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Claude 无法猜到的 Bash commands</td>
+          <td>Claude 可以通过读代码弄清楚的任何东西</td>
+      </tr>
+      <tr>
+          <td>不同于默认值的 code style rules</td>
+          <td>Claude 已经知道的标准语言惯例</td>
+      </tr>
+      <tr>
+          <td>Testing instructions 和偏好的 test runners</td>
+          <td>详细 API 文档（改为链接到 docs）</td>
+      </tr>
+      <tr>
+          <td>Repository etiquette（branch naming、PR conventions）</td>
+          <td>频繁变化的信息</td>
+      </tr>
+      <tr>
+          <td>项目特定架构决策</td>
+          <td>长解释或 tutorials</td>
+      </tr>
+      <tr>
+          <td>Developer environment quirks（必需 env vars）</td>
+          <td>codebase 的逐文件描述</td>
+      </tr>
+      <tr>
+          <td>常见 gotchas 或不显而易见的行为</td>
+          <td>“write clean code” 这类显而易见实践</td>
+      </tr>
+  </tbody>
+</table>
+<p>如果 Claude 反复做你不想要的事，即使文件里有规则，文件可能太长，规则被淹没了。如果 Claude 问的问题在 <a href="http://claude.md/">CLAUDE.md</a> 中已有答案，措辞可能有歧义。把 <a href="http://claude.md/">CLAUDE.md</a> 当作代码：出问题时审查它，定期修剪，并通过观察 Claude 行为是否真的改变来测试变更。</p>
+<p>你可以通过添加强调（例如 “IMPORTANT” 或 “YOU MUST”）来改善指令遵循。把 <a href="http://claude.md/">CLAUDE.md</a> check into git，这样团队可以共同贡献。这个文件会随时间累积价值。</p>
+<p><a href="http://claude.md/">CLAUDE.md</a> 文件可以使用 <code>@path/to/import</code> 语法导入其他文件：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>See <span style="color:#6639ba">@README</span>.md for project overview and <span style="color:#6639ba">@package</span>.json for available npm commands.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span># Additional Instructions
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Git workflow: <span style="color:#6639ba">@docs/git</span>-instructions.md
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Personal overrides: @~/.claude/my-project-instructions.md
+</span></span></code></pre></div><p>你可以把 <a href="http://claude.md/">CLAUDE.md</a> 文件放在几个位置：</p>
+<ul>
+<li><strong>Home folder（<code>~/.claude/CLAUDE.md</code>）</strong>：应用于所有 Claude sessions</li>
+<li><strong>Project root（<code>./CLAUDE.md</code>）</strong>：check into git，与团队共享</li>
+<li><strong>Project root（<code>./CLAUDE.local.md</code>）</strong>：个人项目特定 notes；把这个文件加入 <code>.gitignore</code>，避免与团队共享</li>
+<li><strong>Parent directories</strong>：对 monorepos 很有用，<code>root/CLAUDE.md</code> 和 <code>root/foo/CLAUDE.md</code> 都会被自动拉入</li>
+<li><strong>Child directories</strong>：Claude 在处理这些目录中的文件时，会按需拉入 child <a href="http://claude.md/">CLAUDE.md</a> files</li>
+</ul>
+<h3 id="配置权限">配置权限</h3>
+<blockquote>
+<p>使用 <a href="https://www.notion.so/en/permission-modes#eliminate-prompts-with-auto-mode">auto mode</a> 让 classifier 处理批准，使用 <code>/permissions</code> allowlist 特定命令，或使用 <code>/sandbox</code> 做 OS-level isolation。每种方式都能减少中断，同时让你保持控制。</p>
+</blockquote>
+<p>默认情况下，Claude Code 会为可能修改系统的动作请求许可：文件写入、Bash commands、MCP tools 等。这很安全，但也繁琐。第十次批准之后，你其实不再真的审查，只是在一路点击。减少这些中断有三种方法：</p>
+<ul>
+<li><strong>Auto mode</strong>：一个独立 classifier model 审查命令，只阻止看起来有风险的内容：scope escalation、unknown infrastructure，或 hostile-content-driven actions。适合你信任任务大方向，但不想每一步都点击时使用。</li>
+<li><strong>Permission allowlists</strong>：允许你知道安全的特定工具，例如 <code>npm run lint</code> 或 <code>git commit</code>。</li>
+<li><strong>Sandboxing</strong>：启用 OS-level isolation，限制 filesystem 和 network access，让 Claude 在定义好的边界内更自由地工作。</li>
+</ul>
+<p>阅读更多关于 <a href="https://www.notion.so/en/permission-modes">permission modes</a>、<a href="https://www.notion.so/en/permissions">permission rules</a> 和 <a href="https://www.notion.so/en/sandboxing">sandboxing</a> 的内容。</p>
+<h3 id="使用-cli-工具">使用 CLI 工具</h3>
+<blockquote>
+<p>当与外部服务交互时，告诉 Claude Code 使用 <code>gh</code>、<code>aws</code>、<code>gcloud</code> 和 <code>sentry-cli</code> 等 CLI tools。</p>
+</blockquote>
+<p>CLI tools 是与外部服务交互时最节省上下文的方式。如果你使用 GitHub，请安装 <code>gh</code> CLI。Claude 知道如何用它创建 issues、打开 pull requests 和读取 comments。没有 <code>gh</code> 时，Claude 仍然可以使用 GitHub API，但未经认证的请求经常碰到 rate limits。</p>
+<p>Claude 也能有效学习它还不知道的 CLI tools。试试这样的 prompt：<code>Use 'foo-cli-tool --help' to learn about foo tool, then use it to solve A, B, C.</code></p>
+<h3 id="连接-mcp-servers">连接 MCP servers</h3>
+<blockquote>
+<p>运行 <code>claude mcp add</code> 连接外部工具，例如 Notion、Figma 或你的数据库。</p>
+</blockquote>
+<p>通过 <a href="https://www.notion.so/en/mcp">MCP servers</a>，你可以要求 Claude 从 issue trackers 实现 features、查询数据库、分析 monitoring data、集成来自 Figma 的设计，以及自动化 workflows。</p>
+<h3 id="设置-hooks">设置 hooks</h3>
+<blockquote>
+<p>对于每次都必须发生、没有例外的动作，使用 hooks。</p>
+</blockquote>
+<p><a href="https://www.notion.so/en/hooks-guide">Hooks</a> 会在 Claude workflow 的特定点自动运行 scripts。不同于 <a href="http://claude.md/">CLAUDE.md</a> 中的 advisory instructions，hooks 是确定性的，并保证动作发生。</p>
+<p>Claude 可以为你写 hooks。试试这样的 prompts：<em>“Write a hook that runs eslint after every file edit”</em> 或 <em>“Write a hook that blocks writes to the migrations folder.”</em> 直接编辑 <code>.claude/settings.json</code> 可以手动配置 hooks，运行 <code>/hooks</code> 可以浏览已配置内容。</p>
+<h3 id="创建-skills">创建 skills</h3>
+<blockquote>
+<p>在 <code>.claude/skills/</code> 中创建 <code>SKILL.md</code> 文件，为 Claude 提供领域知识和可复用 workflows。</p>
+</blockquote>
+<p><a href="https://www.notion.so/en/skills">Skills</a> 使用特定于项目、团队或领域的信息扩展 Claude 的知识。Claude 会在相关时自动应用它们，或者你可以用 <code>/skill-name</code> 直接调用。</p>
+<p>通过在 <code>.claude/skills/</code> 中添加一个带 <code>SKILL.md</code> 的目录来创建 skill：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>name: api-conventions
+</span></span><span style="display:flex;"><span>description: REST API design conventions for our services
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span># API Conventions
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Use kebab-case for URL paths
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Use camelCase for JSON properties
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Always include pagination for list endpoints
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Version APIs in the URL path (/v1/, /v2/)
+</span></span></code></pre></div><p>Skills 也可以定义你直接调用的 repeatable workflows：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>name: fix-issue
+</span></span><span style="display:flex;"><span>description: Fix a GitHub issue
+</span></span><span style="display:flex;"><span>disable-model-invocation: true
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>Analyze and fix the GitHub issue: $ARGUMENTS.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">1.</span> Use <span style="color:#0a3069">`gh issue view`</span> to get the issue details
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">2.</span> Understand the problem described in the issue
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">3.</span> Search the codebase for relevant files
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">4.</span> Implement the necessary changes to fix the issue
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">5.</span> Write and run tests to verify the fix
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">6.</span> Ensure code passes linting and type checking
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">7.</span> Create a descriptive commit message
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">8.</span> Push and create a PR
+</span></span></code></pre></div><p>运行 <code>/fix-issue 1234</code> 来调用它。对于有副作用、希望手动触发的 workflows，使用 <code>disable-model-invocation: true</code>。</p>
+<h3 id="创建-custom-subagents">创建 custom subagents</h3>
+<blockquote>
+<p>在 <code>.claude/agents/</code> 中定义 specialized assistants，让 Claude 可以为 isolated tasks 委派它们。</p>
+</blockquote>
+<p><a href="https://www.notion.so/en/sub-agents">Subagents</a> 在自己的上下文中运行，并拥有自己的一组 allowed tools。它们适合需要读取许多文件，或需要专门聚焦而不污染主对话的任务。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-markdown" data-lang="markdown"><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>name: security-reviewer
+</span></span><span style="display:flex;"><span>description: Reviews code for security vulnerabilities
+</span></span><span style="display:flex;"><span>tools: Read, Grep, Glob, Bash
+</span></span><span style="display:flex;"><span>model: opus
+</span></span><span style="display:flex;"><span>---
+</span></span><span style="display:flex;"><span>You are a senior security engineer. Review code for:
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Injection vulnerabilities (SQL, XSS, command injection)
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Authentication and authorization flaws
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Secrets or credentials in code
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">-</span> Insecure data handling
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Provide specific line references and suggested fixes.
+</span></span></code></pre></div><p>明确告诉 Claude 使用 subagents：<em>“Use a subagent to review this code for security issues.”</em></p>
+<h3 id="安装-plugins">安装 plugins</h3>
+<blockquote>
+<p>运行 <code>/plugin</code> 浏览 marketplace。Plugins 会添加 skills、tools 和 integrations，无需配置。</p>
+</blockquote>
+<p><a href="https://www.notion.so/en/plugins">Plugins</a> 会把 skills、hooks、subagents 和 MCP servers 打包成来自社区和 Anthropic 的单个可安装单元。如果你使用 typed language，请安装 <a href="https://www.notion.so/en/discover-plugins#code-intelligence">code intelligence plugin</a>，为 Claude 提供精确 symbol navigation，并在编辑后自动检测错误。</p>
+<p>关于如何在 skills、subagents、hooks 和 MCP 之间选择，请见 <a href="https://www.notion.so/en/features-overview#match-features-to-your-goal">Extend Claude Code</a>。</p>
+<hr>
+<h2 id="有效沟通">有效沟通</h2>
+<p>你与 Claude Code 沟通的方式，会显著影响结果质量。</p>
+<h3 id="提代码库问题">提代码库问题</h3>
+<blockquote>
+<p>像问高级工程师一样问 Claude 问题。</p>
+</blockquote>
+<p>当 onboarding 到新 codebase 时，使用 Claude Code 学习和探索。你可以问 Claude 那些会问其他工程师的问题：</p>
+<ul>
+<li>Logging 是如何工作的？</li>
+<li>我如何创建一个新的 API endpoint？</li>
+<li><code>foo.rs</code> 第 134 行的 <code>async move { ... }</code> 是什么意思？</li>
+<li><code>CustomerOnboardingFlowImpl</code> 处理了哪些 edge cases？</li>
+<li>为什么这段代码在第 333 行调用 <code>foo()</code> 而不是 <code>bar()</code>？</li>
+</ul>
+<p>这样使用 Claude Code 是一种有效的 onboarding workflow，可以缩短 ramp-up time，并减轻其他工程师负担。无需特殊 prompting：直接提问。</p>
+<h3 id="让-claude-采访你">让 Claude 采访你</h3>
+<blockquote>
+<p>对于较大的 features，先让 Claude 采访你。用最小 prompt 开始，并要求 Claude 使用 <code>AskUserQuestion</code> 工具采访你。</p>
+</blockquote>
+<p>Claude 会询问你可能还没考虑的东西，包括技术实现、UI/UX、edge cases 和 tradeoffs。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>I want to build [brief description]. Interview me in detail using the AskUserQuestion tool.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Ask about technical implementation, UI/UX, edge cases, concerns, and tradeoffs. Don&#39;t ask obvious questions, dig into the hard parts I might not have considered.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Keep interviewing until we&#39;ve covered everything, then write a complete spec to SPEC.md.
+</span></span></code></pre></div><p>Spec 完成后，启动一个新 session 来执行它。新 session 会有干净上下文，完全聚焦于实现，而你有一份可引用的书面 spec。</p>
+<hr>
+<h2 id="管理你的-session">管理你的 session</h2>
+<p>对话是持久且可逆的。利用这一点。</p>
+<h3 id="尽早且经常-course-correct">尽早且经常 course-correct</h3>
+<blockquote>
+<p>一旦注意到 Claude 偏离轨道，就纠正它。</p>
+</blockquote>
+<p>最好的结果来自紧密反馈循环。虽然 Claude 偶尔可以第一次就完美解决问题，但快速纠正它通常会更快地产生更好的方案。</p>
+<ul>
+<li><strong><code>Esc</code></strong>：用 <code>Esc</code> 键中途停止 Claude。上下文会保留，所以你可以重定向。</li>
+<li><strong><code>Esc + Esc</code> 或 <code>/rewind</code></strong>：按两次 <code>Esc</code> 或运行 <code>/rewind</code>，打开 rewind menu，恢复之前的对话和代码状态，或从选定消息总结。</li>
+<li><strong><code>&quot;Undo that&quot;</code></strong>：让 Claude revert 它的变更。</li>
+<li><strong><code>/clear</code></strong>：在不相关任务之间重置上下文。带无关上下文的长 sessions 会降低性能。</li>
+</ul>
+<p>如果你在一个 session 中针对同一个问题纠正 Claude 超过两次，上下文已经被失败方法弄乱了。运行 <code>/clear</code>，并用一个结合了你学到内容的更具体 prompt 重新开始。带更好 prompt 的干净 session 几乎总是胜过积累了纠正的长 session。</p>
+<h3 id="激进管理上下文">激进管理上下文</h3>
+<blockquote>
+<p>在不相关任务之间运行 <code>/clear</code> 来重置上下文。</p>
+</blockquote>
+<p>当你接近上下文限制时，Claude Code 会自动 compact 对话历史，在释放空间的同时保留重要代码和决策。</p>
+<p>在长 sessions 中，Claude 的上下文窗口可能填满无关对话、文件内容和命令。这会降低性能，有时会分散 Claude 注意力。</p>
+<ul>
+<li>经常在任务之间使用 <code>/clear</code>，完全重置上下文窗口。</li>
+<li>当 auto compaction 触发时，Claude 会总结最重要内容，包括 code patterns、file states 和 key decisions。</li>
+<li>如需更多控制，运行 <code>/compact &lt;instructions&gt;</code>，例如 <code>/compact Focus on the API changes</code>。</li>
+<li>要只 compact 对话的一部分，使用 <code>Esc + Esc</code> 或 <code>/rewind</code>，选择 message checkpoint，然后选择 <strong>Summarize from here</strong> 或 <strong>Summarize up to here</strong>。前者压缩从该点往后的消息，同时保留早先上下文完整；后者压缩更早消息，同时完整保留最近消息。见 <a href="https://www.notion.so/en/checkpointing#restore-vs-summarize">Restore vs. summarize</a>。</li>
+<li>在 <a href="http://claude.md/">CLAUDE.md</a> 中用类似 <code>&quot;When compacting, always preserve the full list of modified files and any test commands&quot;</code> 的指令自定义 compaction behavior，确保关键上下文在总结中幸存。</li>
+<li>对于不需要留在上下文中的快速问题，使用 <a href="https://www.notion.so/en/interactive-mode#side-questions-with-%2Fbtw"><code>/btw</code></a>。答案会出现在可关闭 overlay 中，永远不会进入对话历史，所以你可以检查细节而不增长上下文。</li>
+</ul>
+<h3 id="使用-subagents-做调查">使用 subagents 做调查</h3>
+<blockquote>
+<p>用 <code>&quot;use subagents to investigate X&quot;</code> 委派研究。它们在单独上下文中探索，让主对话保持干净以便实现。</p>
+</blockquote>
+<p>因为上下文是你的根本约束，subagents 是最强大的可用工具之一。当 Claude 研究 codebase 时，它会读取大量文件，这些都会消耗你的上下文。Subagents 在单独上下文窗口中运行，并回报总结：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>Use subagents to investigate how our authentication system handles token
+</span></span><span style="display:flex;"><span>refresh, and whether we have any existing OAuth utilities I should reuse.
+</span></span></code></pre></div><p>Subagent 会探索 codebase、读取相关文件，并回报发现，而不会污染你的主对话。</p>
+<p>你也可以在 Claude 实现某些东西后，用 subagents 做验证：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-plain" data-lang="plain"><span style="display:flex;"><span>use a subagent to review this code for edge cases
+</span></span></code></pre></div><h3 id="用-checkpoints-rewind">用 checkpoints rewind</h3>
+<blockquote>
+<p>你发送的每个 prompt 都会创建一个 checkpoint。你可以把对话、代码或二者恢复到任何早先 checkpoint。</p>
+</blockquote>
+<p>Claude 会在每次变更前自动 snapshot 文件，所以 checkpoint 可以恢复它们。双击 <code>Escape</code> 或运行 <code>/rewind</code> 打开 rewind menu。你可以只恢复对话、只恢复代码、恢复二者，或从选定消息总结。详情见 <a href="https://www.notion.so/en/checkpointing">Checkpointing</a>。</p>
+<p>你不必小心规划每一步，而可以让 Claude 尝试一些有风险的东西。如果不奏效，rewind 并尝试不同方法。Checkpoints 跨 sessions 持久存在，所以你可以关闭终端后稍后仍然 rewind。</p>
+<blockquote>
+<p>Warning：Checkpoints 只跟踪 <em>Claude</em> 做出的变更，不跟踪外部进程。这不能替代 git。</p>
+</blockquote>
+<h3 id="恢复-conversations">恢复 conversations</h3>
+<blockquote>
+<p>用 <code>/rename</code> 命名 sessions，并把它们当作 branches：每个 workstream 都有自己的持久上下文。</p>
+</blockquote>
+<p>Claude Code 会在本地保存 conversations，所以当任务跨越多次坐下工作时，你不必重新解释上下文。运行 <code>claude --continue</code> 接上最近 session，或运行 <code>claude --resume</code> 从列表中选择。给 sessions 起描述性名字，例如 <code>oauth-migration</code>，方便以后找到。关于完整 resume、branch 和 naming controls，见 <a href="https://www.notion.so/en/sessions">Manage sessions</a>。</p>
+<hr>
+<h2 id="自动化和扩展">自动化和扩展</h2>
+<p>一旦你能高效使用一个 Claude，就用 parallel sessions、non-interactive mode 和 fan-out patterns 放大产出。</p>
+<p>到目前为止的一切，都假设一个人、一个 Claude、一次对话。但 Claude Code 可以水平扩展。本节技术展示如何完成更多工作。</p>
+<h3 id="运行-non-interactive-mode">运行 non-interactive mode</h3>
+<blockquote>
+<p>在 CI、pre-commit hooks 或 scripts 中使用 <code>claude -p &quot;prompt&quot;</code>。添加 <code>--output-format stream-json</code> 获取 streaming JSON output。</p>
+</blockquote>
+<p>通过 <code>claude -p &quot;your prompt&quot;</code>，你可以非交互式运行 Claude，而不启动 session。<a href="https://www.notion.so/en/headless">Non-interactive mode</a> 是把 Claude 集成进 CI pipelines、pre-commit hooks 或任何 automated workflow 的方式。输出格式让你可以程序化解析结果：plain text、JSON 或 streaming JSON。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#57606a"># One-off queries</span>
+</span></span><span style="display:flex;"><span>claude -p <span style="color:#0a3069">&#34;Explain what this project does&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Structured output for scripts</span>
+</span></span><span style="display:flex;"><span>claude -p <span style="color:#0a3069">&#34;List all API endpoints&#34;</span> --output-format json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#57606a"># Streaming for real-time processing</span>
+</span></span><span style="display:flex;"><span>claude -p <span style="color:#0a3069">&#34;Analyze this log file&#34;</span> --output-format stream-json
+</span></span></code></pre></div><h3 id="运行多个-claude-sessions">运行多个 Claude sessions</h3>
+<blockquote>
+<p>并行运行多个 Claude sessions，以加速开发、运行 isolated experiments，或启动复杂 workflows。</p>
+</blockquote>
+<p>选择适合你希望自己做多少协调工作的并行方式：</p>
+<ul>
+<li><a href="https://www.notion.so/en/worktrees">Worktrees</a>：在 isolated git checkouts 中运行独立 CLI sessions，避免 edits 冲突。</li>
+<li><a href="https://www.notion.so/en/desktop#work-in-parallel-with-sessions">Desktop app</a>：以可视化方式管理多个本地 sessions，每个 session 在自己的 worktree 中。</li>
+<li><a href="https://www.notion.so/en/claude-code-on-the-web">Claude Code on the web</a>：在 Anthropic-managed cloud infrastructure 的 isolated VMs 中运行 sessions。</li>
+<li><a href="https://www.notion.so/en/agent-teams">Agent teams</a>：通过 shared tasks、messaging 和 team lead 自动协调多个 sessions。</li>
+</ul>
+<p>除了并行化工作，多个 sessions 也能启用面向质量的 workflows。Fresh context 会改善 code review，因为 Claude 不会偏向自己刚写的代码。</p>
+<p>例如，使用 Writer/Reviewer 模式：</p>
+<table>
+  <thead>
+      <tr>
+          <th>Session A (Writer)</th>
+          <th>Session B (Reviewer)</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>Implement a rate limiter for our API endpoints</code></td>
+          <td></td>
+      </tr>
+      <tr>
+          <td></td>
+          <td><code>Review the rate limiter implementation in @src/middleware/rateLimiter.ts. Look for edge cases, race conditions, and consistency with our existing middleware patterns.</code></td>
+      </tr>
+      <tr>
+          <td><code>Here's the review feedback: [Session B output]. Address these issues.</code></td>
+          <td></td>
+      </tr>
+  </tbody>
+</table>
+<p>你也可以用类似方法处理 tests：让一个 Claude 写 tests，然后让另一个写通过测试的代码。</p>
+<h3 id="跨文件-fan-out">跨文件 fan out</h3>
+<blockquote>
+<p>循环任务，对每个任务调用 <code>claude -p</code>。使用 <code>--allowedTools</code> 为 batch operations 限定权限范围。</p>
+</blockquote>
+<p>对于大型 migrations 或 analyses，你可以把工作分发到许多并行 Claude invocations：</p>
+<h3 id="generate-a-task-list">Generate a task list</h3>
+<p>让 Claude 列出所有需要迁移的文件，例如 <code>list all 2,000 Python files that need migrating</code>。</p>
+<h3 id="write-a-script-to-loop-through-the-list">Write a script to loop through the list</h3>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#cf222e">for</span> file in <span style="color:#cf222e">$(</span>cat files.txt<span style="color:#cf222e">)</span><span style="color:#1f2328">;</span> <span style="color:#cf222e">do</span>
+</span></span><span style="display:flex;"><span>  claude -p <span style="color:#0a3069">&#34;Migrate </span><span style="color:#953800">$file</span><span style="color:#0a3069"> from React to Vue. Return OK or FAIL.&#34;</span> <span style="color:#0a3069">\
+</span></span></span><span style="display:flex;"><span>    --allowedTools <span style="color:#0a3069">&#34;Edit,Bash(git commit *)&#34;</span>
+</span></span><span style="display:flex;"><span><span style="color:#cf222e">done</span>
+</span></span></code></pre></div><h3 id="test-on-a-few-files-then-run-at-scale">Test on a few files, then run at scale</h3>
+<p>根据前 2 到 3 个文件中出的问题 refine prompt，然后在完整集合上运行。<code>--allowedTools</code> 标志会限制 Claude 能做什么，这在无人值守运行时很重要。</p>
+<p>你也可以把 Claude 集成进现有 data/processing pipelines：</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>claude -p <span style="color:#0a3069">&#34;&lt;your prompt&gt;&#34;</span> --output-format json <span style="color:#1f2328">|</span> your_command
+</span></span></code></pre></div><p>开发期间使用 <code>--verbose</code> 做 debugging，在生产中关闭。</p>
+<h3 id="用-auto-mode-自主运行">用 auto mode 自主运行</h3>
+<p>对于带后台安全检查的不间断执行，使用 <a href="https://www.notion.so/en/permission-modes#eliminate-prompts-with-auto-mode">auto mode</a>。Classifier model 会在命令运行前审查它们，阻止 scope escalation、unknown infrastructure 和 hostile-content-driven actions，同时让 routine work 不经提示继续。</p>
+<div class="highlight"><pre tabindex="0" style="background-color:#f7f7f7;-moz-tab-size:2;-o-tab-size:2;tab-size:2;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>claude --permission-mode auto -p <span style="color:#0a3069">&#34;fix all lint errors&#34;</span>
+</span></span></code></pre></div><p>对于带 <code>-p</code> 标志的 non-interactive runs，如果 classifier 反复阻止动作，auto mode 会 abort，因为没有用户可供 fallback。阈值见 <a href="https://www.notion.so/en/permission-modes#when-auto-mode-falls-back">when auto mode falls back</a>。</p>
+<hr>
+<h2 id="避免常见失败模式">避免常见失败模式</h2>
+<p>这些是常见错误。尽早识别它们可以节省时间：</p>
+<ul>
+<li>
+<p><strong>Kitchen sink session。</strong> 你从一个任务开始，然后问 Claude 一些不相关的东西，再回到第一个任务。上下文充满无关信息。</p>
+<blockquote>
+<p><strong>Fix</strong>：在不相关任务之间 <code>/clear</code>。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>反复纠正。</strong> Claude 做错了，你纠正它，它仍然错，你再次纠正。上下文被失败方法污染。</p>
+<blockquote>
+<p><strong>Fix</strong>：两次失败纠正后，<code>/clear</code>，并写一个更好的初始 prompt，把你学到的东西纳入其中。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>过度指定的 <a href="http://claude.md/">CLAUDE.md</a>。</strong> 如果你的 <a href="http://claude.md/">CLAUDE.md</a> 太长，Claude 会忽略其中一半，因为重要规则淹没在噪音中。</p>
+<blockquote>
+<p><strong>Fix</strong>：无情修剪。如果 Claude 没有这条指令也已经能正确做某事，就删除它或把它转成 hook。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>Trust-then-verify gap。</strong> Claude 产出一个看似合理但不处理 edge cases 的实现。</p>
+<blockquote>
+<p><strong>Fix</strong>：始终提供验证（tests、scripts、screenshots）。如果不能验证，就不要 ship。</p>
+</blockquote>
+</li>
+<li>
+<p><strong>Infinite exploration。</strong> 你要求 Claude “investigate” 某件事，但没有限定范围。Claude 读取数百个文件，填满上下文。</p>
+<blockquote>
+<p><strong>Fix</strong>：窄范围限定 investigations，或使用 subagents，避免探索消耗主上下文。</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<h2 id="培养你的直觉">培养你的直觉</h2>
+<p>本指南中的模式并非一成不变。它们是通常有效的起点，但不一定适用于每种情况。</p>
+<p>有时你<em>应该</em>让上下文累积，因为你深处一个复杂问题中，历史很有价值。有时你应该跳过 planning，让 Claude 自己弄清楚，因为任务是探索性的。有时模糊 prompt 正是正确选择，因为你想先看 Claude 如何理解问题，再约束它。</p>
+<p>关注什么有效。当 Claude 产出很棒的结果时，注意你做了什么：prompt structure、你提供的上下文、你处于的模式。当 Claude 挣扎时，问为什么。上下文太吵了吗？Prompt 太模糊了吗？任务太大，无法一次完成吗？</p>
+<p>随着时间推移，你会形成任何指南都无法捕捉的直觉。你会知道什么时候该具体，什么时候该开放；什么时候该 plan，什么时候该 explore；什么时候该 clear context，什么时候该让它累积。</p>
+<h2 id="相关资源">相关资源</h2>
+<ul>
+<li><a href="https://www.notion.so/en/how-claude-code-works">How Claude Code works</a>：agentic loop、tools 和 context management</li>
+<li><a href="https://www.notion.so/en/features-overview">Extend Claude Code</a>：skills、hooks、MCP、subagents 和 plugins</li>
+<li><a href="https://www.notion.so/en/common-workflows">Common workflows</a>：debugging、testing、PRs 等的 step-by-step recipes</li>
+<li><a href="https://www.notion.so/en/memory">CLAUDE.md</a>：存储项目惯例和持久上下文</li>
+</ul>
+
+    </div>
+  </div>
+
+  <nav class="story-nav">
+    <div class="article-nav-inner">
+      
+        <div class="article-nav-prev">
+          <p class="article-nav-label">Previous</p>
+          <a href="/zh/blog/2026/05/multi-agent-research-system/" class="article-nav-title">我们如何构建 multi-agent research system</a>
+        </div>
+      
+      
+        <div class="article-nav-next">
+          <p class="article-nav-label">Next</p>
+          <a href="/zh/blog/2026/05/writing-tools-for-agents/" class="article-nav-title">为 AI agents 编写有效工具：用 AI agents</a>
+        </div>
+      
+    </div>
+  </nav>
+</article>
+
+
+  </main>
+  <footer class="site-footer">
+  <div class="footer-inner">
+    <span class="footer-copyright">&copy; 2026 Alex Chen</span>
+    <nav class="footer-nav">
+      
+        <a href="/zh/blog/">博客</a>
+      
+        <a href="/zh/projects/">项目</a>
+      
+        <a href="/zh/memos/">随笔</a>
+      
+        <a href="/zh/about/">关于</a>
+      
+    </nav>
+    <div class="footer-social">
+      <a href="/zh/index.xml" aria-label="RSS Feed">RSS</a>
+    </div>
+  </div>
+</footer>
+
+  
+  <script src="/js/main.js"></script>
+</body>
+</html>

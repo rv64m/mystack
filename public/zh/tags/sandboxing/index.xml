@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sandboxing on Alex Chen</title>
+    <link>https://example.org/zh/tags/sandboxing/</link>
+    <description>Recent content in Sandboxing on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 11:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/sandboxing/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用 sandboxing 让 Claude Code 更安全、更自主</title>
+      <link>https://example.org/zh/blog/2026/05/claude-code-sandboxing/</link>
+      <pubDate>Sat, 16 May 2026 11:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/claude-code-sandboxing/</guid>
+      <description>&lt;p&gt;在 &lt;a href=&#34;https://www.claude.com/product/claude-code&#34;&gt;Claude Code&lt;/a&gt; 中，Claude 会在你身边编写、测试和调试代码，navigate 你的 codebase、编辑多个 files，并运行 commands 来验证自己的工作。给予 Claude 这么多对 codebase 和 files 的 access 可能引入 risks，尤其是在 prompt injection 的情况下。&lt;/p&gt;&#xA;&lt;p&gt;为了帮助解决这个问题，我们在 Claude Code 中引入了两个基于 sandboxing 构建的新 features，二者都旨在为 developers 提供一个更安全的工作地点，同时也允许 Claude 更自主地运行，并减少 permission prompts。在我们的内部使用中，我们发现 sandboxing 可以安全地减少 84% 的 permission prompts。通过定义 Claude 可以自由工作的设定 boundaries，它们提升了 security 和 agency。&lt;/p&gt;&#xA;&lt;p&gt;Claude Code 运行在 permission-based model 上：默认情况下，它是 read-only 的，这意味着它在进行 modifications 或运行任何 commands 之前会请求 permission。这里有一些例外：我们会 auto-allow 像 echo 或 cat 这样的 safe commands，但大多数 operations 仍然需要 explicit approval。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

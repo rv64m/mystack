@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Harness on Alex Chen</title>
+    <link>https://example.org/zh/tags/harness/</link>
+    <description>Recent content in Harness on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 09:30:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/harness/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>面向长时间运行的应用开发的 Harness 设计</title>
+      <link>https://example.org/zh/blog/2026/05/harness-design-long-running-apps/</link>
+      <pubDate>Sat, 16 May 2026 09:30:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/harness-design-long-running-apps/</guid>
+      <description>&lt;p&gt;&lt;em&gt;作者 Prithvi Rajasekaran 是我们 &lt;a href=&#34;https://www.anthropic.com/news/introducing-anthropic-labs&#34;&gt;Labs&lt;/a&gt; 团队的成员。&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;过去几个月里，我一直在研究两个相互关联的问题：让 Claude 产出高质量的前端设计，以及让它在没有人工干预的情况下构建完整应用。这项工作源于我们早期在&lt;a href=&#34;https://github.com/anthropics/claude-code/blob/main/plugins/frontend-design/skills/frontend-design/SKILL.md&#34;&gt;前端设计 skill&lt;/a&gt; 和&lt;a href=&#34;https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents&#34;&gt;长时间运行的 coding agent harness&lt;/a&gt; 上的努力。在这些工作中，我和同事们通过 prompt engineering 和 harness design，让 Claude 的表现显著超过 baseline，但两者最终都遇到了天花板。&lt;/p&gt;&#xA;&lt;p&gt;为了突破这些限制，我寻找能够横跨两个相当不同领域的新型 AI engineering 方法：一个领域由主观品味定义，另一个领域由可验证的正确性和可用性定义。受到 &lt;a href=&#34;https://en.wikipedia.org/wiki/Generative_adversarial_network&#34;&gt;Generative Adversarial Networks&lt;/a&gt;（GANs）的启发，我设计了一个包含 &lt;strong&gt;generator&lt;/strong&gt; agent 和 &lt;strong&gt;evaluator&lt;/strong&gt; agent 的多 agent 结构。构建一个能够可靠地、并且带有品味地给输出打分的 evaluator，意味着首先要开发一组标准，把“这个设计好吗？”这类主观判断转化为具体、可评分的术语。&lt;/p&gt;&#xA;&lt;p&gt;随后，我把这些技术应用到长时间运行的自主编码中，并沿用了我们早期 harness 工作中的两个经验：把构建过程分解成可处理的块，以及使用结构化 artifact 在 session 之间交接上下文。最终结果是一个三 agent 架构：planner、generator 和 evaluator，它能在持续数小时的自主编码 session 中产出丰富的全栈应用。&lt;/p&gt;&#xA;&lt;p&gt;我们此前已经展示过，harness design 会对长时间运行的 agentic coding 效果产生重大影响。在早期的一个&lt;a href=&#34;https://www.anthropic.com/engineering/effective-harnesses-for-long-running-agents&#34;&gt;实验&lt;/a&gt;中，我们使用 initializer agent 将产品规格拆解成任务列表，再使用 coding agent 逐个 feature 实现任务，然后交接 artifact 以便在 session 之间携带上下文。更广泛的开发者社区也收敛到了类似洞察，例如 “&lt;a href=&#34;https://ghuntley.com/ralph/&#34;&gt;Ralph Wiggum&lt;/a&gt;” 方法使用 hooks 或 scripts 让 agent 保持连续迭代循环。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

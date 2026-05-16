@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Security on Alex Chen</title>
+    <link>https://example.org/zh/tags/security/</link>
+    <description>Recent content in Security on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 11:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/security/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>用 sandboxing 让 Claude Code 更安全、更自主</title>
+      <link>https://example.org/zh/blog/2026/05/claude-code-sandboxing/</link>
+      <pubDate>Sat, 16 May 2026 11:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/claude-code-sandboxing/</guid>
+      <description>&lt;p&gt;在 &lt;a href=&#34;https://www.claude.com/product/claude-code&#34;&gt;Claude Code&lt;/a&gt; 中，Claude 会在你身边编写、测试和调试代码，navigate 你的 codebase、编辑多个 files，并运行 commands 来验证自己的工作。给予 Claude 这么多对 codebase 和 files 的 access 可能引入 risks，尤其是在 prompt injection 的情况下。&lt;/p&gt;&#xA;&lt;p&gt;为了帮助解决这个问题，我们在 Claude Code 中引入了两个基于 sandboxing 构建的新 features，二者都旨在为 developers 提供一个更安全的工作地点，同时也允许 Claude 更自主地运行，并减少 permission prompts。在我们的内部使用中，我们发现 sandboxing 可以安全地减少 84% 的 permission prompts。通过定义 Claude 可以自由工作的设定 boundaries，它们提升了 security 和 agency。&lt;/p&gt;&#xA;&lt;p&gt;Claude Code 运行在 permission-based model 上：默认情况下，它是 read-only 的，这意味着它在进行 modifications 或运行任何 commands 之前会请求 permission。这里有一些例外：我们会 auto-allow 像 echo 或 cat 这样的 safe commands，但大多数 operations 仍然需要 explicit approval。&lt;/p&gt;</description>
+    </item>
+    <item>
+      <title>Claude Code auto mode：一种更安全的跳过权限方式</title>
+      <link>https://example.org/zh/blog/2026/05/claude-code-auto-mode/</link>
+      <pubDate>Sat, 16 May 2026 10:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/claude-code-auto-mode/</guid>
+      <description>&lt;p&gt;默认情况下，Claude Code 会在运行命令或修改文件之前请求用户批准。这能保证用户安全，但也意味着要大量点击“approve”。久而久之，这会导致批准疲劳，让人们不再认真关注自己正在批准什么。&lt;/p&gt;&#xA;&lt;p&gt;用户有两种解决方案来避免这种疲劳：一种是内置 sandbox，将工具隔离起来以防止危险操作；另一种是 &lt;code&gt;--dangerously-skip-permissions&lt;/code&gt; 标志，它会禁用所有权限提示，让 Claude 自由行动，而这在大多数情况下并不安全。图 1 展示了这个权衡空间。Sandboxing 很安全，但维护成本高：每项新能力都需要配置，任何需要网络或主机访问的东西都会破坏隔离。绕过权限不需要维护，但不提供任何保护。手动提示位于中间，而在实践中，用户无论如何都会接受其中 93%。&lt;/p&gt;&#xA;&lt;p&gt;&lt;img src=&#34;https://example.org/images/blog/claude-code-auto-mode/permission-modes.png&#34; alt=&#34;Claude Code 权限模式的权衡空间&#34;&gt;&lt;/p&gt;&#xA;&lt;p&gt;图 1. Claude Code 中可用的权限模式，按照任务自主性和安全性定位。点的颜色表示维护摩擦。Auto mode 的目标是在低维护成本下实现高自主性；虚线箭头显示随着分类器覆盖范围和模型判断力变好，安全性会随时间改善。&lt;/p&gt;&#xA;&lt;p&gt;我们维护着一份内部事件日志，重点记录 agentic misbehaviors。过去的例子包括：因为误解指令而删除远程 git 分支；把一位工程师的 GitHub auth token 上传到内部计算集群；以及尝试对生产数据库执行迁移。这些都是模型过于积极的结果，它以用户并不想要的方式主动采取行动。我们在 &lt;a href=&#34;https://www-cdn.anthropic.com/14e4fb01875d2a69f646fa5e574dea2b1c0ff7b5.pdf&#34;&gt;Claude Opus 4.6 system card&lt;/a&gt;（§6.2.1 和 §6.2.3.3）中记录了这种模式。&lt;/p&gt;&#xA;&lt;p&gt;Auto mode 是 Claude Code 的一种新模式，它把批准委派给基于模型的分类器，是手动审查和没有护栏之间的中间地带。目标是捕捉那些不符合用户意图的危险动作，同时让其他动作无需批准提示即可运行。按照&lt;a href=&#34;http://code.claude.com/docs/en/permission-modes#eliminate-prompts-with-auto-mode&#34;&gt;文档&lt;/a&gt;开始使用 auto mode。&lt;/p&gt;&#xA;&lt;h2 id=&#34;它如何工作&#34;&gt;它如何工作&lt;/h2&gt;&#xA;&lt;p&gt;Auto mode 使用两层防御：一层针对 Claude 读取的内容，一层针对 Claude 做出的动作。&lt;/p&gt;&#xA;&lt;p&gt;在输入层，一个服务端提示注入探针会在工具输出（文件读取、网页抓取、shell 输出、外部工具响应）进入 agent 上下文之前扫描它们。当内容看起来像是在尝试劫持行为时，探针会在结果传递给 agent 之前，向 agent 的上下文中添加一条警告，告诉 agent 把这些内容视为可疑，并锚定用户实际要求的内容。&lt;/p&gt;&#xA;&lt;p&gt;在输出层，transcript classifier（运行在 Sonnet 4.6 上）会在每个动作执行之前，根据一组决策标准评估它，充当人类批准者的替代品。分类器分两个阶段运行：一个快速的单 token 过滤器（决定用“yes”来阻止，或用“no”来允许），随后只有在第一层过滤器标记 transcript 时，才进行 chain-of-thought 推理。因为大多数动作都会通过第一阶段，推理 token 只会花在需要的地方。分类器只看到用户消息和 agent 的工具调用；我们会剥离 Claude 自己的消息和工具输出，使它在设计上对推理保持盲视。我们会在下面的设计决策部分逐一介绍这些选择，包括它们带来的收益和代价。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

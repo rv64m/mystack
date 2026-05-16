@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Browsecomp on Alex Chen</title>
+    <link>https://example.org/zh/tags/browsecomp/</link>
+    <description>Recent content in Browsecomp on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 17:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/browsecomp/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Claude Opus 4.6 的 BrowseComp 表现中的 eval awareness</title>
+      <link>https://example.org/zh/blog/2026/05/eval-awareness-browsecomp/</link>
+      <pubDate>Sat, 16 May 2026 17:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/eval-awareness-browsecomp/</guid>
+      <description>&lt;p&gt;BrowseComp 是一个 evaluation，旨在测试 models 在 web 上寻找难以定位信息的能力。像许多 benchmarks 一样，它容易受到 contamination 影响：answers 会通过 academic papers、blog posts 和 GitHub issues 泄漏到 public web 上，而运行 eval 的 model 可能会在 search results 中遇到它们。当我们在 multi-agent configuration 中评估 Claude Opus 4.6 的 BrowseComp 表现时，我们在 1,266 个 BrowseComp problems 中发现了 9 个这种 contamination 的例子。&lt;/p&gt;&#xA;&lt;p&gt;然而，我们还见证了两个 novel contamination pattern 的 cases。Claude Opus 4.6 并不是无意中遇到泄漏答案，而是独立 hypothesized 自己正在被 evaluated，识别出自己正在运行哪个 benchmark，然后定位并 decrypt 了 answer key。据我们所知，这是首次 documented instance：一个 model 在不知道正在被 administer 哪个 benchmark 的情况下怀疑自己正在被 evaluated，然后反向工作，成功识别并解决 evaluation 本身。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Context-Engineering on Alex Chen</title>
+    <link>https://example.org/zh/tags/context-engineering/</link>
+    <description>Recent content in Context-Engineering on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 09:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/context-engineering/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>面向 AI agents 的有效 context engineering</title>
+      <link>https://example.org/zh/blog/2026/05/effective-context-engineering-for-ai-agents/</link>
+      <pubDate>Sat, 16 May 2026 09:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/effective-context-engineering-for-ai-agents/</guid>
+      <description>&lt;p&gt;在 prompt engineering 成为 applied AI 关注焦点几年之后，一个新术语开始变得突出：&lt;strong&gt;context engineering&lt;/strong&gt;。使用 language models 构建应用，正在逐渐少一些关于为 prompts 找到正确 words 和 phrases 的工作，多一些关于回答更广泛问题的工作：“什么样的 context configuration 最可能生成我们希望 model 表现出的 behavior？”&lt;/p&gt;&#xA;&lt;p&gt;&lt;strong&gt;Context&lt;/strong&gt; 指的是从 large-language model (LLM) 采样时包含的一组 tokens。手头的 &lt;strong&gt;engineering&lt;/strong&gt; problem，是在 LLMs 的固有限制下优化这些 tokens 的 utility，以持续实现期望 outcome。有效驾驭 LLMs 往往需要 &lt;em&gt;thinking in context&lt;/em&gt;，换句话说：考虑 LLM 在任何给定时间可用的整体 state，以及这种 state 可能产生哪些 potential behaviors。&lt;/p&gt;&#xA;&lt;p&gt;在这篇文章中，我们会探索 context engineering 这一新兴技艺，并为构建 steerable、effective agents 提供一个更精炼的 mental model。&lt;/p&gt;&#xA;&lt;p&gt;在 Anthropic，我们把 context engineering 视为 prompt engineering 的自然进展。Prompt engineering 指的是为获得最佳 outcomes 而编写和组织 LLM instructions 的方法（可查看 &lt;a href=&#34;https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview&#34;&gt;our docs&lt;/a&gt;，其中有 overview 和有用的 prompt engineering strategies）。&lt;strong&gt;Context engineering&lt;/strong&gt; 指的是在 LLM inference 期间策划和维护最优 tokens（information）集合的一组 strategies，包括除 prompts 之外也可能进入 context 的所有其他 information。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>

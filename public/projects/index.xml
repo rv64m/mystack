@@ -2,23 +2,23 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Selected Work on Alex Chen</title>
-    <link>http://localhost:52954/projects/</link>
+    <link>https://example.org/projects/</link>
     <description>Recent content in Selected Work on Alex Chen</description>
     <generator>Hugo</generator>
     <language>en-us</language>
-    <atom:link href="http://localhost:52954/projects/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="https://example.org/projects/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Design System Kit</title>
-      <link>http://localhost:52954/projects/design-system-kit/</link>
+      <link>https://example.org/projects/design-system-kit/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:52954/projects/design-system-kit/</guid>
+      <guid>https://example.org/projects/design-system-kit/</guid>
       <description>&lt;p&gt;A lightweight design system starter that prioritizes pragmatism over completeness.&lt;/p&gt;&#xA;&lt;h2 id=&#34;philosophy&#34;&gt;Philosophy&lt;/h2&gt;&#xA;&lt;p&gt;Most design systems fail because they&amp;rsquo;re too ambitious. This kit starts small: tokens, a few core components, and clear documentation. Teams can extend it as needed rather than fighting against an opinionated framework.&lt;/p&gt;&#xA;&lt;h2 id=&#34;features&#34;&gt;Features&lt;/h2&gt;&#xA;&lt;ul&gt;&#xA;&lt;li&gt;CSS custom properties for theming&lt;/li&gt;&#xA;&lt;li&gt;Accessible React components&lt;/li&gt;&#xA;&lt;li&gt;Minimal dependencies&lt;/li&gt;&#xA;&lt;li&gt;Dark mode support out of the box&lt;/li&gt;&#xA;&lt;/ul&gt;</description>
     </item>
     <item>
       <title>Quiet Reader</title>
-      <link>http://localhost:52954/projects/quiet-reader/</link>
+      <link>https://example.org/projects/quiet-reader/</link>
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      <guid>http://localhost:52954/projects/quiet-reader/</guid>
+      <guid>https://example.org/projects/quiet-reader/</guid>
       <description>&lt;p&gt;Quiet Reader is a reading app designed for focus. No social features. No sync conflicts. Just your books and articles, presented beautifully.&lt;/p&gt;&#xA;&lt;h2 id=&#34;problem&#34;&gt;Problem&lt;/h2&gt;&#xA;&lt;p&gt;Most reading apps are cluttered with features you don&amp;rsquo;t need: social sharing, achievement badges, algorithmic recommendations. For people who just want to read, this noise is exhausting.&lt;/p&gt;&#xA;&lt;h2 id=&#34;solution&#34;&gt;Solution&lt;/h2&gt;&#xA;&lt;p&gt;Quiet Reader strips away everything non-essential. The interface is deliberately minimal: a book cover, your reading position, and the text itself. Settings are limited to typography, spacing, and theme — the things that actually affect reading comfort.&lt;/p&gt;</description>
     </item>
   </channel>

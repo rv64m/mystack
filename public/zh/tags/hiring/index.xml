@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Hiring on Alex Chen</title>
+    <link>https://example.org/zh/tags/hiring/</link>
+    <description>Recent content in Hiring on Alex Chen</description>
+    <generator>Hugo</generator>
+    <language>zh-cn</language>
+    <lastBuildDate>Sat, 16 May 2026 14:00:00 +0800</lastBuildDate>
+    <atom:link href="https://example.org/zh/tags/hiring/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>设计抗 AI 的技术评估</title>
+      <link>https://example.org/zh/blog/2026/05/ai-resistant-technical-evaluations/</link>
+      <pubDate>Sat, 16 May 2026 14:00:00 +0800</pubDate>
+      <guid>https://example.org/zh/blog/2026/05/ai-resistant-technical-evaluations/</guid>
+      <description>&lt;p&gt;&lt;em&gt;本文由 Tristan Hume 撰写，他是 Anthropic performance optimization team 的负责人之一。Tristan 设计并重新设计了帮助 Anthropic 招聘数十名 performance engineers 的 take-home test。&lt;/em&gt;&lt;/p&gt;&#xA;&lt;p&gt;随着 AI capabilities 改善，评估 technical candidates 变得更困难。一个今天能很好地区分人类技能水平的 take-home，明天可能会被 models 轻松解决，从而对 evaluation 变得毫无用处。&lt;/p&gt;&#xA;&lt;p&gt;自 2024 年初以来，我们的 performance engineering team 一直使用一个 take-home test，要求 candidates 为模拟 accelerator 优化代码。超过 1,000 名 candidates 完成了它，其中数十人现在在这里工作，包括 bring up 我们的 Trainium cluster，并 shipping 自 Claude 3 Opus 以来每个 model 的 engineers。&lt;/p&gt;&#xA;&lt;p&gt;但每个新的 Claude model 都迫使我们重新设计这个 test。在给定相同 time limit 时，Claude Opus 4 的表现超过了大多数 human applicants。这仍然让我们能够区分最强 candidates，但随后 Claude Opus 4.5 也匹配了这些人。Human 在给予 unlimited time 时仍然可以 outperform models，但在 take-home test 的 constraints 下，我们已经不再有办法区分 top candidates 的 output 和我们最有能力的 model。&lt;/p&gt;</description>
+    </item>
+  </channel>
+</rss>
